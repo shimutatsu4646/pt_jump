@@ -1,0 +1,23 @@
+inherit_from:
+  - .rubocop_airbnb.yml
+
+Layout/LineLength:
+  Max: 130
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'bin/*'
+    - 'db/**/*'
+    - 'lib/tasks/*'
+    - 'log/**/*'
+    - 'node_modules/**/*'
+    - 'spec/spec_helper.rb'
+    - 'tmp/**/*'
+

@@ -38,12 +38,14 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'faker'
-  #外部APIにアクセスする機能をテスト
+  # 外部APIにアクセスする機能をテスト
   gem 'webmock'
-  #ユーザー操作のエミュレート（Feature Spec）にはDBクリーンアップ機能がないため。
+  # ユーザー操作のエミュレート（Feature Spec）にはDBクリーンアップ機能がないため。
   gem 'database_cleaner'
   gem 'capybara'
   gem 'spring-commands-rspec'
+
+  gem 'rubocop-airbnb'
 end
 
 group :development do
