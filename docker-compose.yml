@@ -9,7 +9,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: body_order_password
+      MYSQL_ROOT_PASSWORD: pt_jump_password
     security_opt:
       - seccomp:unconfined
   app:
@@ -17,7 +17,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - .:/body_order
+      - .:/pt_jump
     command: bash -c "rm -rf tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     depends_on:
       - mysql

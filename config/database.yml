@@ -14,19 +14,19 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password: body_order_password
+  password: pt_jump_password
   host: mysql
 
 development:
   <<: *default
-  database: body_order_development
+  database: pt_jump_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: body_order_test
+  database: pt_jump_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -50,6 +50,6 @@ test:
 #
 production:
   <<: *default
-  database: body_order_production
-  username: body_order
-  password: <%= ENV['BODY_ORDER_DATABASE_PASSWORD'] %>
+  database: pt_jump_production
+  username: pt_jump
+  password: <%= ENV['PT_JUMP_DATABASE_PASSWORD'] %>

@@ -1,5 +1,5 @@
 {
-  "name": "body-order",
+  "name":"pt_jump",
   "private": true,
   "dependencies": {
     "@rails/actioncable": "^6.0.0",
