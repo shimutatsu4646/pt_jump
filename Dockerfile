@@ -3,13 +3,13 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && apt-get install -y nodejs yarn
 
-RUN mkdir /body_order
-WORKDIR /body_order
+RUN mkdir /pt_jump
+WORKDIR /pt_jump
 
-COPY Gemfile /body_order/Gemfile
-COPY Gemfile.lock /body_order/Gemfile.lock
+COPY Gemfile /pt_jump/Gemfile
+COPY Gemfile.lock /pt_jump/Gemfile.lock
 RUN bundle install
-COPY . /body_order
+COPY . /pt_jump
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/

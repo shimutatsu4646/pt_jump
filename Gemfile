@@ -26,6 +26,8 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem 'rename'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -38,12 +40,14 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'faker'
-  #外部APIにアクセスする機能をテスト
+  # 外部APIにアクセスする機能をテスト
   gem 'webmock'
-  #ユーザー操作のエミュレート（Feature Spec）にはDBクリーンアップ機能がないため。
+  # ユーザー操作のエミュレート（Feature Spec）にはDBクリーンアップ機能がないため。
   gem 'database_cleaner'
   gem 'capybara'
   gem 'spring-commands-rspec'
+
+  gem 'rubocop-airbnb'
 end
 
 group :development do
