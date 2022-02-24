@@ -16,6 +16,10 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :age, :gender, :introduction, :start_time, :end_time, :dm_allowed])
+    # devise_parameter_sanitizer.permit(:profile_change) do |trainee|
+    #   trainee.permit(:name, :age)
+    #   # https://github.com/heartcombo/devise/blob/8593801130f2df94a50863b5db535c272b00efe1/lib/devise/parameter_sanitizer.rb#L28
+    # できないかも
+    # endf
   end
 end

@@ -37,7 +37,7 @@ module PtJump
       g.skip_routes true
       g.helper false
       g.assets false
-      g.test_framework :rspec, controller_specs: false, view_specs: false, routing_specs: false # viewのテストはsystemスペックに任せる。
+      g.test_framework :rspec, view_specs: false, routing_specs: false # viewのテストはsystemスペックに任せる。
     end
   end
 end

@@ -17,11 +17,12 @@
   <p><%= link_to 'sign_out', destroy_trainee_session_path, method: :delete %></p>
 <% end %>
 
+
 <% @trainees.each do |trainee| %>
   <p>トレーニー情報</p>
-  <p><%= trainee.name %></p>
-  <p><%= trainee.age %></p>
-  <p><%= trainee.gender %></p>
-  <p><%= trainee.email %></p>
+  <p>name:<%= trainee.name %></p>
+  <p>age:<%= trainee.age %></p>
+  <p>gender:<%= trainee.gender %></p>
+  <p>email:<%= trainee.email %></p>
   <p><%= link_to 'プロフィール', trainee_path(trainee) %></p>
 <% end %>

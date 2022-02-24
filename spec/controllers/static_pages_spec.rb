@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "StaticPages Request", type: :request do
-  describe "GET /" do
+RSpec.describe StaticPagesController, type: :controller do
+  describe "#top" do
     it "正常にレスポンスを返すこと" do
-      get root_path
+      get :top
       aggregate_failures do
         expect(response).to be_successful
         expect(response).to have_http_status "200"

@@ -22,8 +22,7 @@ ActiveRecord::Schema.define(version: 2022_01_17_094431) do
     t.integer "age", null: false
     t.integer "gender", null: false
     t.text "introduction"
-    t.time "start_time"
-    t.time "end_time"
+    t.text "timeframe"
     t.boolean "dm_allowed", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

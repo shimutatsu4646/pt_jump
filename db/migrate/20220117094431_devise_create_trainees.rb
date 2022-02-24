@@ -37,8 +37,7 @@ class DeviseCreateTrainees < ActiveRecord::Migration[6.1]
       t.integer :age, null: false
       t.integer :gender, null: false
       t.text :introduction
-      t.time :start_time
-      t.time :end_time
+      t.text :timeframe
       t.boolean :dm_allowed, null: false, default: false
 
       t.timestamps null: false
