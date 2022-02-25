@@ -27,11 +27,12 @@ class Trainee < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
   devise :database_authenticatable, :registerable,
-          :recoverable, :rememberable, :validatable
+          :recoverable, :rememberable
 
   devise :validatable, password_length: 8..128 # パスワードの最小文字数を８文字に変更
   validates :name, presence: true
-  validates :age, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :age, presence: true
+  validates :age, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :gender, presence: true
   enum gender: { male: 0, female: 1 }
   validates :dm_allowed, inclusion: { in: [true, false] }

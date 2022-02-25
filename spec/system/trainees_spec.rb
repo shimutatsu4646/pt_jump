@@ -40,7 +40,7 @@ RSpec.describe "Trainees System", type: :system do
             fill_in "trainee_password", with: "test_password"
             fill_in "trainee_password_confirmation", with: "test_password"
             check "trainee_dm_allowed"
-            click_button "Sign up"
+            click_button "登録"
 
             trainee = Trainee.find_by(name: "test_trainee_name")
             aggregate_failures do
@@ -55,15 +55,20 @@ RSpec.describe "Trainees System", type: :system do
         scenario "新規登録できないこと" do
           visit new_trainee_registration_path
           expect do
-            # nameがnilのため、エラー発生
+            # nameとageがnilのため、エラー発生
             fill_in "trainee_name", with: nil
-            fill_in "trainee_age", with: 20
+            fill_in "trainee_age", with: nil
             select "male", from: "trainee_gender"
             fill_in "trainee_email", with: "system_test2@example.com"
             fill_in "trainee_password", with: "test_password"
             fill_in "trainee_password_confirmation", with: "test_password"
             check "trainee_dm_allowed"
-            click_button "Sign up"
+            click_button "登録"
+
+            aggregate_failures do
+              expect(page).to have_content "名前を入力してください"
+              expect(page).to have_content "年齢を入力してください"
+            end
           end.to change { Trainee.count }.by(0)
         end
       end
@@ -84,7 +89,7 @@ RSpec.describe "Trainees System", type: :system do
             fill_in "trainee_email", with: trainee.email
             fill_in "trainee_current_password", with: trainee.password
             check "trainee_dm_allowed"
-            click_button "Update"
+            click_button "更新"
 
             aggregate_failures do
               expect(current_path).to eq trainee_path(trainee.id)
@@ -107,7 +112,7 @@ RSpec.describe "Trainees System", type: :system do
             # current_passwordを一致させないことでエラー発生
             fill_in "trainee_current_password", with: "wrong_password"
             check "trainee_dm_allowed"
-            click_button "Update"
+            click_button "更新"
           end.not_to change { trainee.reload.name }
         end
       end
@@ -122,7 +127,7 @@ RSpec.describe "Trainees System", type: :system do
         visit new_trainee_session_path
         fill_in "trainee_email", with: trainee.email
         fill_in "trainee_password", with: trainee.password
-        click_button "Log in"
+        click_button "ログイン"
 
         aggregate_failures do
           expect(current_path).to eq root_path
@@ -137,7 +142,7 @@ RSpec.describe "Trainees System", type: :system do
         # emailが一致しないため、エラー発生
         fill_in "trainee_email", with: "wrong_email@example.com"
         fill_in "trainee_password", with: trainee.password
-        click_button "Log in"
+        click_button "ログイン"
 
         aggregate_failures do
           expect(current_path).to eq new_trainee_session_path
@@ -148,7 +153,7 @@ RSpec.describe "Trainees System", type: :system do
 
     scenario "ログイン中のトレーニーがログアウトすること" do
       login trainee
-      click_on "sign_out"
+      click_on "ログアウト"
       aggregate_failures do
         expect(page).to have_content "ログアウトしました。"
         expect(current_path).to eq root_path

@@ -6,15 +6,15 @@
 <% end %>
 
 <% unless trainee_signed_in?  %>
-  <p><%= link_to 'sign_up', new_trainee_registration_path %></p>
+  <p><%= link_to 'トレーニー新規登録', new_trainee_registration_path %></p>
 <% end %>
 
 <% unless trainee_signed_in?  %>
-  <p><%= link_to 'sign_in', new_trainee_session_path %></p>
+  <p><%= link_to 'ログイン', new_trainee_session_path %></p>
 <% end %>
 
 <% if trainee_signed_in? %>
-  <p><%= link_to 'sign_out', destroy_trainee_session_path, method: :delete %></p>
+  <p><%= link_to 'ログアウト', destroy_trainee_session_path, method: :delete %></p>
 <% end %>
 
 

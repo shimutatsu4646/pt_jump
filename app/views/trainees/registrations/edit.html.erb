@@ -1,5 +1,5 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
-<h2>プロフィール変更: <%= current_trainee.name %></h2>
+<h2><%= current_trainee.name %></h2>
+<h2>プロフィール変更ページ</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "trainees/shared/error_messages", resource: resource %>
@@ -44,11 +44,11 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.label :password %> <i>(パスワードを変更しない場合は入力しないでください)</i><br />
     <%= f.password_field :password, autocomplete: "new-password" %>
     <% if @minimum_password_length %>
       <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+      <em><%= @minimum_password_length %> 文字以上</em>
     <% end %>
   </div>
 
@@ -58,12 +58,12 @@
   </div>
 
   <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.label :current_password %> <i>(必須項目)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Update" %>
+    <%= f.submit "更新" %>
   </div>
 <% end %>
 
