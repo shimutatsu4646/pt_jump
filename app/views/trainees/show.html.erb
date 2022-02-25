@@ -2,13 +2,13 @@
 <% if @trainee == current_trainee %>
   <h2>あなたのプロフィール</h2>
 <% end %>
-<p>名前：<%= @trainee.name %></p>
-<p>年齢：<%= @trainee.age %></p>
-<p>性別：<%= @trainee.gender %></p>
-<p>活動時間：<%= @trainee.timeframe %></p>
-<p>自己紹介：<%= @trainee.introduction %></p>
-<p>メールアドレス：<%= @trainee.email %></p>
-<p>DM許可：<%= @trainee.dm_allowed %></p>
+<p>名前:<%= @trainee.name %></p>
+<p>年齢:<%= @trainee.age %></p>
+<p>性別:<%= @trainee.gender %></p>
+<p>活動時間:<%= @trainee.timeframe %></p>
+<p>自己紹介:<%= @trainee.introduction %></p>
+<p>メールアドレス:<%= @trainee.email %></p>
+<p>DM許可:<%= @trainee.dm_allowed %></p>
 <% if @trainee == current_trainee %>
   <%= link_to "プロフィール変更", edit_trainee_registration_path(current_trainee.id) %>
 <% end %>

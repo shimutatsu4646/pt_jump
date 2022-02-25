@@ -20,9 +20,11 @@
 
 <% @trainees.each do |trainee| %>
   <p>トレーニー情報</p>
-  <p>name:<%= trainee.name %></p>
-  <p>age:<%= trainee.age %></p>
-  <p>gender:<%= trainee.gender %></p>
-  <p>email:<%= trainee.email %></p>
+  <p>名前:<%= trainee.name %></p>
+  <p>年齢:<%= trainee.age %></p>
+  <p>性別:<%= trainee.gender %></p>
+  <p>メールアドレス:<%= trainee.email %></p>
+
+  <p>DM許可:<%= trainee.dm_allowed %></p>
   <p><%= link_to 'プロフィール', trainee_path(trainee) %></p>
 <% end %>

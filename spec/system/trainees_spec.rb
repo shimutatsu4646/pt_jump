@@ -43,7 +43,10 @@ RSpec.describe "Trainees System", type: :system do
             click_button "Sign up"
 
             trainee = Trainee.find_by(name: "test_trainee_name")
-            expect(current_path).to eq trainee_path(trainee.id)
+            aggregate_failures do
+              expect(current_path).to eq trainee_path(trainee.id)
+              expect(page).to have_content "アカウント登録が完了しました。"
+            end
           end.to change { Trainee.count }.by(1)
         end
       end
@@ -83,7 +86,10 @@ RSpec.describe "Trainees System", type: :system do
             check "trainee_dm_allowed"
             click_button "Update"
 
-            expect(current_path).to eq trainee_path(trainee.id)
+            aggregate_failures do
+              expect(current_path).to eq trainee_path(trainee.id)
+              expect(page).to have_content "アカウント情報を変更しました。"
+            end
           end.to change { trainee.reload.name }.to("updated_name")
         end
       end
@@ -120,7 +126,7 @@ RSpec.describe "Trainees System", type: :system do
 
         aggregate_failures do
           expect(current_path).to eq root_path
-          expect(page).to have_content "Signed in successfully."
+          expect(page).to have_content "ログインしました。"
         end
       end
     end
@@ -135,7 +141,7 @@ RSpec.describe "Trainees System", type: :system do
 
         aggregate_failures do
           expect(current_path).to eq new_trainee_session_path
-          expect(page).to have_content "Invalid Email or password."
+          expect(page).to have_content "Eメールまたはパスワードが違います。"
         end
       end
     end
@@ -144,7 +150,7 @@ RSpec.describe "Trainees System", type: :system do
       login trainee
       click_on "sign_out"
       aggregate_failures do
-        expect(page).to have_content "Signed out successfully."
+        expect(page).to have_content "ログアウトしました。"
         expect(current_path).to eq root_path
       end
     end
