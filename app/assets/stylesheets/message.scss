@@ -1,0 +1,20 @@
+// エラーメッセージ
+.failed-registration {
+  background-color: #ffa0a8;
+  text-align: center;
+  margin-bottom: 0;
+  padding: 1rem 0;
+}
+
+.error-messages {
+  background-color: rgb(255, 214, 214);
+  text-align: center;
+  padding-bottom: 1rem;
+  // display: inline-block;
+}
+
+.error-message {
+  padding-top: 1rem;
+}
+
+// フラッシュメッセージ

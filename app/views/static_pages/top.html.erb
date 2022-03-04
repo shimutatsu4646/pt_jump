@@ -1,30 +1,11 @@
 <h1>トップページ</h1>
-<% if trainee_signed_in? %>
-  <h2>ログイン:<%= current_trainee.name %></h2>
-<% else %>
-  <h2>ログインしていません</h2>
-<% end %>
-
-<% unless trainee_signed_in?  %>
-  <p><%= link_to 'トレーニー新規登録', new_trainee_registration_path %></p>
-<% end %>
-
-<% unless trainee_signed_in?  %>
-  <p><%= link_to 'ログイン', new_trainee_session_path %></p>
-<% end %>
-
-<% if trainee_signed_in? %>
-  <p><%= link_to 'ログアウト', destroy_trainee_session_path, method: :delete %></p>
-<% end %>
-
 
 <% @trainees.each do |trainee| %>
-  <p>トレーニー情報</p>
-  <p>名前:<%= trainee.name %></p>
-  <p>年齢:<%= trainee.age %></p>
-  <p>性別:<%= trainee.gender %></p>
-  <p>メールアドレス:<%= trainee.email %></p>
-
-  <p>DM許可:<%= trainee.dm_allowed %></p>
-  <p><%= link_to 'プロフィール', trainee_path(trainee) %></p>
+<ul class="custom-light-gray"> <li>名前:<%= trainee.name %></li>
+  <li>年齢:<%= trainee.age %></li>
+  <li>性別:<%= trainee.gender %></li>
+  <li>メールアドレス:<%= trainee.email %></li>
+  <li>DM許可:<%= trainee.dm_allowed %></li>
+  <li><%= link_to 'プロフィール', trainee_path(trainee) %></li>
+</ul>
 <% end %>

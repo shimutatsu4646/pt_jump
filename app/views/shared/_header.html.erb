@@ -1,0 +1,38 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark py-4">
+    <div class="container-fluid mx-4">
+      <%= link_to "P.T.Jump", root_path , class: "navbar-brand" %>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav m-auto mt-3 mt-md-0 mb-2 mb-md-0">
+          <% if trainee_signed_in? %>
+            <li class="nav-item mb-4 mb-md-0">
+              <a href="#" class="nav-link disabled text-light" aria-disabled="true"><%= current_trainee.name %>としてログイン中</a>
+            </li>
+            <li class="nav-item">
+              <%= link_to "プロフィール", trainee_path(current_trainee.id) , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_trainee_session_path , {method: :delete, class: "nav-link"} %>
+            </li>
+          <% else %>
+            <li class="nav-item mb-4 mb-md-0">
+              <a href="#" class="nav-link disabled text-light" aria-disabled="true">ゲストユーザーとして利用中</a>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログイン", new_trainee_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーニー登録", new_trainee_registration_path, class: "nav-link" %>
+            </li>
+          <% end %>
+          <li class="nav-item">
+            <%= link_to "トップページ", root_path , class: "nav-link aria-current=page" %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
