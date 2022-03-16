@@ -25,6 +25,16 @@ RSpec.describe "Trainees System", type: :system do
         expect(page).not_to have_content "プロフィール変更"
       end
     end
+
+    describe "ActiveStorageのavatar" do
+      scenario "アバター画像が表示されていること" do
+        visit trainee_path(trainee.id)
+        aggregate_failures do
+          # src$=とすることでその後に続く文字列を含む画像ファイルを探している。
+          expect(page).to have_selector "img[src$='default_trainee_avatar.png']"
+        end
+      end
+    end
   end
 
   describe "Registration" do
@@ -46,6 +56,7 @@ RSpec.describe "Trainees System", type: :system do
             aggregate_failures do
               expect(current_path).to eq trainee_path(trainee.id)
               expect(page).to have_content "アカウント登録が完了しました。"
+              expect(page).to have_selector "img[src$='default_trainee_avatar.png']"
             end
           end.to change { Trainee.count }.by(1)
         end
@@ -114,6 +125,21 @@ RSpec.describe "Trainees System", type: :system do
             check "trainee_dm_allowed"
             click_button "更新"
           end.not_to change { trainee.reload.name }
+        end
+      end
+
+      describe "ActiveStorageのavatar" do
+        scenario "画像ファイルがアップロードされて、アバターが変化すること" do
+          login trainee
+          visit trainee_path(trainee.id)
+          expect(page).to have_selector "img[src$='default_trainee_avatar.png']"
+          click_on "プロフィール変更"
+
+          attach_file "trainee[avatar]", "spec/fixtures/files/test_avatar_1.png"
+          fill_in "trainee_current_password", with: trainee.password
+          click_button "更新"
+          expect(page).to have_selector "img[src$='test_avatar_1.png']"
+          expect(trainee.reload.avatar.filename.to_s).to eq "test_avatar_1.png"
         end
       end
     end

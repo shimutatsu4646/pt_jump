@@ -33,5 +33,12 @@ FactoryBot.define do
     sequence(:email) { |n| "test_trainee#{n}@example.com" }
     password { "trainee_password" }
     password_confirmation { 'trainee_password' }
+
+    before(:create) do |trainee|
+      # デフォルトのプロフィール画像をActiveStorageで添付する。
+      avatar_file = "default_trainee_avatar.png"
+      avatar_path = Rails.root.join('app', 'assets', 'images', avatar_file)
+      trainee.avatar.attach(io: File.open(avatar_path), filename: avatar_file)
+    end
   end
 end

@@ -3,6 +3,7 @@
   <h3>自分のプロフィール</h3>
 <% end %>
 <ul class="custom-light-gray">
+  <li><%= image_tag @trainee.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
   <li>名前:<%= @trainee.name %></li>
   <li>年齢:<%= @trainee.age %></li>
   <li>性別:<%= @trainee.gender %></li>

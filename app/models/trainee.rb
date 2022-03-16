@@ -36,4 +36,6 @@ class Trainee < ApplicationRecord
   validates :gender, presence: true
   enum gender: { male: 0, female: 1 }
   validates :dm_allowed, inclusion: { in: [true, false] }
+
+  has_one_attached :avatar
 end

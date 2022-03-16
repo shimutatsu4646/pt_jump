@@ -4,6 +4,19 @@
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <%= render "trainees/shared/error_messages", resource: resource %>
 
+    <div>
+      <%= image_tag resource.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :avatar %><br />
+      <%= f.file_field :avatar, autocomplete: "avatar", onchange: "loadAvatar(this);" %>
+    </div>
+
+    <div id="update_avatar" style="display: none;">
+      <p id="preview"></p>
+    </div>
+
     <div class="field">
       <%= f.label :name %><br />
       <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
@@ -75,3 +88,6 @@
 
   <%= link_to "トップページ", root_path %>
 </div>
+
+<!-- プロフィール画像のプレビューをするjs -->
+<%= render "shared/preview"%>

@@ -10,9 +10,27 @@ class Trainees::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    build_resource(sign_up_params)
+    default_avatar_attach(resource)
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      if resource.active_for_authentication?
+        set_flash_message! :notice, :signed_up
+        sign_up(resource_name, resource)
+        respond_with resource, location: after_sign_up_path_for(resource)
+      else
+        set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
+      end
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -20,9 +38,6 @@ class Trainees::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
@@ -59,12 +74,13 @@ class Trainees::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :age, :gender, :introduction, :timeframe, :dm_allowed])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :age, :gender, :introduction, :timeframe, :dm_allowed, :image])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :age, :gender, :introduction, :timeframe, :dm_allowed])
+    devise_parameter_sanitizer.permit(:account_update, keys:
+      [:name, :age, :gender, :introduction, :timeframe, :dm_allowed, :avatar])
   end
 
   # The path used after sign up.
@@ -74,6 +90,13 @@ class Trainees::RegistrationsController < Devise::RegistrationsController
 
   def after_update_path_for(resource)
     trainee_path(resource)
+  end
+
+  def default_avatar_attach(resource)
+    # デフォルトのプロフィール画像をActiveStorageで添付する。
+    image_file = "default_trainee_avatar.png"
+    image_path = Rails.root.join('app', 'assets', 'images', image_file)
+    resource.avatar.attach(io: File.open(image_path), filename: image_file)
   end
 
   # The path used after sign up for inactive accounts.
