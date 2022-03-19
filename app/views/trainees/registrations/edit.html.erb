@@ -5,7 +5,7 @@
     <%= render "trainees/shared/error_messages", resource: resource %>
 
     <div>
-      <%= image_tag resource.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %>
+      <%= image_tag resource.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0"), class: "avatar_image" %>
     </div>
 
     <div class="field">
