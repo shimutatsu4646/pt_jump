@@ -5,4 +5,9 @@ Rails.application.routes.draw do
   devise_scope :trainee do
     get 'trainees/show/:id', to: 'trainees#show', as: :trainee
   end
+
+  devise_for :trainers, module: "trainers"
+  devise_scope :trainee do
+    get 'trainers/show/:id', to: 'trainers#show', as: :trainer
+  end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Trainees::RegistrationsController < Devise::RegistrationsController
+class Trainers::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
@@ -60,27 +60,28 @@ class Trainees::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :age, :gender, :introduction, :timeframe, :dm_allowed, :avatar])
+    devise_parameter_sanitizer.permit(:sign_up, keys:
+      [:name, :age, :gender, :introduction, :timeframe, :min_fee, :max_fee, :instruction_period, :avatar])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
     devise_parameter_sanitizer.permit(:account_update, keys:
-      [:name, :age, :gender, :introduction, :timeframe, :dm_allowed, :avatar])
+      [:name, :age, :gender, :introduction, :timeframe, :min_fee, :max_fee, :instruction_period, :avatar])
   end
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    trainee_path(resource)
+    trainer_path(resource)
   end
 
   def after_update_path_for(resource)
-    trainee_path(resource)
+    trainer_path(resource)
   end
 
   def default_avatar_attach(resource)
     # デフォルトのプロフィール画像をActiveStorageで添付する。
-    image_file = "default_trainee_avatar.png"
+    image_file = "default_trainer_avatar.png"
     image_path = Rails.root.join('app', 'assets', 'images', image_file)
     resource.avatar.attach(io: File.open(image_path), filename: image_file)
   end

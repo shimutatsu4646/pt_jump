@@ -17,15 +17,31 @@
             <li class="nav-item">
               <%= link_to "ログアウト", destroy_trainee_session_path , {method: :delete, class: "nav-link"} %>
             </li>
+          <% elsif trainer_signed_in? %>
+            <li class="nav-item mb-4 mb-md-0">
+              <a href="#" class="nav-link disabled text-light" aria-disabled="true"><%= current_trainer.name %>としてログイン中</a>
+            </li>
+            <li class="nav-item">
+              <%= link_to "プロフィール", trainer_path(current_trainer.id) , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_trainer_session_path , {method: :delete, class: "nav-link"} %>
+            </li>
           <% else %>
             <li class="nav-item mb-4 mb-md-0">
               <a href="#" class="nav-link disabled text-light" aria-disabled="true">ゲストユーザーとして利用中</a>
             </li>
             <li class="nav-item">
-              <%= link_to "ログイン", new_trainee_session_path, class: "nav-link" %>
+              <%= link_to "トレーニーログイン", new_trainee_session_path, class: "nav-link" %>
             </li>
             <li class="nav-item">
               <%= link_to "トレーニー登録", new_trainee_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーナーログイン", new_trainer_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーナー登録", new_trainer_registration_path, class: "nav-link" %>
             </li>
           <% end %>
           <li class="nav-item">

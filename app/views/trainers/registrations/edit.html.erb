@@ -1,0 +1,103 @@
+<div class="text-center">
+  <h3>プロフィール変更</h3>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= render "trainees/shared/error_messages", resource: resource %>
+
+    <div>
+      <%= image_tag resource.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0"), class: "avatar_image" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :avatar %><br />
+      <%= f.file_field :avatar, autocomplete: "avatar", onchange: "loadAvatar(this);" %>
+    </div>
+
+    <div id="update_avatar" style="display: none;">
+      <p id="preview"></p>
+    </div>
+
+    <div class="field">
+      <%= f.label :name %><br />
+      <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :age %><br />
+      <%= f.number_field :age, min: 1, autocomplete: "name" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :gender %><br />
+      <%= f.select :gender, Trainee.genders.keys.map {|k| [k, k]}, { include_blank: true } ,autocomplete: "gender" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :timeframe %><br />
+      <%= f.text_area :timeframe, autocomplete: "timeframe" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :introduction %><br />
+      <%= f.text_area :introduction, autocomplete: "introduction" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :min_fee %><br />
+      <%= f.number_field :min_fee, autocomplete: "min_fee" %>円以上
+    </div>
+
+    <div class="field">
+      <%= f.label :max_fee %><br />
+      <%= f.number_field :max_fee, autocomplete: "max_fee" %>円以下
+    </div>
+
+    <div class="field">
+      <%= f.label :instruction_period %><br />
+      <%= f.select :instruction_period, Trainer.instruction_periods.keys.map {|k| [k, k]}, { include_blank: true } ,autocomplete: "gender" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autocomplete: "email" %>
+    </div>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :password %> <i>(パスワードを変更しない場合は入力しないでください)</i><br />
+      <%= f.password_field :password, autocomplete: "new-password" %>
+      <% if @minimum_password_length %>
+        <br />
+        <em><%= @minimum_password_length %> 文字以上</em>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :current_password %> <i>(必須項目)</i><br />
+      <%= f.password_field :current_password, autocomplete: "current-password" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "更新", class: "btn btn-outline-primary btn-lg" %>
+    </div>
+  <% end %>
+
+  <h4 class="mt-5">Cancel my account</h4>
+
+  <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+  <%= link_to "Back", :back %><br />
+
+  <%= link_to "トップページ", root_path %>
+</div>
+
+<!-- プロフィール画像のプレビューをするjs -->
+<%= render "shared/preview"%>

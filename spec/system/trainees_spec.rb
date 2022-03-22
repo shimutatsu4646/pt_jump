@@ -10,7 +10,7 @@ RSpec.describe "Trainees System", type: :system do
 
     context "対象のトレーニーがログインユーザーの場合" do
       scenario "詳細ページに「プロフィール変更」リンクが表示されていること" do
-        login trainee
+        login_as_trainee trainee
         visit trainee_path(trainee.id)
         expect(page).to have_content "プロフィール変更"
       end
@@ -20,7 +20,7 @@ RSpec.describe "Trainees System", type: :system do
       let(:other_trainee) { create(:trainee, name: "other_trainee_name", email: "other_trainee@example.com") }
 
       scenario "詳細ページに「プロフィール変更」リンクが表示されていないこと" do
-        login other_trainee
+        login_as_trainee other_trainee
         visit trainee_path(trainee.id)
         expect(page).not_to have_content "プロフィール変更"
       end
@@ -90,7 +90,7 @@ RSpec.describe "Trainees System", type: :system do
 
       context "入力値に問題がない場合" do
         scenario "更新すること" do
-          login trainee
+          login_as_trainee trainee
           visit trainee_path(trainee.id)
           click_on "プロフィール変更"
           expect do
@@ -112,7 +112,7 @@ RSpec.describe "Trainees System", type: :system do
 
       context "入力値に問題がある場合" do
         scenario "更新しないこと" do
-          login trainee
+          login_as_trainee trainee
           visit trainee_path(trainee.id)
           click_on "プロフィール変更"
           expect do
@@ -130,7 +130,7 @@ RSpec.describe "Trainees System", type: :system do
 
       describe "ActiveStorageのavatar" do
         scenario "画像ファイルがアップロードされて、アバターが変化すること" do
-          login trainee
+          login_as_trainee trainee
           visit trainee_path(trainee.id)
           expect(page).to have_selector "img[src$='default_trainee_avatar.png']"
           click_on "プロフィール変更"
@@ -178,7 +178,7 @@ RSpec.describe "Trainees System", type: :system do
     end
 
     scenario "ログイン中のトレーニーがログアウトすること" do
-      login trainee
+      login_as_trainee trainee
       click_on "ログアウト"
       aggregate_failures do
         expect(page).to have_content "ログアウトしました。"
