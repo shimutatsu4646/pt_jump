@@ -13,7 +13,10 @@
   <li>DM許可:<%= @trainee.dm_allowed %></li>
   <% if @trainee == current_trainee %>
     <li>
-      <%= link_to "プロフィール変更", edit_trainee_registration_path(current_trainee.id) %>
+      <%= link_to "プロフィールの変更", edit_profile_trainee_path(current_trainee.id) %>
+    </li>
+    <li>
+      <%= link_to "アカウント情報の変更", edit_trainee_registration_path(current_trainee.id) %>
     </li>
   <% end %>
 </ul>

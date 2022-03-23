@@ -80,30 +80,32 @@ RSpec.describe Trainees::RegistrationsController, type: :controller do
       let(:trainee) { create(:trainee) }
 
       it "アカウントを変更し、詳細ページにリダイレクトすること" do
-        trainee_update_params = attributes_for(:trainee,
-          name: "trainee_after_update",
-          current_password: "trainee_password")
+        trainee_update_params = {
+          email: "update_email@example.com",
+          current_password: "trainee_password"
+        }
         sign_in trainee
         patch :update, params: { id: trainee.id, trainee: trainee_update_params }
         aggregate_failures do
-          expect(trainee.reload.name).to eq "trainee_after_update"
+          expect(trainee.reload.email).to eq "update_email@example.com"
           expect(response).to redirect_to trainee_path(trainee.id)
         end
       end
     end
 
     context "認可されていないトレーニーの場合" do
-      let(:trainee) { create(:trainee, name: "trainee_before_update") }
+      let(:trainee) { create(:trainee, email: "before_update@example.com") }
       let(:other_trainee) { create(:trainee) }
 
       it "対象のトレーニーを更新できないこと" do
-        trainee_update_params = attributes_for(:trainee,
-          name: "trainee_after_update",
-          current_password: "trainee_password")
+        trainee_update_params = {
+          email: "update_email@example.com",
+          current_password: "trainee_password"
+        }
         sign_in other_trainee
         patch :update, params: { id: trainee.id, trainee: trainee_update_params }
         aggregate_failures do
-          expect(trainee.reload.name).to eq "trainee_before_update"
+          expect(trainee.reload.email).to eq "before_update@example.com"
           expect(response).to redirect_to trainee_path(other_trainee.id)
         end
       end
@@ -113,9 +115,10 @@ RSpec.describe Trainees::RegistrationsController, type: :controller do
       let(:trainee) { create(:trainee) }
 
       it "302レスポンスを返し、サインインページにリダイレクトすること" do
-        trainee_update_params = attributes_for(:trainee,
-          name: "trainee_after_update",
-          current_password: "trainee_password")
+        trainee_update_params = {
+          email: "update_email@example.com",
+          current_password: "trainee_password"
+        }
         patch :update, params: { id: trainee.id, trainee: trainee_update_params }
         aggregate_failures do
           expect(response).to have_http_status "302"

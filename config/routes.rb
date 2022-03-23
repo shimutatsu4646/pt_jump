@@ -4,10 +4,14 @@ Rails.application.routes.draw do
   devise_for :trainees, module: "trainees"
   devise_scope :trainee do
     get 'trainees/show/:id', to: 'trainees#show', as: :trainee
+    get 'trainees/edit_profile/:id', to: 'trainees#edit', as: :edit_profile_trainee
+    put 'trainees/update_profile/:id', to: 'trainees#update', as: :update_profile_trainee
   end
 
   devise_for :trainers, module: "trainers"
   devise_scope :trainee do
     get 'trainers/show/:id', to: 'trainers#show', as: :trainer
+    get 'trainers/edit_profile/:id', to: 'trainers#edit', as: :edit_profile_trainer
+    put 'trainers/update_profile/:id', to: 'trainers#update', as: :update_profile_trainer
   end
 end

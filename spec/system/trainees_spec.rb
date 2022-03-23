@@ -9,20 +9,22 @@ RSpec.describe "Trainees System", type: :system do
     let(:trainee) { create(:trainee) }
 
     context "対象のトレーニーがログインユーザーの場合" do
-      scenario "詳細ページに「プロフィール変更」リンクが表示されていること" do
+      scenario "詳細ページにデータを更新するリンクが表示されていること" do
         login_as_trainee trainee
         visit trainee_path(trainee.id)
-        expect(page).to have_content "プロフィール変更"
+        expect(page).to have_content "プロフィールの変更"
+        expect(page).to have_content "アカウント情報の変更"
       end
     end
 
     context "対象のトレーニーがログインユーザーではない場合" do
       let(:other_trainee) { create(:trainee, name: "other_trainee_name", email: "other_trainee@example.com") }
 
-      scenario "詳細ページに「プロフィール変更」リンクが表示されていないこと" do
+      scenario "詳細ページにデータを更新するリンクが表示されていないこと" do
         login_as_trainee other_trainee
         visit trainee_path(trainee.id)
-        expect(page).not_to have_content "プロフィール変更"
+        expect(page).not_to have_content "プロフィールの変更"
+        expect(page).not_to have_content "アカウント情報の変更"
       end
     end
 
@@ -33,6 +35,61 @@ RSpec.describe "Trainees System", type: :system do
           # src$=とすることでその後に続く文字列を含む画像ファイルを探している。
           expect(page).to have_selector "img[src$='default_trainee_avatar.png']"
         end
+      end
+    end
+  end
+
+  describe "トレーニーのプロフィールの変更" do
+    let(:trainee) { create(:trainee) }
+
+    context "入力値に問題がない場合" do
+      scenario "更新すること" do
+        login_as_trainee trainee
+        visit trainee_path(trainee.id)
+        click_on "プロフィールの変更"
+        fill_in "trainee_name", with: "updated_name"
+        fill_in "trainee_age", with: 30
+        select "female", from: "trainee_gender"
+        check "trainee_dm_allowed"
+        click_button "更新"
+
+        aggregate_failures do
+          expect(current_path).to eq trainee_path(trainee.id)
+          expect(page).to have_content "プロフィール情報を変更しました。"
+          expect(trainee.reload.name).to eq "updated_name"
+          expect(trainee.reload.age).to eq 30
+          expect(trainee.reload.gender).to eq "female"
+          expect(trainee.reload.dm_allowed).to eq true
+        end
+      end
+    end
+
+    context "入力値に問題がある場合" do
+      scenario "更新しないこと" do
+        login_as_trainee trainee
+        visit trainee_path(trainee.id)
+        click_on "プロフィールの変更"
+        expect do
+          fill_in "trainee_name", with: nil
+          fill_in "trainee_age", with: 30
+          select "female", from: "trainee_gender"
+          check "trainee_dm_allowed"
+          click_button "更新"
+        end.not_to change { trainee.reload }
+      end
+    end
+
+    describe "ActiveStorageのavatar" do
+      scenario "画像ファイルがアップロードされて、アバターが変更されること" do
+        login_as_trainee trainee
+        visit trainee_path(trainee.id)
+        expect(page).to have_selector "img[src$='default_trainee_avatar.png']"
+        click_on "プロフィールの変更"
+        attach_file "trainee[avatar]", "spec/fixtures/files/test_avatar_1.png"
+        click_button "更新"
+
+        expect(page).to have_selector "img[src$='test_avatar_1.png']"
+        expect(trainee.reload.avatar.filename.to_s).to eq "test_avatar_1.png"
       end
     end
   end
@@ -85,28 +142,24 @@ RSpec.describe "Trainees System", type: :system do
       end
     end
 
-    describe "トレーニーの更新" do
+    describe "トレーニーのアカウント情報の更新" do
       let(:trainee) { create(:trainee) }
 
       context "入力値に問題がない場合" do
         scenario "更新すること" do
           login_as_trainee trainee
           visit trainee_path(trainee.id)
-          click_on "プロフィール変更"
+          click_on "アカウント情報の変更"
           expect do
-            fill_in "trainee_name", with: "updated_name"
-            fill_in "trainee_age", with: 20
-            select "male", from: "trainee_gender"
-            fill_in "trainee_email", with: trainee.email
+            fill_in "trainee_email", with: "update_email@example.com"
             fill_in "trainee_current_password", with: trainee.password
-            check "trainee_dm_allowed"
             click_button "更新"
 
             aggregate_failures do
               expect(current_path).to eq trainee_path(trainee.id)
               expect(page).to have_content "アカウント情報を変更しました。"
             end
-          end.to change { trainee.reload.name }.to("updated_name")
+          end.to change { trainee.reload.email }.to("update_email@example.com")
         end
       end
 
@@ -114,32 +167,13 @@ RSpec.describe "Trainees System", type: :system do
         scenario "更新しないこと" do
           login_as_trainee trainee
           visit trainee_path(trainee.id)
-          click_on "プロフィール変更"
+          click_on "アカウント情報の変更"
           expect do
-            fill_in "trainee_name", with: "updated_name"
-            fill_in "trainee_age", with: 20
-            select "male", from: "trainee_gender"
-            fill_in "trainee_email", with: trainee.email
-            # current_passwordを一致させないことでエラー発生
-            fill_in "trainee_current_password", with: "wrong_password"
-            check "trainee_dm_allowed"
+            fill_in "trainee_email", with: "update_email@example.com"
+            # current_passwordをnilにすることでエラー発生
+            fill_in "trainee_current_password", with: nil
             click_button "更新"
-          end.not_to change { trainee.reload.name }
-        end
-      end
-
-      describe "ActiveStorageのavatar" do
-        scenario "画像ファイルがアップロードされて、アバターが変化すること" do
-          login_as_trainee trainee
-          visit trainee_path(trainee.id)
-          expect(page).to have_selector "img[src$='default_trainee_avatar.png']"
-          click_on "プロフィール変更"
-
-          attach_file "trainee[avatar]", "spec/fixtures/files/test_avatar_1.png"
-          fill_in "trainee_current_password", with: trainee.password
-          click_button "更新"
-          expect(page).to have_selector "img[src$='test_avatar_1.png']"
-          expect(trainee.reload.avatar.filename.to_s).to eq "test_avatar_1.png"
+          end.not_to change { trainee.reload.email }
         end
       end
     end
@@ -180,6 +214,7 @@ RSpec.describe "Trainees System", type: :system do
     scenario "ログイン中のトレーニーがログアウトすること" do
       login_as_trainee trainee
       click_on "ログアウト"
+
       aggregate_failures do
         expect(page).to have_content "ログアウトしました。"
         expect(current_path).to eq root_path

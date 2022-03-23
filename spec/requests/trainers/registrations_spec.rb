@@ -75,31 +75,33 @@ RSpec.describe "Trainer Registration Request", type: :request do
     context "認可されたトレーナーの場合" do
       let(:trainer) { create(:trainer) }
 
-      it "アカウントを変更し、詳細ページにリダイレクトすること" do
-        trainer_update_params = attributes_for(:trainer,
-          name: "trainer_after_update",
-          current_password: "trainer_password")
+      it "アカウントを更新し、詳細ページにリダイレクトすること" do
+        trainer_update_params = {
+          email: "update_email@example.com",
+          current_password: "trainer_password"
+        }
         sign_in trainer
         patch trainer_registration_path, params: { id: trainer.id, trainer: trainer_update_params }
         aggregate_failures do
-          expect(trainer.reload.name).to eq "trainer_after_update"
+          expect(trainer.reload.email).to eq "update_email@example.com"
           expect(response).to redirect_to trainer_path(trainer.id)
         end
       end
     end
 
     context "認可されていないトレーナーの場合" do
-      let(:trainer) { create(:trainer, name: "trainer_before_update") }
+      let(:trainer) { create(:trainer, email: "before_update@example.com") }
       let(:other_trainer) { create(:trainer) }
 
       it "対象のトレーナーを更新できないこと" do
-        trainer_update_params = attributes_for(:trainer,
-          name: "trainer_after_update",
-          current_password: "trainer_password")
+        trainer_update_params = {
+          email: "update_email@example.com",
+          current_password: "trainer_password"
+        }
         sign_in other_trainer
         patch trainer_registration_path, params: { id: trainer.id, trainer: trainer_update_params }
         aggregate_failures do
-          expect(trainer.reload.name).to eq "trainer_before_update"
+          expect(trainer.reload.email).to eq "before_update@example.com"
           expect(response).to redirect_to trainer_path(other_trainer.id)
         end
       end
@@ -109,9 +111,10 @@ RSpec.describe "Trainer Registration Request", type: :request do
       let(:trainer) { create(:trainer) }
 
       it "302レスポンスを返し、サインインページにリダイレクトすること" do
-        trainer_update_params = attributes_for(:trainer,
-          name: "trainer_after_update",
-          current_password: "trainer_password")
+        trainer_update_params = {
+          email: "update_email@example.com",
+          current_password: "trainer_password"
+        }
         patch trainer_registration_path, params: { id: trainer.id, trainer: trainer_update_params }
         aggregate_failures do
           expect(response).to have_http_status "302"

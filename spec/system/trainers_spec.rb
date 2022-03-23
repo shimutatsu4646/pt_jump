@@ -9,20 +9,22 @@ RSpec.describe "Trainers System", type: :system do
     let(:trainer) { create(:trainer) }
 
     context "対象のトレーナーがログインユーザーの場合" do
-      scenario "詳細ページに「プロフィール変更」リンクが表示されていること" do
+      scenario "詳細ページにデータを更新するリンクが表示されていること" do
         login_as_trainer trainer
         visit trainer_path(trainer.id)
-        expect(page).to have_content "プロフィール変更"
+        expect(page).to have_content "プロフィールの変更"
+        expect(page).to have_content "アカウント情報の変更"
       end
     end
 
     context "対象のトレーナーがログインユーザーではない場合" do
       let(:other_trainer) { create(:trainer, name: "other_trainer_name", email: "other_trainer@example.com") }
 
-      scenario "詳細ページに「プロフィール変更」リンクが表示されていないこと" do
+      scenario "詳細ページにデータを更新するリンクが表示されていないこと" do
         login_as_trainer other_trainer
         visit trainer_path(trainer.id)
-        expect(page).not_to have_content "プロフィール変更"
+        expect(page).not_to have_content "プロフィールの変更"
+        expect(page).not_to have_content "アカウント情報の変更"
       end
     end
 
@@ -33,6 +35,68 @@ RSpec.describe "Trainers System", type: :system do
           # src$=とすることでその後に続く文字列を含む画像ファイルを探している。
           expect(page).to have_selector "img[src$='default_trainer_avatar.png']"
         end
+      end
+    end
+  end
+
+  describe "トレーナーのプロフィールの変更" do
+    let(:trainer) { create(:trainer) }
+
+    context "入力値に問題がない場合" do
+      scenario "更新すること" do
+        login_as_trainer trainer
+        visit trainer_path(trainer.id)
+        click_on "プロフィールの変更"
+
+        fill_in "trainer_name", with: "updated_name"
+        fill_in "trainer_age", with: 30
+        select "female", from: "trainer_gender"
+        fill_in "trainer_min_fee", with: 1000
+        fill_in "trainer_max_fee", with: 5000
+        select "below_one_month", from: "trainer_instruction_period"
+        click_button "更新"
+
+        aggregate_failures do
+          expect(current_path).to eq trainer_path(trainer.id)
+          expect(page).to have_content "プロフィール情報を変更しました。"
+          expect(trainer.reload.name).to eq "updated_name"
+          expect(trainer.reload.age).to eq 30
+          expect(trainer.reload.gender).to eq "female"
+          expect(trainer.reload.min_fee).to eq 1000
+          expect(trainer.reload.max_fee).to eq 5000
+          expect(trainer.reload.instruction_period).to eq "below_one_month"
+        end
+      end
+    end
+
+    context "入力値に問題がある場合" do
+      scenario "更新しないこと" do
+        login_as_trainer trainer
+        visit trainer_path(trainer.id)
+        click_on "プロフィールの変更"
+        expect do
+          fill_in "trainer_name", with: nil
+          fill_in "trainer_age", with: 30
+          select "female", from: "trainer_gender"
+          fill_in "trainer_min_fee", with: 1000
+          fill_in "trainer_max_fee", with: 5000
+          select "below_one_month", from: "trainer_instruction_period"
+          click_button "更新"
+        end.not_to change { trainer.reload }
+      end
+    end
+
+    describe "ActiveStorageのavatar" do
+      scenario "画像ファイルがアップロードされて、アバターが変更されること" do
+        login_as_trainer trainer
+        visit trainer_path(trainer.id)
+        expect(page).to have_selector "img[src$='default_trainer_avatar.png']"
+        click_on "プロフィールの変更"
+        attach_file "trainer[avatar]", "spec/fixtures/files/test_avatar_1.png"
+        click_button "更新"
+
+        expect(page).to have_selector "img[src$='test_avatar_1.png']"
+        expect(trainer.reload.avatar.filename.to_s).to eq "test_avatar_1.png"
       end
     end
   end
@@ -83,22 +147,16 @@ RSpec.describe "Trainers System", type: :system do
       end
     end
 
-    describe "トレーナーの更新" do
+    describe "トレーナーのアカウント情報の更新" do
       let(:trainer) { create(:trainer) }
 
       context "入力値に問題がない場合" do
         scenario "更新すること" do
           login_as_trainer trainer
           visit trainer_path(trainer.id)
-          click_on "プロフィール変更"
+          click_on "アカウント情報の変更"
           expect do
-            fill_in "trainer_name", with: "updated_name"
-            fill_in "trainer_age", with: 20
-            select "male", from: "trainer_gender"
-            fill_in "trainer_min_fee", with: 1000
-            fill_in "trainer_max_fee", with: 2000
-            select "unspecified", from: "trainer_instruction_period"
-            fill_in "trainer_email", with: trainer.email
+            fill_in "trainer_email", with: "update_email@example.com"
             fill_in "trainer_current_password", with: trainer.password
             click_button "更新"
 
@@ -106,7 +164,7 @@ RSpec.describe "Trainers System", type: :system do
               expect(current_path).to eq trainer_path(trainer.id)
               expect(page).to have_content "アカウント情報を変更しました。"
             end
-          end.to change { trainer.reload.name }.to("updated_name")
+          end.to change { trainer.reload.email }.to("update_email@example.com")
         end
       end
 
@@ -114,31 +172,13 @@ RSpec.describe "Trainers System", type: :system do
         scenario "更新しないこと" do
           login_as_trainer trainer
           visit trainer_path(trainer.id)
-          click_on "プロフィール変更"
+          click_on "アカウント情報の変更"
           expect do
-            fill_in "trainer_name", with: "updated_name"
-            fill_in "trainer_age", with: 20
-            select "male", from: "trainer_gender"
-            fill_in "trainer_email", with: trainer.email
-            # current_passwordを一致させないことでエラー発生
-            fill_in "trainer_current_password", with: "wrong_password"
+            fill_in "trainer_email", with: "update_email@example.com"
+            # current_passwordをnilにすることでエラー発生
+            fill_in "trainer_current_password", with: nil
             click_button "更新"
-          end.not_to change { trainer.reload.name }
-        end
-      end
-
-      describe "ActiveStorageのavatar" do
-        scenario "画像ファイルがアップロードされて、アバターが変化すること" do
-          login_as_trainer trainer
-          visit trainer_path(trainer.id)
-          expect(page).to have_selector "img[src$='default_trainer_avatar.png']"
-          click_on "プロフィール変更"
-
-          attach_file "trainer[avatar]", "spec/fixtures/files/test_avatar_1.png"
-          fill_in "trainer_current_password", with: trainer.password
-          click_button "更新"
-          expect(page).to have_selector "img[src$='test_avatar_1.png']"
-          expect(trainer.reload.avatar.filename.to_s).to eq "test_avatar_1.png"
+          end.not_to change { trainer.reload.email }
         end
       end
     end
@@ -179,6 +219,7 @@ RSpec.describe "Trainers System", type: :system do
     scenario "ログイン中のトレーナーがログアウトすること" do
       login_as_trainer trainer
       click_on "ログアウト"
+
       aggregate_failures do
         expect(page).to have_content "ログアウトしました。"
         expect(current_path).to eq root_path

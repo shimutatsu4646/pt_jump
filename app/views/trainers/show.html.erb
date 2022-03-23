@@ -15,7 +15,10 @@
   <li>指導期間:<%= @trainer.instruction_period %></li>
   <% if @trainer == current_trainer %>
     <li>
-      <%= link_to "プロフィール変更", edit_trainer_registration_path(current_trainer.id) %>
+      <%= link_to "プロフィールの変更", edit_profile_trainer_path(current_trainer.id) %>
+    </li>
+    <li>
+      <%= link_to "アカウント情報の変更", edit_trainer_registration_path(current_trainer.id) %>
     </li>
   <% end %>
 </ul>
