@@ -10,7 +10,7 @@
   <li>活動時間:<%= @trainee.timeframe %></li>
   <li>自己紹介:<%= @trainee.introduction %></li>
   <li>メールアドレス:<%= @trainee.email %></li>
-  <li>DM許可:<%= @trainee.dm_allowed %></li>
+  <li>DMの受け付け:<%= @trainee.dm_allowed ? "許可する" : "許可しない" %></li>
   <% if @trainee == current_trainee %>
     <li>
       <%= link_to "プロフィールの変更", edit_profile_trainee_path(current_trainee.id) %>

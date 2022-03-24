@@ -9,7 +9,7 @@
       <li>年齢:<%= trainee.age %></li>
       <li>性別:<%= trainee.gender_i18n %></li>
       <li>メールアドレス:<%= trainee.email %></li>
-      <li>DM許可:<%= trainee.dm_allowed %></li>
+      <li>DMの受け付け:<%= trainee.dm_allowed ? "許可する" : "許可しない" %></li>
       <li><%= link_to  'プロフィール', trainee_path(trainee) %></li>
     </ul>
   <% end %>

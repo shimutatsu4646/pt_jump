@@ -9,7 +9,7 @@ ja:
         gender: 性別
         introduction: 自己紹介
         timeframe: 活動時間帯
-        dm_allowed: ダイレクトメッセージの受け付け可否
+        dm_allowed: ダイレクトメッセージの受け付け
         avatar: プロフィール画像
         confirmation_password: 確認用パスワード
         current_password: 現在のパスワード
