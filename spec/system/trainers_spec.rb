@@ -50,10 +50,10 @@ RSpec.describe "Trainers System", type: :system do
 
         fill_in "trainer_name", with: "updated_name"
         fill_in "trainer_age", with: 30
-        select "female", from: "trainer_gender"
+        select "女性", from: "trainer_gender"
         fill_in "trainer_min_fee", with: 1000
         fill_in "trainer_max_fee", with: 5000
-        select "below_one_month", from: "trainer_instruction_period"
+        select "一ヶ月未満", from: "trainer_instruction_period"
         click_button "更新"
 
         aggregate_failures do
@@ -77,10 +77,10 @@ RSpec.describe "Trainers System", type: :system do
         expect do
           fill_in "trainer_name", with: nil
           fill_in "trainer_age", with: 30
-          select "female", from: "trainer_gender"
+          select "女性", from: "trainer_gender"
           fill_in "trainer_min_fee", with: 1000
           fill_in "trainer_max_fee", with: 5000
-          select "below_one_month", from: "trainer_instruction_period"
+          select "一ヶ月未満", from: "trainer_instruction_period"
           click_button "更新"
         end.not_to change { trainer.reload }
       end
@@ -109,7 +109,7 @@ RSpec.describe "Trainers System", type: :system do
           expect do
             fill_in "trainer_name", with: "test_trainer_name"
             fill_in "trainer_age", with: 20
-            select "male", from: "trainer_gender"
+            select "男性", from: "trainer_gender"
             fill_in "trainer_email", with: "system_test1@example.com"
             fill_in "trainer_password", with: "test_password"
             fill_in "trainer_password_confirmation", with: "test_password"
@@ -132,7 +132,7 @@ RSpec.describe "Trainers System", type: :system do
             # nameとageがnilのため、エラー発生
             fill_in "trainer_name", with: nil
             fill_in "trainer_age", with: nil
-            select "male", from: "trainer_gender"
+            select "男性", from: "trainer_gender"
             fill_in "trainer_email", with: "system_test2@example.com"
             fill_in "trainer_password", with: "test_password"
             fill_in "trainer_password_confirmation", with: "test_password"

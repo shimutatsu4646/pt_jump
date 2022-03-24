@@ -6,7 +6,7 @@
   <li><%= image_tag @trainee.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
   <li>名前:<%= @trainee.name %></li>
   <li>年齢:<%= @trainee.age %></li>
-  <li>性別:<%= @trainee.gender %></li>
+  <li>性別:<%= @trainee.gender_i18n %></li>
   <li>活動時間:<%= @trainee.timeframe %></li>
   <li>自己紹介:<%= @trainee.introduction %></li>
   <li>メールアドレス:<%= @trainee.email %></li>

@@ -7,7 +7,7 @@
       <li><%= image_tag trainee.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
       <li>名前:<%= trainee.name %></li>
       <li>年齢:<%= trainee.age %></li>
-      <li>性別:<%= trainee.gender %></li>
+      <li>性別:<%= trainee.gender_i18n %></li>
       <li>メールアドレス:<%= trainee.email %></li>
       <li>DM許可:<%= trainee.dm_allowed %></li>
       <li><%= link_to  'プロフィール', trainee_path(trainee) %></li>
@@ -20,11 +20,11 @@
     <li><%= image_tag trainer.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
     <li>名前:<%= trainer.name %></li>
     <li>年齢:<%= trainer.age %></li>
-    <li>性別:<%= trainer.gender %></li>
+    <li>性別:<%= trainer.gender_i18n %></li>
     <li>メールアドレス:<%= trainer.email %></li>
     <li>最小料金:<% if trainer.min_fee %><%= trainer.min_fee %>円<% else %>指定なし<% end %></li>
     <li>最高料金:<% if trainer.max_fee %><%= trainer.max_fee %>円<% else %>指定なし<% end %></li>
-    <li>指導期間:<%= trainer.instruction_period %></li>
+    <li>指導期間:<%= trainer.instruction_period_i18n %></li>
     <li><%= link_to 'プロフィール', trainer_path(trainer) %></li>
   </ul>
   <% end %>

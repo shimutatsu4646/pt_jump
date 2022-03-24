@@ -49,7 +49,7 @@ RSpec.describe "Trainees System", type: :system do
         click_on "プロフィールの変更"
         fill_in "trainee_name", with: "updated_name"
         fill_in "trainee_age", with: 30
-        select "female", from: "trainee_gender"
+        select "女性", from: "trainee_gender"
         check "trainee_dm_allowed"
         click_button "更新"
 
@@ -72,7 +72,7 @@ RSpec.describe "Trainees System", type: :system do
         expect do
           fill_in "trainee_name", with: nil
           fill_in "trainee_age", with: 30
-          select "female", from: "trainee_gender"
+          select "女性", from: "trainee_gender"
           check "trainee_dm_allowed"
           click_button "更新"
         end.not_to change { trainee.reload }
@@ -102,7 +102,7 @@ RSpec.describe "Trainees System", type: :system do
           expect do
             fill_in "trainee_name", with: "test_trainee_name"
             fill_in "trainee_age", with: 20
-            select "male", from: "trainee_gender"
+            select "男性", from: "trainee_gender"
             fill_in "trainee_email", with: "system_test1@example.com"
             fill_in "trainee_password", with: "test_password"
             fill_in "trainee_password_confirmation", with: "test_password"
@@ -126,7 +126,7 @@ RSpec.describe "Trainees System", type: :system do
             # nameとageがnilのため、エラー発生
             fill_in "trainee_name", with: nil
             fill_in "trainee_age", with: nil
-            select "male", from: "trainee_gender"
+            select "男性", from: "trainee_gender"
             fill_in "trainee_email", with: "system_test2@example.com"
             fill_in "trainee_password", with: "test_password"
             fill_in "trainee_password_confirmation", with: "test_password"

@@ -29,7 +29,7 @@
 
     <div class="field">
       <%= f.label :gender %><br />
-      <%= f.select :gender, Trainee.genders.keys.map {|k| [k, k]}, { include_blank: true } ,autocomplete: "gender" %>
+      <%= f.select :gender, Trainee.genders_i18n.keys.map {|k| [I18n.t("enums.trainee.gender.#{k}"), k]}, { include_blank: true } ,autocomplete: "gender" %>
     </div>
 
     <div class="field">
