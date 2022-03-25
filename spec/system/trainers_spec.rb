@@ -39,7 +39,7 @@ RSpec.describe "Trainers System", type: :system do
     end
   end
 
-  describe "トレーナーのプロフィールの変更" do
+  describe "トレーナーのプロフィールの更新" do
     let(:trainer) { create(:trainer) }
 
     context "入力値に問題がない場合" do
@@ -49,8 +49,9 @@ RSpec.describe "Trainers System", type: :system do
         click_on "プロフィールの変更"
 
         fill_in "trainer_name", with: "updated_name"
-        fill_in "trainer_age", with: 30
-        select "女性", from: "trainer_gender"
+        fill_in "trainer_introduction", with: "Added introduction."
+        select "筋肉づくり", from: "trainer_category"
+        select "オフラインで指導", from: "trainer_instruction_method"
         fill_in "trainer_min_fee", with: 1000
         fill_in "trainer_max_fee", with: 5000
         select "一ヶ月未満", from: "trainer_instruction_period"
@@ -60,11 +61,19 @@ RSpec.describe "Trainers System", type: :system do
           expect(current_path).to eq trainer_path(trainer.id)
           expect(page).to have_content "プロフィール情報を変更しました。"
           expect(trainer.reload.name).to eq "updated_name"
-          expect(trainer.reload.age).to eq 30
-          expect(trainer.reload.gender).to eq "female"
+          expect(trainer.reload.introduction).to eq "Added introduction."
+          expect(trainer.reload.category).to eq "building_muscle"
+          expect(trainer.reload.instruction_method).to eq "offline"
           expect(trainer.reload.min_fee).to eq 1000
           expect(trainer.reload.max_fee).to eq 5000
           expect(trainer.reload.instruction_period).to eq "below_one_month"
+          expect(page).to have_content "updated_name"
+          expect(page).to have_content "Added introduction."
+          expect(page).to have_content "筋肉づくり"
+          expect(page).to have_content "オフラインで指導"
+          expect(page).to have_content "1000円"
+          expect(page).to have_content "5000円"
+          expect(page).to have_content "一ヶ月未満"
         end
       end
     end
@@ -76,8 +85,9 @@ RSpec.describe "Trainers System", type: :system do
         click_on "プロフィールの変更"
         expect do
           fill_in "trainer_name", with: nil
-          fill_in "trainer_age", with: 30
-          select "女性", from: "trainer_gender"
+          fill_in "trainer_introduction", with: "Added introduction."
+          select "筋肉づくり", from: "trainer_category"
+          select "オンラインで指導", from: "trainer_instruction_method"
           fill_in "trainer_min_fee", with: 1000
           fill_in "trainer_max_fee", with: 5000
           select "一ヶ月未満", from: "trainer_instruction_period"

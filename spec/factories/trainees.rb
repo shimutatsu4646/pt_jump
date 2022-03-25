@@ -4,10 +4,12 @@
 #
 #  id                     :bigint           not null, primary key
 #  age                    :integer          not null
+#  category               :integer
 #  dm_allowed             :boolean          default(FALSE), not null
 #  email                  :string(255)      default(""), not null
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
+#  instruction_method     :integer
 #  introduction           :text(65535)
 #  name                   :string(255)      not null
 #  remember_created_at    :datetime
@@ -27,12 +29,14 @@ FactoryBot.define do
     name { "test_trainee" }
     age { 20 }
     gender { "male" } # 数値（0もしくは1）だと、パラメータとしてgenderデータをpostしたときに問題が発生する
-    timeframe { "" }
-    introduction { "" }
+    timeframe { nil }
+    introduction { nil }
+    category { nil }
+    instruction_method { nil }
     dm_allowed { false }
     sequence(:email) { |n| "test_trainee#{n}@example.com" }
     password { "trainee_password" }
-    password_confirmation { 'trainee_password' }
+    password_confirmation { "trainee_password" }
 
     before(:create) do |trainee|
       # デフォルトのプロフィール画像をActiveStorageで添付する。

@@ -9,10 +9,12 @@
   <li>性別:<%= @trainer.gender_i18n %></li>
   <li>活動時間:<%= @trainer.timeframe %></li>
   <li>自己紹介:<%= @trainer.introduction %></li>
-  <li>メールアドレス:<%= @trainer.email %></li>
+  <li>カテゴリー:<% if @trainer.category %><%= @trainer.category_i18n %><% else %>指定なし<% end %></li>
+  <li>希望する指導方法:<% if @trainer.instruction_method %><%= @trainer.instruction_method_i18n  %><% else %>指定なし<% end %></li>
   <li>最小料金:<% if @trainer.min_fee %><%= @trainer.min_fee %>円<% else %>指定なし<% end %></li>
   <li>最高料金:<% if @trainer.max_fee %><%= @trainer.max_fee %>円<% else %>指定なし<% end %></li>
   <li>指導期間:<%= @trainer.instruction_period_i18n %></li>
+  <li>メールアドレス:<%= @trainer.email %></li>
   <% if @trainer == current_trainer %>
     <li>
       <%= link_to "プロフィールの変更", edit_profile_trainer_path(current_trainer.id) %>

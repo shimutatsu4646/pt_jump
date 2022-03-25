@@ -70,6 +70,8 @@ RSpec.describe "Trainees Request", type: :request do
           name: "update_name",
           introduction: "hello",
           timeframe: "9:00~17:00",
+          category: "building_muscle",
+          instruction_method: "online",
           dm_allowed: true
         }
         sign_in trainee
@@ -78,6 +80,8 @@ RSpec.describe "Trainees Request", type: :request do
           expect(trainee.reload.name).to eq "update_name"
           expect(trainee.reload.introduction).to eq "hello"
           expect(trainee.reload.timeframe).to eq "9:00~17:00"
+          expect(trainee.reload.category).to eq "building_muscle"
+          expect(trainee.reload.instruction_method).to eq "online"
           expect(trainee.reload.dm_allowed).to eq true
           expect(response).to redirect_to trainee_path(trainee.id)
         end

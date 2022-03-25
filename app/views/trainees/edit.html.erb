@@ -43,6 +43,17 @@
     </div>
 
     <div class="field">
+      <%= f.label :category %><br />
+      <%= f.select :category, Trainee.categories_i18n.keys.map {|k| [I18n.t("enums.trainee.category.#{k}"), k]}, { include_blank: true } ,autocomplete: "category" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :instruction_method %><br />
+      <%= f.select :instruction_method, Trainee.instruction_methods_i18n.keys.map {|k| [I18n.t("enums.trainee.instruction_method.#{k}"), k]}, { include_blank: true } ,autocomplete: "instruction_method" %>
+    </div>
+
+
+    <div class="field">
       <%= f.label :dm_allowed %><br />
       <span>許可しますか？</span><br />
       <%= f.check_box :dm_allowed, autocomplete: "dm_allowed" %>

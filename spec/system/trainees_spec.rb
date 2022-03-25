@@ -39,7 +39,7 @@ RSpec.describe "Trainees System", type: :system do
     end
   end
 
-  describe "トレーニーのプロフィールの変更" do
+  describe "トレーニーのプロフィールの更新" do
     let(:trainee) { create(:trainee) }
 
     context "入力値に問題がない場合" do
@@ -48,8 +48,9 @@ RSpec.describe "Trainees System", type: :system do
         visit trainee_path(trainee.id)
         click_on "プロフィールの変更"
         fill_in "trainee_name", with: "updated_name"
-        fill_in "trainee_age", with: 30
-        select "女性", from: "trainee_gender"
+        fill_in "trainee_introduction", with: "Added introduction."
+        select "筋肉づくり", from: "trainee_category"
+        select "オンラインで指導", from: "trainee_instruction_method"
         check "trainee_dm_allowed"
         click_button "更新"
 
@@ -57,9 +58,16 @@ RSpec.describe "Trainees System", type: :system do
           expect(current_path).to eq trainee_path(trainee.id)
           expect(page).to have_content "プロフィール情報を変更しました。"
           expect(trainee.reload.name).to eq "updated_name"
-          expect(trainee.reload.age).to eq 30
-          expect(trainee.reload.gender).to eq "female"
+          expect(trainee.reload.introduction).to eq "Added introduction."
+          expect(trainee.reload.category).to eq "building_muscle"
+          expect(trainee.reload.instruction_method).to eq "online"
           expect(trainee.reload.dm_allowed).to eq true
+          expect(page).to have_content "updated_name"
+          expect(page).to have_content "Added introduction."
+          expect(page).to have_content "筋肉づくり"
+          expect(page).to have_content "オンラインで指導"
+          expect(page).to have_content "許可する"
+          expect(page).to have_content "許可する"
         end
       end
     end
@@ -71,8 +79,9 @@ RSpec.describe "Trainees System", type: :system do
         click_on "プロフィールの変更"
         expect do
           fill_in "trainee_name", with: nil
-          fill_in "trainee_age", with: 30
-          select "女性", from: "trainee_gender"
+          fill_in "trainee_introduction", with: "Added introduction."
+          select "筋肉づくり", from: "trainee_category"
+          select "オンラインで指導", from: "trainee_instruction_method"
           check "trainee_dm_allowed"
           click_button "更新"
         end.not_to change { trainee.reload }

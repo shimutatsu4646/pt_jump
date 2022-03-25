@@ -4,10 +4,12 @@
 #
 #  id                     :bigint           not null, primary key
 #  age                    :integer          not null
+#  category               :integer
 #  dm_allowed             :boolean          default(FALSE), not null
 #  email                  :string(255)      default(""), not null
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
+#  instruction_method     :integer
 #  introduction           :text(65535)
 #  name                   :string(255)      not null
 #  remember_created_at    :datetime
@@ -86,6 +88,20 @@ RSpec.describe "Trainee Model", type: :model do
   describe "introductionカラム" do
     it "自己紹介がnilであっても、有効になること" do
       trainee = build(:trainee, introduction: nil)
+      expect(trainee).to be_valid
+    end
+  end
+
+  describe "categoryカラム" do
+    it "カテゴリーがnilであっても、有効になること" do
+      trainee = build(:trainee, category: nil)
+      expect(trainee).to be_valid
+    end
+  end
+
+  describe "instruction_methodカラム" do
+    it "指導方法がnilであっても、有効になること" do
+      trainee = build(:trainee, instruction_method: nil)
       expect(trainee).to be_valid
     end
   end

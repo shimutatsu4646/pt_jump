@@ -43,6 +43,16 @@
     </div>
 
     <div class="field">
+      <%= f.label :category %><br />
+      <%= f.select :category, Trainer.categories_i18n.keys.map {|k| [I18n.t("enums.trainer.category.#{k}"), k]}, { include_blank: true } ,autocomplete: "category" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :instruction_method %><br />
+      <%= f.select :instruction_method, Trainer.instruction_methods_i18n.keys.map {|k| [I18n.t("enums.trainer.instruction_method.#{k}"), k]}, { include_blank: true } ,autocomplete: "instruction_method" %>
+    </div>
+
+    <div class="field">
       <%= f.label :min_fee %><br />
       <%= f.number_field :min_fee, autocomplete: "min_fee" %>円以上
     </div>

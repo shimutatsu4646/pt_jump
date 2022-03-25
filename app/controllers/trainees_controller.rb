@@ -23,7 +23,7 @@ class TraineesController < ApplicationController
 
   def trainee_profile_params
     params.require(:trainee).permit(:name, :age, :gender, :introduction, :timeframe,
-      :dm_allowed, :avatar)
+      :dm_allowed, :category, :instruction_method, :avatar)
   end
 
   def check_current_trainee

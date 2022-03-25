@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_19_233233) do
+ActiveRecord::Schema.define(version: 2022_03_25_023050) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 2022_03_19_233233) do
     t.boolean "dm_allowed", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "category"
+    t.integer "instruction_method"
     t.index ["email"], name: "index_trainees_on_email", unique: true
     t.index ["reset_password_token"], name: "index_trainees_on_reset_password_token", unique: true
   end
@@ -74,6 +76,8 @@ ActiveRecord::Schema.define(version: 2022_03_19_233233) do
     t.integer "instruction_period", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "category"
+    t.integer "instruction_method"
     t.index ["email"], name: "index_trainers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_trainers_on_reset_password_token", unique: true
   end

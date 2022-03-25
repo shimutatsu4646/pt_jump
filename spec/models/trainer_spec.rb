@@ -4,9 +4,11 @@
 #
 #  id                     :bigint           not null, primary key
 #  age                    :integer          not null
+#  category               :integer
 #  email                  :string(255)      default(""), not null
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
+#  instruction_method     :integer
 #  instruction_period     :integer          default("unspecified"), not null
 #  introduction           :text(65535)
 #  max_fee                :integer
@@ -84,6 +86,20 @@ RSpec.describe "Trainer Model", type: :model do
   describe "introductionカラム" do
     it "自己紹介がnilであっても、有効になること" do
       trainer = build(:trainer, introduction: nil)
+      expect(trainer).to be_valid
+    end
+  end
+
+  describe "categoryカラム" do
+    it "カテゴリーがnilであっても、有効になること" do
+      trainer = build(:trainer, category: nil)
+      expect(trainer).to be_valid
+    end
+  end
+
+  describe "instruction_methodカラム" do
+    it "指導方法がnilであっても、有効になること" do
+      trainer = build(:trainer, instruction_method: nil)
       expect(trainer).to be_valid
     end
   end

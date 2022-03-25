@@ -9,6 +9,8 @@ ja:
         gender: 性別
         introduction: 自己紹介
         timeframe: 活動時間帯
+        category: カテゴリー
+        instruction_method: 希望する指導方法
         dm_allowed: ダイレクトメッセージの受け付け
         avatar: プロフィール画像
         confirmation_password: 確認用パスワード
@@ -42,6 +44,8 @@ ja:
         gender: 性別
         introduction: 自己紹介
         timeframe: 活動時間帯
+        category: 一番得意なカテゴリー
+        instruction_method: 指導方法
         min_fees: 最低指導料金
         max_fees: 最高指導料金
         instruction_period: 指導期間

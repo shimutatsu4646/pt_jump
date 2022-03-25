@@ -70,6 +70,8 @@ RSpec.describe "Trainers Request", type: :request do
           name: "update_name",
           introduction: "hello",
           timeframe: "9:00~17:00",
+          category: "building_muscle",
+          instruction_method: "online",
           min_fee: 3000,
           max_fee: 10000,
           instruction_period: "below_one_month"
@@ -80,6 +82,8 @@ RSpec.describe "Trainers Request", type: :request do
           expect(trainer.reload.name).to eq "update_name"
           expect(trainer.reload.introduction).to eq "hello"
           expect(trainer.reload.timeframe).to eq "9:00~17:00"
+          expect(trainer.reload.category).to eq "building_muscle"
+          expect(trainer.reload.instruction_method).to eq "online"
           expect(trainer.reload.min_fee).to eq 3000
           expect(trainer.reload.max_fee).to eq 10000
           expect(trainer.reload.instruction_period).to eq "below_one_month"

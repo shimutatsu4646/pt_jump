@@ -23,7 +23,7 @@ class TrainersController < ApplicationController
 
   def trainer_profile_params
     params.require(:trainer).permit(:name, :age, :gender, :introduction, :timeframe,
-      :min_fee, :max_fee, :instruction_period, :avatar)
+      :min_fee, :max_fee, :instruction_period, :category, :instruction_method, :avatar)
   end
 
   def check_current_trainer
