@@ -67,6 +67,40 @@
       <%= f.select :instruction_period, Trainer.instruction_periods_i18n.keys.map {|k| [I18n.t("enums.trainer.instruction_period.#{k}"), k]}, { include_blank: true } ,autocomplete: "instruction_period" %>
     </div>
 
+
+    <div class="field">
+      <%= f.label :city_ids %><br />
+      <div class="row justify-content-center mt-3">
+        <% Region.all.each do |region| %>
+            <button type= "button" class="btn btn-outline-dark btn-lg m-1 col-4" data-bs-toggle="collapse" data-bs-target="#prefectureCollapse<%= region.id %>" aria-expanded="false">
+              <%= region.name %>
+            </button>
+          <div class="collapse m-3" id="prefectureCollapse<%= region.id %>">
+            <% Prefecture.where(region_id: region.id).each do |prefecture| %>
+              <% if region.id == prefecture.region_id %>
+                <button type= "button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#cityCollapse<%= prefecture.id %>" aria-expanded="false">
+                  <%= prefecture.name %>
+                </button>
+              <% end %>
+              <div class="collapse m-2" id="cityCollapse<%= prefecture.id %>">
+                <% i = 0 %>
+              <div class="border border-secondary border-2 bg-light p-2 mt-4"><%= prefecture.name %>の市区町村の一覧</div>
+                <%= f.collection_check_boxes :city_ids, City.all, :id, :name do |city| %>
+                  <% if prefecture.id == city.object.prefecture_id %>
+                    <% if i % 3 == 0 %>
+                      <br>
+                    <% end %>
+                    <% i += 1 %>
+                    <span class="mx-2 my-3"><%= city.check_box + city.text %></span>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
     <div class="actions">
       <%= f.submit "更新", class: "btn btn-outline-primary btn-lg" %>
     </div>

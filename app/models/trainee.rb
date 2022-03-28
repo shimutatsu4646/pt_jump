@@ -42,4 +42,6 @@ class Trainee < ApplicationRecord
   enum instruction_method: { offline: 0, online: 1 }
 
   has_one_attached :avatar
+  has_and_belongs_to_many :cities
+  has_many :prefecture, through: :cities
 end

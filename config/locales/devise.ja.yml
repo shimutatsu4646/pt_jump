@@ -13,6 +13,7 @@ ja:
         instruction_method: 希望する指導方法
         dm_allowed: ダイレクトメッセージの受け付け
         avatar: プロフィール画像
+        city_ids: 活動地域
         confirmation_password: 確認用パスワード
         current_password: 現在のパスワード
         confirmation_sent_at: パスワード確認送信時刻
@@ -50,6 +51,7 @@ ja:
         max_fees: 最高指導料金
         instruction_period: 指導期間
         avatar: プロフィール画像
+        city_ids: 活動地域
         confirmation_password: 確認用パスワード
         current_password: 現在のパスワード
         confirmation_sent_at: パスワード確認送信時刻

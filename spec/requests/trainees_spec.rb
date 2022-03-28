@@ -72,7 +72,8 @@ RSpec.describe "Trainees Request", type: :request do
           timeframe: "9:00~17:00",
           category: "building_muscle",
           instruction_method: "online",
-          dm_allowed: true
+          dm_allowed: true,
+          city_ids: ["1", "634"]
         }
         sign_in trainee
         put update_profile_trainee_path(trainee), params: { id: trainee.id, trainee: trainee_update_params }
@@ -83,6 +84,8 @@ RSpec.describe "Trainees Request", type: :request do
           expect(trainee.reload.category).to eq "building_muscle"
           expect(trainee.reload.instruction_method).to eq "online"
           expect(trainee.reload.dm_allowed).to eq true
+          expect(trainee.cities.first.name).to eq "札幌市"
+          expect(trainee.cities.second.name).to eq "千代田区"
           expect(response).to redirect_to trainee_path(trainee.id)
         end
       end

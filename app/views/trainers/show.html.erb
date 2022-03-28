@@ -14,6 +14,9 @@
   <li>最小料金:<% if @trainer.min_fee %><%= @trainer.min_fee %>円<% else %>指定なし<% end %></li>
   <li>最高料金:<% if @trainer.max_fee %><%= @trainer.max_fee %>円<% else %>指定なし<% end %></li>
   <li>指導期間:<%= @trainer.instruction_period_i18n %></li>
+  <% @trainer.cities.each do |city| %>
+    <li><%= city.prefecture.name %>：<%= city.name %></li>
+  <% end %>
   <li>メールアドレス:<%= @trainer.email %></li>
   <% if @trainer == current_trainer %>
     <li>

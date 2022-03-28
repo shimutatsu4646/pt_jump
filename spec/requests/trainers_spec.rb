@@ -74,7 +74,8 @@ RSpec.describe "Trainers Request", type: :request do
           instruction_method: "online",
           min_fee: 3000,
           max_fee: 10000,
-          instruction_period: "below_one_month"
+          instruction_period: "below_one_month",
+          city_ids: ["517", "1707"]
         }
         sign_in trainer
         put update_profile_trainer_path(trainer), params: { id: trainer.id, trainer: trainer_update_params }
@@ -87,6 +88,8 @@ RSpec.describe "Trainers Request", type: :request do
           expect(trainer.reload.min_fee).to eq 3000
           expect(trainer.reload.max_fee).to eq 10000
           expect(trainer.reload.instruction_period).to eq "below_one_month"
+          expect(trainer.cities.first.name).to eq "さいたま市"
+          expect(trainer.cities.second.name).to eq "那覇市"
           expect(response).to redirect_to trainer_path(trainer.id)
         end
       end

@@ -12,6 +12,10 @@
   <li>カテゴリー:<% if @trainee.category %><%= @trainee.category_i18n %><% else %>指定なし<% end %></li>
   <li>希望する指導方法:<% if @trainee.instruction_method %><%= @trainee.instruction_method_i18n  %><% else %>指定なし<% end %></li>
   <li>DMの受け付け:<%= @trainee.dm_allowed ? "許可する" : "許可しない" %></li>
+  <li>活動地域<% if @trainee.cities.empty? %>：入力なし<% end %></li>
+  <% @trainee.cities.each do |city| %>
+    <li><%= city.prefecture.name %>：<%= city.name %></li>
+  <% end %>
   <li>メールアドレス:<%= @trainee.email %></li>
   <% if @trainee == current_trainee %>
     <li>

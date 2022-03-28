@@ -55,6 +55,9 @@ RSpec.describe "Trainers System", type: :system do
         fill_in "trainer_min_fee", with: 1000
         fill_in "trainer_max_fee", with: 5000
         select "一ヶ月未満", from: "trainer_instruction_period"
+        check "trainer_city_ids_1093"
+        check "trainer_city_ids_1119"
+        check "trainer_city_ids_1120"
         click_button "更新"
 
         aggregate_failures do
@@ -67,6 +70,9 @@ RSpec.describe "Trainers System", type: :system do
           expect(trainer.reload.min_fee).to eq 1000
           expect(trainer.reload.max_fee).to eq 5000
           expect(trainer.reload.instruction_period).to eq "below_one_month"
+          expect(trainer.cities.first.name).to eq "京都市"
+          expect(trainer.cities.second.name).to eq "大阪市"
+          expect(trainer.cities.third.name).to eq "堺市"
           expect(page).to have_content "updated_name"
           expect(page).to have_content "Added introduction."
           expect(page).to have_content "筋肉づくり"
@@ -74,6 +80,11 @@ RSpec.describe "Trainers System", type: :system do
           expect(page).to have_content "1000円"
           expect(page).to have_content "5000円"
           expect(page).to have_content "一ヶ月未満"
+          expect(page).to have_content "京都府"
+          expect(page).to have_content "京都市"
+          expect(page).to have_content "大阪府"
+          expect(page).to have_content "大阪市"
+          expect(page).to have_content "堺市"
         end
       end
     end

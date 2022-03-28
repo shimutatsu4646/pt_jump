@@ -52,6 +52,9 @@ RSpec.describe "Trainees System", type: :system do
         select "筋肉づくり", from: "trainee_category"
         select "オンラインで指導", from: "trainee_instruction_method"
         check "trainee_dm_allowed"
+        check "trainee_city_ids_634"
+        check "trainee_city_ids_635"
+        check "trainee_city_ids_636"
         click_button "更新"
 
         aggregate_failures do
@@ -62,12 +65,18 @@ RSpec.describe "Trainees System", type: :system do
           expect(trainee.reload.category).to eq "building_muscle"
           expect(trainee.reload.instruction_method).to eq "online"
           expect(trainee.reload.dm_allowed).to eq true
+          expect(trainee.cities.first.name).to eq "千代田区"
+          expect(trainee.cities.second.name).to eq "中央区"
+          expect(trainee.cities.third.name).to eq "港区"
           expect(page).to have_content "updated_name"
           expect(page).to have_content "Added introduction."
           expect(page).to have_content "筋肉づくり"
           expect(page).to have_content "オンラインで指導"
           expect(page).to have_content "許可する"
-          expect(page).to have_content "許可する"
+          expect(page).to have_content "東京都"
+          expect(page).to have_content "千代田区"
+          expect(page).to have_content "中央区"
+          expect(page).to have_content "港区"
         end
       end
     end

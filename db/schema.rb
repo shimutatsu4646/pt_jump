@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_25_023050) do
+ActiveRecord::Schema.define(version: 2022_03_27_062944) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -38,6 +38,36 @@ ActiveRecord::Schema.define(version: 2022_03_25_023050) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "cities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "prefecture_id", null: false
+    t.index ["prefecture_id"], name: "index_cities_on_prefecture_id"
+  end
+
+  create_table "cities_trainees", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "trainee_id", null: false
+    t.bigint "city_id", null: false
+    t.index ["city_id"], name: "index_cities_trainees_on_city_id"
+    t.index ["trainee_id", "city_id"], name: "index_cities_trainees_on_trainee_id_and_city_id", unique: true
+  end
+
+  create_table "cities_trainers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "trainer_id", null: false
+    t.bigint "city_id", null: false
+    t.index ["city_id"], name: "index_cities_trainers_on_city_id"
+    t.index ["trainer_id", "city_id"], name: "index_cities_trainers_on_trainer_id_and_city_id", unique: true
+  end
+
+  create_table "prefectures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "region_id", null: false
+    t.index ["region_id"], name: "index_prefectures_on_region_id"
+  end
+
+  create_table "regions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
   end
 
   create_table "trainees", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -84,4 +114,10 @@ ActiveRecord::Schema.define(version: 2022_03_25_023050) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cities", "prefectures"
+  add_foreign_key "cities_trainees", "cities"
+  add_foreign_key "cities_trainees", "trainees"
+  add_foreign_key "cities_trainers", "cities"
+  add_foreign_key "cities_trainers", "trainers"
+  add_foreign_key "prefectures", "regions"
 end
