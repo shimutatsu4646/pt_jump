@@ -11,6 +11,12 @@
       <li>カテゴリー:<% if trainee.category %><%= trainee.category_i18n %><% else %>指定なし<% end %></li>
       <li>希望する指導方法:<% if trainee.instruction_method %><%= trainee.instruction_method_i18n  %><% else %>指定なし<% end %></li>
       <li>DMの受け付け:<%= trainee.dm_allowed ? "許可する" : "許可しない" %></li>
+      <li>
+        活動地域:
+        <% trainee.prefecture_ids.each do |prefecture_id| %>
+          <%= Prefecture.find(prefecture_id).name %>
+        <% end %>
+      </li>
       <li>メールアドレス:<%= trainee.email %></li>
       <li><%= link_to  'プロフィール', trainee_path(trainee) %></li>
     </ul>
@@ -28,6 +34,12 @@
     <li>最小料金:<% if trainer.min_fee %><%= trainer.min_fee %>円<% else %>指定なし<% end %></li>
     <li>最高料金:<% if trainer.max_fee %><%= trainer.max_fee %>円<% else %>指定なし<% end %></li>
     <li>指導期間:<%= trainer.instruction_period_i18n %></li>
+    <li>
+        活動地域:
+        <% trainer.prefecture_ids.each do |prefecture_id| %>
+          <%= Prefecture.find(prefecture_id).name %>
+        <% end %>
+      </li>
     <li>メールアドレス:<%= trainer.email %></li>
     <li><%= link_to 'プロフィール', trainer_path(trainer) %></li>
   </ul>
