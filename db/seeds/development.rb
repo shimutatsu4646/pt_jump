@@ -29,61 +29,336 @@ cities_list.each do |prefecture, city|
 end
 
 # トレーニーデータの作成
-5.times do |i|
-  Trainee.create!(
-    name: "trainee#{i}",
-    age: (20 + i),
-    gender: "male",
-    timeframe: nil,
-    introduction: nil,
-    category: nil,
-    instruction_method: nil,
-    dm_allowed: false,
-    email: "trainee#{i}@example.com",
-    password: "password#{i}"
-  )
-end
+
+# 一人のトレーニーはnilにできるカラムは全てnilにする。
+# trainee2~trainee10
+# ２つの都道府県を関連付けする。（東京、大阪）
+# １つの都道府県につき、5~8件の市区町村を活動地域とする。
+# ２種類の性別、２種類の指導方法、2種類のdm許可、4種類のカテゴリーを全て網羅する。
+# 一人のトレーニーが複数の都道府県を活動地域とする。
+Trainee.create!(
+  name: "trainee1",
+  age: 21,
+  gender: "male",
+  timeframe: nil,
+  introduction: nil,
+  category: nil,
+  instruction_method: nil,
+  dm_allowed: false,
+  email: "trainee1@example.com",
+  password: "password1"
+)
+
+trainee2 = Trainee.create!(
+  name: "trainee2",
+  age: 22,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "building_muscle",
+  instruction_method: "online",
+  dm_allowed: false,
+  email: "trainee2@example.com",
+  password: "password2"
+)
+trainee2.cities << City.where(prefecture_id: [13]).limit(5)
+
+trainee3 = Trainee.create!(
+  name: "trainee3",
+  age: 23,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "losing_weight",
+  instruction_method: "offline",
+  dm_allowed: true,
+  email: "trainee3@example.com",
+  password: "password3"
+)
+trainee3.cities << City.where(prefecture_id: [13]).limit(6)
+
+trainee4 = Trainee.create!(
+  name: "trainee4",
+  age: 24,
+  gender: "female",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_function",
+  instruction_method: "online",
+  dm_allowed: true,
+  email: "trainee4@example.com",
+  password: "password4"
+)
+trainee4.cities << City.where(prefecture_id: [13]).limit(7)
+
+trainee5 = Trainee.create!(
+  name: "trainee5",
+  age: 25,
+  gender: "female",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_therapy",
+  instruction_method: "offline",
+  dm_allowed: false,
+  email: "trainee5@example.com",
+  password: "password5"
+)
+trainee5.cities << City.where(prefecture_id: [13]).limit(8)
+
+trainee6 = Trainee.create!(
+  name: "trainee6",
+  age: 26,
+  gender: "female",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "losing_weight",
+  instruction_method: "offline",
+  dm_allowed: false,
+  email: "trainee6@example.com",
+  password: "password6"
+)
+trainee6.cities << City.where(prefecture_id: [27]).limit(5)
+
+trainee7 = Trainee.create!(
+  name: "trainee7",
+  age: 27,
+  gender: "female",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "building_muscle",
+  instruction_method: "online",
+  dm_allowed: false,
+  email: "trainee7@example.com",
+  password: "password7"
+)
+trainee7.cities << City.where(prefecture_id: [27]).limit(6)
+
+trainee8 = Trainee.create!(
+  name: "trainee8",
+  age: 28,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_function",
+  instruction_method: "offline",
+  dm_allowed: true,
+  email: "trainee8@example.com",
+  password: "password8"
+)
+trainee8.cities << City.where(prefecture_id: [27]).limit(7)
+
+trainee9 = Trainee.create!(
+  name: "trainee9",
+  age: 29,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_therapy",
+  instruction_method: "offline",
+  dm_allowed: true,
+  email: "trainee9@example.com",
+  password: "password9"
+)
+trainee9.cities << City.where(prefecture_id: [27]).limit(8)
+
+trainee10 = Trainee.create!(
+  name: "trainee10",
+  age: 30,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_therapy",
+  instruction_method: "offline",
+  dm_allowed: true,
+  email: "trainee10@example.com",
+  password: "password10"
+)
+# 複数の都道府県を活動地域としたトレーニーデータ
+trainee10.cities << City.where(prefecture_id: [13]).limit(8)
+trainee10.cities << City.where(prefecture_id: [27]).limit(8)
+
 
 # トレーナーデータの作成
-5.times do |i|
-  Trainer.create!(
-    name: "trainer#{i}",
-    age: (20 + i),
-    gender: "female",
-    timeframe: nil,
-    introduction: nil,
-    category: nil,
-    instruction_method: nil,
-    min_fee: nil,
-    max_fee: nil,
-    instruction_period: "unspecified",
-    email: "trainer#{i}@example.com",
-    password: "password#{i}"
-  )
-end
+
+# 一人のトレーナーはnilにできるカラムは全てnilにする。
+# trainee2~trainee10
+# ２つの都道府県を関連付けする。（東京、大阪）
+# １つの都道府県につき、5~8件の市区町村を活動地域とする。
+# ２種類の性別、２種類の指導方法、2種類の指導期間、4種類のカテゴリーを全て網羅する。
+# min_feeは1000円ずつ増やす。
+# 一人のトレーナーが複数の都道府県を活動地域とする。
+Trainer.create!(
+  name: "trainer1",
+  age: 21,
+  gender: "male",
+  timeframe: nil,
+  introduction: nil,
+  category: nil,
+  instruction_method: nil,
+  min_fee: nil,
+  max_fee: nil,
+  instruction_period: "below_one_month",
+  email: "trainer1@example.com",
+  password: "password1"
+)
+
+trainer2 = Trainer.create!(
+  name: "trainer2",
+  age: 22,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "building_muscle",
+  instruction_method: "online",
+  min_fee: 1000,
+  max_fee: nil,
+  instruction_period: "below_one_month",
+  email: "trainer2@example.com",
+  password: "password2"
+)
+trainer2.cities << City.where(prefecture_id: [13]).limit(5)
+
+trainer3 = Trainer.create!(
+  name: "trainer3",
+  age: 23,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "losing_weight",
+  instruction_method: "offline",
+  min_fee: 2000,
+  max_fee: nil,
+  instruction_period: "above_one_month",
+  email: "trainer3@example.com",
+  password: "password3"
+)
+trainer3.cities << City.where(prefecture_id: [13]).limit(6)
+
+trainer4 = Trainer.create!(
+  name: "trainer4",
+  age: 24,
+  gender: "female",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_function",
+  instruction_method: "online",
+  min_fee: 2000,
+  max_fee: nil,
+  instruction_period: "below_one_month",
+  email: "trainer4@example.com",
+  password: "password4"
+)
+trainer4.cities << City.where(prefecture_id: [13]).limit(7)
+
+trainer5 = Trainer.create!(
+  name: "trainer5",
+  age: 25,
+  gender: "female",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_therapy",
+  instruction_method: "offline",
+  min_fee: 3000,
+  max_fee: nil,
+  instruction_period: "above_one_month",
+  email: "trainer5@example.com",
+  password: "password5"
+)
+trainer5.cities << City.where(prefecture_id: [13]).limit(8)
+
+trainer6 = Trainer.create!(
+  name: "trainer6",
+  age: 26,
+  gender: "female",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "losing_weight",
+  instruction_method: "offline",
+  min_fee: 4000,
+  max_fee: nil,
+  instruction_period: "below_one_month",
+  email: "trainer6@example.com",
+  password: "password6"
+)
+trainer6.cities << City.where(prefecture_id: [27]).limit(5)
+
+trainer7 = Trainer.create!(
+  name: "trainer7",
+  age: 27,
+  gender: "female",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "building_muscle",
+  instruction_method: "online",
+  min_fee: 5000,
+  max_fee: nil,
+  instruction_period: "above_one_month",
+  email: "trainer7@example.com",
+  password: "password7"
+)
+trainer7.cities << City.where(prefecture_id: [27]).limit(6)
+
+trainer8 = Trainer.create!(
+  name: "trainer8",
+  age: 28,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_function",
+  instruction_method: "offline",
+  min_fee: 6000,
+  max_fee: nil,
+  instruction_period: "below_one_month",
+  email: "trainer8@example.com",
+  password: "password8"
+)
+trainer8.cities << City.where(prefecture_id: [27]).limit(7)
+
+trainer9 = Trainer.create!(
+  name: "trainer9",
+  age: 29,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_therapy",
+  instruction_method: "offline",
+  min_fee: 7000,
+  max_fee: nil,
+  instruction_period: "above_one_month",
+  email: "trainer9@example.com",
+  password: "password9"
+)
+trainer9.cities << City.where(prefecture_id: [27]).limit(8)
+
+trainer10 = Trainer.create!(
+  name: "trainer10",
+  age: 30,
+  gender: "male",
+  timeframe: nil,
+  introduction: "よろしくお願いします。" * 10,
+  category: "physical_therapy",
+  instruction_method: "offline",
+  min_fee: 8000,
+  max_fee: nil,
+  instruction_period: "below_one_month",
+  email: "trainer10@example.com",
+  password: "password10"
+)
+# 複数の都道府県を活動地域としたトレーナーデータ
+trainer10.cities << City.where(prefecture_id: [13]).limit(8)
+trainer10.cities << City.where(prefecture_id: [27]).limit(8)
 
 # トレーニーのデフォルトのプロフィール画像のパス
 trainee_image_file = "default_trainee_avatar.png"
 trainee_image_path = Rails.root.join('app', 'assets', 'images', trainee_image_file)
-
-# トレーニーの活動地域
-trainee_city = City.where(id: [1]) # 札幌市
-
-# ユーザーの活動地域データの作成
 # ActiveStorageのavatarにデフォルトのプロフィール画像を添付
 Trainee.all.each do |trainee|
   trainee.avatar.attach(io: File.open(trainee_image_path), filename: trainee_image_file)
-  trainee.cities << trainee_city
 end
-
-# トレーナーの活動地域
-trainer_city = City.where(id: [634]) # 千代田区
 
 # トレーナーのデフォルトのプロフィール画像のパス
 trainer_image_file = "default_trainer_avatar.png"
 trainer_image_path = Rails.root.join('app', 'assets', 'images', trainer_image_file)
-
 Trainer.all.each do |trainer|
   trainer.avatar.attach(io: File.open(trainer_image_path), filename: trainer_image_file)
-  trainer.cities << trainer_city
 end

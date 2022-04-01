@@ -127,4 +127,67 @@ RSpec.describe "Trainers Request", type: :request do
       end
     end
   end
+
+  describe "GET /trainers/search" do
+    context "ログイン済みトレー二ーの場合" do
+      let(:trainee) { create(:trainee) }
+
+      context "@trainer_search_paramsがnilの場合" do
+        it "正常にレスポンスを返すこと" do
+          sign_in trainee
+          get search_for_trainer_path
+          aggregate_failures do
+            expect(response).to be_successful
+            expect(response).to have_http_status "200"
+          end
+        end
+      end
+
+      context "@trainer_search_paramsがnilでない場合" do
+        it "正常にレスポンスを返すこと" do
+          trainer_search_params = {
+            age_from: nil,
+            age_to: nil,
+            gender: nil,
+            dm_allowed: false,
+            category: nil,
+            min_fee: nil,
+            max_fee: nil,
+            instruction_method: nil,
+            instruction_period: nil,
+            city_ids: [],
+          }
+          sign_in trainee
+          get search_for_trainer_path, params: { search_trainer: trainer_search_params }
+          aggregate_failures do
+            expect(response).to be_successful
+            expect(response).to have_http_status "200"
+          end
+        end
+      end
+    end
+
+    context "ログイン済みトレーナーの場合" do
+      let(:trainer) { create(:trainer) }
+
+      it "302レスポンスを返し、トップページにリダイレクトすること" do
+        sign_in trainer
+        get search_for_trainer_path
+        aggregate_failures do
+          expect(response).to have_http_status "302"
+          expect(response).to redirect_to root_path
+        end
+      end
+    end
+
+    context "ゲストユーザーの場合" do
+      it "302レスポンスを返し、トレー二ー用ログインページにリダイレクトすること" do
+        get search_for_trainer_path
+        aggregate_failures do
+          expect(response).to have_http_status "302"
+          expect(response).to redirect_to new_trainee_session_path
+        end
+      end
+    end
+  end
 end

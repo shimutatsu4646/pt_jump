@@ -45,5 +45,47 @@ class Trainer < ApplicationRecord
 
   has_one_attached :avatar
   has_and_belongs_to_many :cities
-  has_many :prefecture, through: :cities
+  has_many :prefectures, through: :cities
+
+  scope :search_trainer, -> (trainer_search_params) do
+    return if trainer_search_params.blank?
+
+    age_from(trainer_search_params[:age_from]).
+      age_to(trainer_search_params[:age_to]).
+      which_gender(trainer_search_params[:gender]).
+      which_category(trainer_search_params[:category]).
+      which_instruction_method(trainer_search_params[:instruction_method]).
+      which_instruction_period(trainer_search_params[:instruction_period]).
+      min_fee_from(trainer_search_params[:min_fee_from]).
+      min_fee_to(trainer_search_params[:min_fee_to]).
+      what_cities(trainer_search_params[:city_ids])
+  end
+
+  scope :age_from, -> (from) {
+    where("? <= age", from) if from.present?
+  }
+  scope :age_to, -> (to) {
+    where("age <= ?", to) if to.present?
+  }
+  scope :which_gender, -> (gender) {
+    where(gender: gender) if gender.present?
+  }
+  scope :which_category, -> (category) {
+    where(category: category) if category.present?
+  }
+  scope :which_instruction_method, -> (instruction_method) {
+    where(instruction_method: instruction_method) if instruction_method.present?
+  }
+  scope :which_instruction_period, -> (instruction_period) {
+    where(instruction_period: instruction_period) if instruction_period.present?
+  }
+  scope :min_fee_from, -> (from) {
+    where("? <= min_fee", from) if from.present?
+  }
+  scope :min_fee_to, -> (to) {
+    where("min_fee <= ?", to) if to.present?
+  }
+  scope :what_cities, -> (city_ids) {
+    where(cities: { id: city_ids.reject(&:blank?).map(&:to_i) }) if city_ids.reject(&:blank?).present?
+  }
 end

@@ -43,5 +43,40 @@ class Trainee < ApplicationRecord
 
   has_one_attached :avatar
   has_and_belongs_to_many :cities
-  has_many :prefecture, through: :cities
+  has_many :prefectures, through: :cities
+
+  scope :search_trainee, -> (trainee_search_params) do
+    return if trainee_search_params.blank?
+
+    whether_allow_dm(trainee_search_params[:dm_allowed]).
+      age_from(trainee_search_params[:age_from]).
+      age_to(trainee_search_params[:age_to]).
+      which_gender(trainee_search_params[:gender]).
+      which_category(trainee_search_params[:category]).
+      which_instruction_method(trainee_search_params[:instruction_method]).
+      what_cities(trainee_search_params[:city_ids])
+  end
+
+  # ↓検索ページにて、チェックボックスにチェックがない場合適応しない。
+  scope :whether_allow_dm, -> (dm_allowed) {
+    where(dm_allowed: dm_allowed) if dm_allowed == "1"
+  }
+  scope :age_from, -> (from) {
+    where("? <= age", from) if from.present?
+  }
+  scope :age_to, -> (to) {
+    where("age <= ?", to) if to.present?
+  }
+  scope :which_gender, -> (gender) {
+    where(gender: gender) if gender.present?
+  }
+  scope :which_category, -> (category) {
+    where(category: category) if category.present?
+  }
+  scope :which_instruction_method, -> (instruction_method) {
+    where(instruction_method: instruction_method) if instruction_method.present?
+  }
+  scope :what_cities, -> (city_ids) {
+    where(cities: { id: city_ids.reject(&:blank?).map(&:to_i) }) if city_ids.reject(&:blank?).present?
+  }
 end

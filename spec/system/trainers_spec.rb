@@ -122,6 +122,239 @@ RSpec.describe "Trainers System", type: :system do
     end
   end
 
+  describe "トレーナー検索" do
+    let!(:trainer1) do
+      create(:trainer,
+      name: "trainer1", age: 21,
+      gender: "male", category: "losing_weight",
+      min_fee: 1000, instruction_method: "online",
+      instruction_period: "below_one_month")
+    end
+
+    let!(:trainer2) do
+      create(:trainer,
+      name: "trainer2", age: 22,
+      gender: "female", category: "building_muscle",
+      min_fee: 2000, instruction_method: "offline",
+      instruction_period: "below_one_month")
+    end
+
+    let!(:trainer3) do
+      create(:trainer,
+      name: "trainer3", age: 23,
+      gender: "male", category: "physical_function",
+      min_fee: 3000, instruction_method: "online",
+      instruction_period: "above_one_month")
+    end
+
+    let!(:trainer4) do
+      create(:trainer,
+      name: "trainer4", age: 24,
+      gender: "female", category: "physical_therapy",
+      min_fee: 4000, instruction_method: "offline",
+      instruction_period: "above_one_month")
+    end
+
+    let(:trainee) { create(:trainee) }
+
+    scenario "トレーナー検索ページに訪れると、検索フォームがあり、トレーナーは１件も表示されていないこと" do
+      login_as_trainee trainee
+      visit root_path
+
+      click_on "トレーナー検索"
+      aggregate_failures do
+        expect(current_path).to eq search_for_trainer_path
+        expect(page).to have_selector "#collapseSearch"
+        expect(page).not_to have_selector "ul.search-result"
+        expect(page).not_to have_content(trainer1.name)
+      end
+    end
+
+    context "検索条件を入力しない場合" do
+      scenario "フォームに入力せず「この条件で検索する」ボタンをクリックすると、トレーナーを全件取得すること" do
+        login_as_trainee trainee
+        visit search_for_trainer_path
+
+        click_button "この条件で検索する"
+        aggregate_failures do
+          expect(current_path).to eq search_for_trainer_path
+          expect(page).to have_selector "#collapseSearch"
+          expect(page).to have_selector "ul.search-result", count: 4
+          expect(page).to have_content(trainer1.name)
+          expect(page).to have_content(trainer2.name)
+          expect(page).to have_content(trainer3.name)
+          expect(page).to have_content(trainer4.name)
+        end
+      end
+
+      scenario "「検索条件・検索結果をリセットする」ボタンをクリックすると、同じページにリダイレクトすること" do
+        login_as_trainee trainee
+        visit search_for_trainer_path
+
+        click_button "検索条件・検索結果をリセットする"
+        aggregate_failures do
+          expect(current_path).to eq search_for_trainer_path
+          expect(page).to have_selector "#collapseSearch"
+          expect(page).not_to have_selector "ul.search-result"
+          expect(page).not_to have_content(trainer1.name)
+          expect(page).not_to have_content(trainer2.name)
+          expect(page).not_to have_content(trainer3.name)
+          expect(page).not_to have_content(trainer4.name)
+        end
+      end
+    end
+
+    context "検索条件を入力する場合" do
+      scenario "年齢の範囲を条件にして検索できること" do
+        login_as_trainee trainee
+        visit search_for_trainer_path
+
+        fill_in "search_trainer_age_from", with: 22
+        fill_in "search_trainer_age_to", with: 23
+        click_button "この条件で検索する"
+        aggregate_failures do
+          expect(page).not_to have_content(trainer1.name)
+          expect(page).to have_content(trainer2.name)
+          expect(page).to have_content(trainer3.name)
+          expect(page).not_to have_content(trainer4.name)
+        end
+      end
+
+      scenario "最低料金の範囲を条件にして検索できること" do
+        login_as_trainee trainee
+        visit search_for_trainer_path
+
+        fill_in "search_trainer_min_fee_from", with: 1000
+        fill_in "search_trainer_min_fee_to", with: 3000
+        click_button "この条件で検索する"
+        aggregate_failures do
+          expect(page).to have_content(trainer1.name)
+          expect(page).to have_content(trainer2.name)
+          expect(page).to have_content(trainer3.name)
+          expect(page).not_to have_content(trainer4.name)
+        end
+      end
+
+      scenario "性別を条件にして検索できること" do
+        login_as_trainee trainee
+        visit search_for_trainer_path
+
+        select "男性", from: "search_trainer_gender"
+        click_button "この条件で検索する"
+        aggregate_failures do
+          expect(page).to have_content(trainer1.name)
+          expect(page).not_to have_content(trainer2.name)
+          expect(page).to have_content(trainer3.name)
+          expect(page).not_to have_content(trainer4.name)
+        end
+      end
+
+      scenario "カテゴリーを条件にして検索できること" do
+        login_as_trainee trainee
+        visit search_for_trainer_path
+
+        select "筋肉づくり", from: "search_trainer_category"
+        click_button "この条件で検索する"
+        aggregate_failures do
+          expect(page).not_to have_content(trainer1.name)
+          expect(page).to have_content(trainer2.name)
+          expect(page).not_to have_content(trainer3.name)
+          expect(page).not_to have_content(trainer4.name)
+        end
+      end
+
+      scenario "指導方法を条件にして検索できること" do
+        login_as_trainee trainee
+        visit search_for_trainer_path
+
+        select "オンラインで指導", from: "search_trainer_instruction_method"
+        click_button "この条件で検索する"
+        aggregate_failures do
+          expect(page).to have_content(trainer1.name)
+          expect(page).not_to have_content(trainer2.name)
+          expect(page).to have_content(trainer3.name)
+          expect(page).not_to have_content(trainer4.name)
+        end
+      end
+
+      scenario "指導期間を条件にして検索できること" do
+        login_as_trainee trainee
+        visit search_for_trainer_path
+
+        select "一ヶ月未満", from: "search_trainer_instruction_period"
+        click_button "この条件で検索する"
+        aggregate_failures do
+          expect(page).to have_content(trainer1.name)
+          expect(page).to have_content(trainer2.name)
+          expect(page).not_to have_content(trainer3.name)
+          expect(page).not_to have_content(trainer4.name)
+        end
+      end
+
+      describe "活動地域を条件に含む検索操作" do
+        before do
+          trainer1.cities << City.where(id: 1) # 札幌市
+          trainer2.cities << City.where(id: [1, 2]) # 札幌市＆函館市
+          trainer3.cities << City.where(id: [1, 2, 3]) # 札幌市＆函館市＆小樽市
+          trainer4.cities << City.where(id: [636, 696]) # 東京都：港区、神奈川県：横浜市
+        end
+
+        scenario "活動地域を条件にして検索できること" do
+          login_as_trainee trainee
+          visit search_for_trainer_path
+
+          check "search_trainer_city_ids_1"
+          check "search_trainer_city_ids_2"
+          click_button "この条件で検索する"
+          aggregate_failures do
+            expect(page).to have_content(trainer1.name)
+            expect(page).to have_content(trainer2.name)
+            expect(page).to have_content(trainer3.name)
+            expect(page).not_to have_content(trainer4.name)
+          end
+        end
+
+        scenario "複数の都道府県を含む市区町村を条件にして検索できること" do
+          login_as_trainee trainee
+          visit search_for_trainer_path
+
+          check "search_trainer_city_ids_636"
+          check "search_trainer_city_ids_696"
+          click_button "この条件で検索する"
+          aggregate_failures do
+            expect(page).not_to have_content(trainer1.name)
+            expect(page).not_to have_content(trainer2.name)
+            expect(page).not_to have_content(trainer3.name)
+            expect(page).to have_content(trainer4.name)
+          end
+        end
+
+        scenario "複数の条件を組み合わせて検索できること" do
+          login_as_trainee trainee
+          visit search_for_trainer_path
+
+          fill_in "search_trainer_age_from", with: 20
+          fill_in "search_trainer_age_to", with: 25
+          fill_in "search_trainer_min_fee_from", with: 1000
+          fill_in "search_trainer_min_fee_to", with: 3000
+          select "男性", from: "search_trainer_gender"
+          select "ダイエット", from: "search_trainer_category"
+          select "オンラインで指導", from: "search_trainer_instruction_method"
+          select "一ヶ月未満", from: "search_trainer_instruction_period"
+          click_button "この条件で検索する"
+          aggregate_failures do
+            expect(page).to have_content(trainer1.name)
+            expect(page).not_to have_content(trainer2.name)
+            expect(page).not_to have_content(trainer3.name)
+            expect(page).not_to have_content(trainer4.name)
+          end
+        end
+      end
+    end
+  end
+
+  # DEVISE MODULE--------------------------------------------------------
+
   describe "Registration" do
     describe "トレーナーの新規登録" do
       context "入力値に問題がない場合" do
