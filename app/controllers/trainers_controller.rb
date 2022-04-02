@@ -29,9 +29,9 @@ class TrainersController < ApplicationController
 
   def trainer_profile_params
     params.require(:trainer).permit(
-      :name, :age, :gender,
+      :name, :age,
       :introduction, :timeframe,
-      :min_fee, :max_fee, :instruction_period,
+      :min_fee, :instruction_period,
       :category, :instruction_method, :avatar,
       city_ids: []
     )
@@ -40,8 +40,8 @@ class TrainersController < ApplicationController
   def trainer_search_params
     params.fetch(:search_trainer, {}).permit(
       :age_from, :age_to,
-      :category,
       :gender,
+      :category,
       :instruction_method,
       :instruction_period,
       :min_fee_from, :min_fee_to,

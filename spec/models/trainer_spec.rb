@@ -9,9 +9,8 @@
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
 #  instruction_method     :integer
-#  instruction_period     :integer          default("unspecified"), not null
+#  instruction_period     :integer
 #  introduction           :text(65535)
-#  max_fee                :integer
 #  min_fee                :integer
 #  name                   :string(255)      not null
 #  remember_created_at    :datetime
@@ -112,17 +111,10 @@ RSpec.describe Trainer, type: :model do
       end
     end
 
-    describe "max_feeカラム" do
-      it "最高指導料金がnilであっても、有効になること" do
-        trainer = build(:trainer, max_fee: nil)
-        expect(trainer).to be_valid
-      end
-    end
-
     describe "instruction_periodカラム" do
-      it "指導期間がnilの場合、無効になること" do
+      it "指導期間がnilであっても、有効になること" do
         trainer = build(:trainer, instruction_period: nil)
-        expect(trainer).to be_invalid
+        expect(trainer).to be_valid
       end
     end
 

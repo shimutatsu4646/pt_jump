@@ -9,9 +9,8 @@
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
 #  instruction_method     :integer
-#  instruction_period     :integer          default("unspecified"), not null
+#  instruction_period     :integer
 #  introduction           :text(65535)
-#  max_fee                :integer
 #  min_fee                :integer
 #  name                   :string(255)      not null
 #  remember_created_at    :datetime
@@ -36,8 +35,7 @@ FactoryBot.define do
     category { nil }
     instruction_method { nil }
     min_fee { nil }
-    max_fee { nil }
-    instruction_period { "unspecified" }
+    instruction_period { nil }
     sequence(:email) { |n| "test_trainer#{n}@example.com" }
     password { "trainer_password" }
     password_confirmation { "trainer_password" }

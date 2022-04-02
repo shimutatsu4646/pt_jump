@@ -47,8 +47,7 @@ ja:
         timeframe: 活動時間帯
         category: 一番得意なカテゴリー
         instruction_method: 主な指導方法
-        min_fees: 最低指導料金
-        max_fees: 最高指導料金
+        min_fees: 最低料金
         instruction_period: 指導期間
         avatar: プロフィール画像
         city_ids: 活動地域

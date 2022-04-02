@@ -30,7 +30,7 @@ end
 
 # トレーニーデータの作成
 
-# 一人のトレーニーはnilにできるカラムは全てnilにする。
+# trainee1はnilにできるカラムは全てnilにする。
 # trainee2~trainee10
 # ２つの都道府県を関連付けする。（東京、大阪）
 # １つの都道府県につき、5~8件の市区町村を活動地域とする。
@@ -180,7 +180,7 @@ trainee10.cities << City.where(prefecture_id: [27]).limit(8)
 
 # トレーナーデータの作成
 
-# 一人のトレーナーはnilにできるカラムは全てnilにする。
+# trainer1はnilにできるカラムは全てnilにする。
 # trainee2~trainee10
 # ２つの都道府県を関連付けする。（東京、大阪）
 # １つの都道府県につき、5~8件の市区町村を活動地域とする。
@@ -196,8 +196,7 @@ Trainer.create!(
   category: nil,
   instruction_method: nil,
   min_fee: nil,
-  max_fee: nil,
-  instruction_period: "below_one_month",
+  instruction_period: nil,
   email: "trainer1@example.com",
   password: "password1"
 )
@@ -211,7 +210,6 @@ trainer2 = Trainer.create!(
   category: "building_muscle",
   instruction_method: "online",
   min_fee: 1000,
-  max_fee: nil,
   instruction_period: "below_one_month",
   email: "trainer2@example.com",
   password: "password2"
@@ -227,7 +225,6 @@ trainer3 = Trainer.create!(
   category: "losing_weight",
   instruction_method: "offline",
   min_fee: 2000,
-  max_fee: nil,
   instruction_period: "above_one_month",
   email: "trainer3@example.com",
   password: "password3"
@@ -243,7 +240,6 @@ trainer4 = Trainer.create!(
   category: "physical_function",
   instruction_method: "online",
   min_fee: 2000,
-  max_fee: nil,
   instruction_period: "below_one_month",
   email: "trainer4@example.com",
   password: "password4"
@@ -259,7 +255,6 @@ trainer5 = Trainer.create!(
   category: "physical_therapy",
   instruction_method: "offline",
   min_fee: 3000,
-  max_fee: nil,
   instruction_period: "above_one_month",
   email: "trainer5@example.com",
   password: "password5"
@@ -275,7 +270,6 @@ trainer6 = Trainer.create!(
   category: "losing_weight",
   instruction_method: "offline",
   min_fee: 4000,
-  max_fee: nil,
   instruction_period: "below_one_month",
   email: "trainer6@example.com",
   password: "password6"
@@ -291,7 +285,6 @@ trainer7 = Trainer.create!(
   category: "building_muscle",
   instruction_method: "online",
   min_fee: 5000,
-  max_fee: nil,
   instruction_period: "above_one_month",
   email: "trainer7@example.com",
   password: "password7"
@@ -307,7 +300,6 @@ trainer8 = Trainer.create!(
   category: "physical_function",
   instruction_method: "offline",
   min_fee: 6000,
-  max_fee: nil,
   instruction_period: "below_one_month",
   email: "trainer8@example.com",
   password: "password8"
@@ -323,7 +315,6 @@ trainer9 = Trainer.create!(
   category: "physical_therapy",
   instruction_method: "offline",
   min_fee: 7000,
-  max_fee: nil,
   instruction_period: "above_one_month",
   email: "trainer9@example.com",
   password: "password9"
@@ -339,7 +330,6 @@ trainer10 = Trainer.create!(
   category: "physical_therapy",
   instruction_method: "offline",
   min_fee: 8000,
-  max_fee: nil,
   instruction_period: "below_one_month",
   email: "trainer10@example.com",
   password: "password10"

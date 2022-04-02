@@ -9,9 +9,8 @@
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
 #  instruction_method     :integer
-#  instruction_period     :integer          default("unspecified"), not null
+#  instruction_period     :integer
 #  introduction           :text(65535)
-#  max_fee                :integer
 #  min_fee                :integer
 #  name                   :string(255)      not null
 #  remember_created_at    :datetime
@@ -38,8 +37,7 @@ class Trainer < ApplicationRecord
   validates :age, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :gender, presence: true
   enum gender: { male: 0, female: 1 }
-  validates :instruction_period, presence: true
-  enum instruction_period: { unspecified: 0, below_one_month: 1, above_one_month: 2 }
+  enum instruction_period: { below_one_month: 0, above_one_month: 1 }
   enum category: { losing_weight: 0, building_muscle: 1, physical_function: 2, physical_therapy: 3 }
   enum instruction_method: { offline: 0, online: 1 }
 

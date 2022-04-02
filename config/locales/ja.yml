@@ -17,7 +17,6 @@ ja:
         male: 男性
         female: 女性
       instruction_period:
-        unspecified: 指定なし
         below_one_month: 一ヶ月未満
         above_one_month: 一ヶ月以上
       category:

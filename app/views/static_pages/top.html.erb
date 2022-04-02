@@ -32,8 +32,7 @@
     <li>カテゴリー:<%= trainer.category_i18n %><% if trainer.category.nil? %>指定なし<% end %></li>
     <li>希望する指導方法:<%= trainer.instruction_method_i18n  %><% if trainer.instruction_method.nil? %>指定なし<% end %></li>
     <li>最小料金:<% if trainer.min_fee %><%= trainer.min_fee %>円<% else %>指定なし<% end %></li>
-    <li>最高料金:<% if trainer.max_fee %><%= trainer.max_fee %>円<% else %>指定なし<% end %></li>
-    <li>指導期間:<%= trainer.instruction_period_i18n %></li>
+    <li>指導期間:<%= trainer.instruction_period_i18n  %><% if trainer.instruction_period.nil? %>指定なし<% end %></li>
     <li>
         活動地域:
         <% trainer.prefecture_ids.each do |prefecture_id| %>

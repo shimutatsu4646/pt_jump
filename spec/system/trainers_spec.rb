@@ -53,7 +53,6 @@ RSpec.describe "Trainers System", type: :system do
         select "筋肉づくり", from: "trainer_category"
         select "オフラインで指導", from: "trainer_instruction_method"
         fill_in "trainer_min_fee", with: 1000
-        fill_in "trainer_max_fee", with: 5000
         select "一ヶ月未満", from: "trainer_instruction_period"
         check "trainer_city_ids_1093"
         check "trainer_city_ids_1119"
@@ -68,7 +67,6 @@ RSpec.describe "Trainers System", type: :system do
           expect(trainer.reload.category).to eq "building_muscle"
           expect(trainer.reload.instruction_method).to eq "offline"
           expect(trainer.reload.min_fee).to eq 1000
-          expect(trainer.reload.max_fee).to eq 5000
           expect(trainer.reload.instruction_period).to eq "below_one_month"
           expect(trainer.cities.first.name).to eq "京都市"
           expect(trainer.cities.second.name).to eq "大阪市"
@@ -78,7 +76,6 @@ RSpec.describe "Trainers System", type: :system do
           expect(page).to have_content "筋肉づくり"
           expect(page).to have_content "オフラインで指導"
           expect(page).to have_content "1000円"
-          expect(page).to have_content "5000円"
           expect(page).to have_content "一ヶ月未満"
           expect(page).to have_content "京都府"
           expect(page).to have_content "京都市"
@@ -100,7 +97,6 @@ RSpec.describe "Trainers System", type: :system do
           select "筋肉づくり", from: "trainer_category"
           select "オンラインで指導", from: "trainer_instruction_method"
           fill_in "trainer_min_fee", with: 1000
-          fill_in "trainer_max_fee", with: 5000
           select "一ヶ月未満", from: "trainer_instruction_period"
           click_button "更新"
         end.not_to change { trainer.reload }

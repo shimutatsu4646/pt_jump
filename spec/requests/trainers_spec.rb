@@ -73,7 +73,6 @@ RSpec.describe "Trainers Request", type: :request do
           category: "building_muscle",
           instruction_method: "online",
           min_fee: 3000,
-          max_fee: 10000,
           instruction_period: "below_one_month",
           city_ids: ["517", "1707"]
         }
@@ -86,7 +85,6 @@ RSpec.describe "Trainers Request", type: :request do
           expect(trainer.reload.category).to eq "building_muscle"
           expect(trainer.reload.instruction_method).to eq "online"
           expect(trainer.reload.min_fee).to eq 3000
-          expect(trainer.reload.max_fee).to eq 10000
           expect(trainer.reload.instruction_period).to eq "below_one_month"
           expect(trainer.cities.first.name).to eq "さいたま市"
           expect(trainer.cities.second.name).to eq "那覇市"
@@ -152,7 +150,6 @@ RSpec.describe "Trainers Request", type: :request do
             dm_allowed: false,
             category: nil,
             min_fee: nil,
-            max_fee: nil,
             instruction_method: nil,
             instruction_period: nil,
             city_ids: [],
