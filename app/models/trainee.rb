@@ -5,7 +5,7 @@
 #  id                     :bigint           not null, primary key
 #  age                    :integer          not null
 #  category               :integer
-#  dm_allowed             :boolean          default(FALSE), not null
+#  chat_acceptance        :boolean          default(FALSE), not null
 #  email                  :string(255)      default(""), not null
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
@@ -36,7 +36,7 @@ class Trainee < ApplicationRecord
   validates :age, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validates :gender, presence: true
   enum gender: { male: 0, female: 1 }
-  validates :dm_allowed, inclusion: { in: [true, false] }
+  validates :chat_acceptance, inclusion: { in: [true, false] }
   enum category: { losing_weight: 0, building_muscle: 1, physical_function: 2, physical_therapy: 3 }
   enum instruction_method: { offline: 0, online: 1 }
 
@@ -49,7 +49,7 @@ class Trainee < ApplicationRecord
   scope :search_trainee, -> (trainee_search_params) do
     return if trainee_search_params.blank?
 
-    whether_allow_dm(trainee_search_params[:dm_allowed]).
+    whether_accept_chats(trainee_search_params[:chat_acceptance]).
       age_from(trainee_search_params[:age_from]).
       age_to(trainee_search_params[:age_to]).
       which_gender(trainee_search_params[:gender]).
@@ -60,8 +60,8 @@ class Trainee < ApplicationRecord
   end
 
   # ↓検索ページにて、チェックボックスにチェックがない場合適応しない。
-  scope :whether_allow_dm, -> (dm_allowed) {
-    where(dm_allowed: dm_allowed) if dm_allowed == "1"
+  scope :whether_accept_chats, -> (chat_acceptance) {
+    where(chat_acceptance: chat_acceptance) if chat_acceptance == "1"
   }
   scope :age_from, -> (from) {
     where("? <= age", from) if from.present?

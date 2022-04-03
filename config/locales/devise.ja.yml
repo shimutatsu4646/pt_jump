@@ -10,7 +10,7 @@ ja:
         introduction: 自己紹介
         category: カテゴリー
         instruction_method: 希望する指導方法
-        dm_allowed: ダイレクトメッセージの受け付け
+        chat_acceptance: チャットの受け入れ
         avatar: プロフィール画像
         city_ids: 活動地域
         day_of_week_ids: 活動できる曜日

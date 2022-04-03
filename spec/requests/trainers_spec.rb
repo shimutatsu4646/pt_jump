@@ -148,7 +148,7 @@ RSpec.describe "Trainers Request", type: :request do
             age_from: nil,
             age_to: nil,
             gender: nil,
-            dm_allowed: false,
+            chat_acceptance: false,
             category: nil,
             min_fee: nil,
             instruction_method: nil,

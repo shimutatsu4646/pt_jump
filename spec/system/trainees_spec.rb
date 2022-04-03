@@ -52,7 +52,7 @@ RSpec.describe "Trainees System", type: :system do
         fill_in "trainee_introduction", with: "Added introduction."
         select "筋肉づくり", from: "trainee_category"
         select "オンラインで指導", from: "trainee_instruction_method"
-        check "trainee_dm_allowed"
+        check "trainee_chat_acceptance"
         check "trainee_city_ids_634"
         check "trainee_city_ids_635"
         check "trainee_city_ids_636"
@@ -67,7 +67,7 @@ RSpec.describe "Trainees System", type: :system do
           expect(trainee.reload.introduction).to eq "Added introduction."
           expect(trainee.reload.category).to eq "building_muscle"
           expect(trainee.reload.instruction_method).to eq "online"
-          expect(trainee.reload.dm_allowed).to eq true
+          expect(trainee.reload.chat_acceptance).to eq true
           expect(trainee.cities.first.name).to eq "千代田区"
           expect(trainee.cities.second.name).to eq "中央区"
           expect(trainee.cities.third.name).to eq "港区"
@@ -98,7 +98,7 @@ RSpec.describe "Trainees System", type: :system do
           fill_in "trainee_introduction", with: "Added introduction."
           select "筋肉づくり", from: "trainee_category"
           select "オンラインで指導", from: "trainee_instruction_method"
-          check "trainee_dm_allowed"
+          check "trainee_chat_acceptance"
           click_button "更新"
         end.not_to change { trainee.reload }
       end
@@ -124,28 +124,28 @@ RSpec.describe "Trainees System", type: :system do
       create(:trainee,
       name: "trainee1", age: 21,
       gender: "male", category: "losing_weight",
-      instruction_method: "online", dm_allowed: true)
+      instruction_method: "online", chat_acceptance: true)
     end
 
     let!(:trainee2) do
       create(:trainee,
       name: "trainee2", age: 22,
       gender: "female", category: "building_muscle",
-      instruction_method: "offline", dm_allowed: true)
+      instruction_method: "offline", chat_acceptance: true)
     end
 
     let!(:trainee3) do
       create(:trainee,
       name: "trainee3", age: 23,
       gender: "male", category: "physical_function",
-      instruction_method: "online", dm_allowed: true)
+      instruction_method: "online", chat_acceptance: true)
     end
 
     let!(:trainee4) do
       create(:trainee,
       name: "trainee4", age: 24,
       gender: "female", category: "physical_therapy",
-      instruction_method: "offline", dm_allowed: false)
+      instruction_method: "offline", chat_acceptance: false)
     end
 
     let(:trainer) { create(:trainer) }
@@ -255,11 +255,11 @@ RSpec.describe "Trainees System", type: :system do
         end
       end
 
-      scenario "DMの受け付け可否を条件にして検索できること" do
+      scenario "チャットの受け入れ可否を条件にして検索できること" do
         login_as_trainer trainer
         visit search_for_trainee_path
 
-        check "search_trainee_dm_allowed"
+        check "search_trainee_chat_acceptance"
         click_button "この条件で検索する"
         aggregate_failures do
           expect(page).to have_content(trainee1.name)
@@ -353,7 +353,7 @@ RSpec.describe "Trainees System", type: :system do
           select "男性", from: "search_trainee_gender"
           select "ダイエット", from: "search_trainee_category"
           select "オンラインで指導", from: "search_trainee_instruction_method"
-          check "search_trainee_dm_allowed"
+          check "search_trainee_chat_acceptance"
           check "search_trainee_city_ids_1"
           check "search_trainee_city_ids_2"
           check "search_trainee_day_of_week_ids_1"
@@ -384,7 +384,7 @@ RSpec.describe "Trainees System", type: :system do
             fill_in "trainee_email", with: "system_test1@example.com"
             fill_in "trainee_password", with: "test_password"
             fill_in "trainee_password_confirmation", with: "test_password"
-            check "trainee_dm_allowed"
+            check "trainee_chat_acceptance"
             click_button "登録"
 
             trainee = Trainee.find_by(name: "test_trainee_name")
@@ -408,7 +408,7 @@ RSpec.describe "Trainees System", type: :system do
             fill_in "trainee_email", with: "system_test2@example.com"
             fill_in "trainee_password", with: "test_password"
             fill_in "trainee_password_confirmation", with: "test_password"
-            check "trainee_dm_allowed"
+            check "trainee_chat_acceptance"
             click_button "登録"
 
             aggregate_failures do

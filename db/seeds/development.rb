@@ -44,7 +44,7 @@ DayOfWeek.create!(name: "日曜日")
 # trainee2~trainee10
 # ２つの都道府県を関連付けする。（東京、大阪）
 # １つの都道府県につき、5~8件の市区町村を活動地域とする。
-# ２種類の性別、２種類の指導方法、2種類のdm許可、4種類のカテゴリーを全て網羅する。
+# ２種類の性別、２種類の指導方法、チャット受け入れの可否、4種類のカテゴリーを全て網羅する。
 # 一人のトレーニーが複数の都道府県を活動地域とする。
 # trainee2~8は１つの曜日を追加する。trainee9・10は複数の曜日を追加する。
 Trainee.create!(
@@ -54,7 +54,7 @@ Trainee.create!(
   introduction: nil,
   category: nil,
   instruction_method: nil,
-  dm_allowed: false,
+  chat_acceptance: false,
   email: "trainee1@example.com",
   password: "password1"
 )
@@ -66,7 +66,7 @@ trainee2 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "building_muscle",
   instruction_method: "online",
-  dm_allowed: false,
+  chat_acceptance: false,
   email: "trainee2@example.com",
   password: "password2"
 )
@@ -80,7 +80,7 @@ trainee3 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "losing_weight",
   instruction_method: "offline",
-  dm_allowed: true,
+  chat_acceptance: true,
   email: "trainee3@example.com",
   password: "password3"
 )
@@ -94,7 +94,7 @@ trainee4 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "physical_function",
   instruction_method: "online",
-  dm_allowed: true,
+  chat_acceptance: true,
   email: "trainee4@example.com",
   password: "password4"
 )
@@ -108,7 +108,7 @@ trainee5 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
-  dm_allowed: false,
+  chat_acceptance: false,
   email: "trainee5@example.com",
   password: "password5"
 )
@@ -122,7 +122,7 @@ trainee6 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "losing_weight",
   instruction_method: "offline",
-  dm_allowed: false,
+  chat_acceptance: false,
   email: "trainee6@example.com",
   password: "password6"
 )
@@ -136,7 +136,7 @@ trainee7 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "building_muscle",
   instruction_method: "online",
-  dm_allowed: false,
+  chat_acceptance: false,
   email: "trainee7@example.com",
   password: "password7"
 )
@@ -150,7 +150,7 @@ trainee8 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "physical_function",
   instruction_method: "offline",
-  dm_allowed: true,
+  chat_acceptance: true,
   email: "trainee8@example.com",
   password: "password8"
 )
@@ -164,7 +164,7 @@ trainee9 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
-  dm_allowed: true,
+  chat_acceptance: true,
   email: "trainee9@example.com",
   password: "password9"
 )
@@ -182,7 +182,7 @@ trainee10 = Trainee.create!(
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
-  dm_allowed: true,
+  chat_acceptance: true,
   email: "trainee10@example.com",
   password: "password10"
 )

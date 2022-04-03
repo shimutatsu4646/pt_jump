@@ -10,7 +10,7 @@
       <li>性別:<%= trainee.gender_i18n %></li>
       <li>カテゴリー:<% if trainee.category %><%= trainee.category_i18n %><% else %>指定なし<% end %></li>
       <li>希望する指導方法:<% if trainee.instruction_method %><%= trainee.instruction_method_i18n  %><% else %>指定なし<% end %></li>
-      <li>DMの受け付け:<%= trainee.dm_allowed ? "許可する" : "許可しない" %></li>
+      <li>チャットの受け入れ:<%= trainee.chat_acceptance ? "許可する" : "許可しない" %></li>
       <li>活動できる曜日<% if trainee.day_of_weeks.empty? %>：指定なし<% end %></li>
       <% trainee.day_of_weeks.each do |day| %>
         <span><%= day.name %></span>

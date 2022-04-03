@@ -5,7 +5,7 @@
 #  id                     :bigint           not null, primary key
 #  age                    :integer          not null
 #  category               :integer
-#  dm_allowed             :boolean          default(FALSE), not null
+#  chat_acceptance        :boolean          default(FALSE), not null
 #  email                  :string(255)      default(""), not null
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
@@ -99,9 +99,9 @@ RSpec.describe Trainee, type: :model do
       end
     end
 
-    describe "dm_allowedカラム" do
-      it "DM許可がnilの場合、無効になること" do
-        trainee = build(:trainee, dm_allowed: nil)
+    describe "chat_acceptanceカラム" do
+      it "チャットの受け入れ可否がnilの場合、無効になること" do
+        trainee = build(:trainee, chat_acceptance: nil)
         expect(trainee).to be_invalid
       end
     end
@@ -219,14 +219,14 @@ RSpec.describe Trainee, type: :model do
         end
       end
 
-      describe "whether_allow_dmスコープ" do
+      describe "whether_accept_chatsスコープ" do
         # trueで検索する場合は"1"。条件なしになるのは"0"
-        subject { Trainee.whether_allow_dm("1") }
+        subject { Trainee.whether_accept_chats("1") }
 
-        let!(:trainee1) { create(:trainee, dm_allowed: true) }
-        let!(:trainee2) { create(:trainee, dm_allowed: false) }
+        let!(:trainee1) { create(:trainee, chat_acceptance: true) }
+        let!(:trainee2) { create(:trainee, chat_acceptance: false) }
 
-        it "whether_allow_dmスコープが条件に当てはまるトレーナーのみを取得すること" do
+        it "whether_accept_chatsスコープが条件に当てはまるトレーナーのみを取得すること" do
           is_expected.to include trainee1
           is_expected.not_to include trainee2
         end

@@ -71,7 +71,7 @@ RSpec.describe "Trainees Request", type: :request do
           introduction: "hello",
           category: "building_muscle",
           instruction_method: "online",
-          dm_allowed: true,
+          chat_acceptance: true,
           city_ids: ["1", "634"],
           day_of_week_ids: ["1", "2"]
         }
@@ -82,7 +82,7 @@ RSpec.describe "Trainees Request", type: :request do
           expect(trainee.reload.introduction).to eq "hello"
           expect(trainee.reload.category).to eq "building_muscle"
           expect(trainee.reload.instruction_method).to eq "online"
-          expect(trainee.reload.dm_allowed).to eq true
+          expect(trainee.reload.chat_acceptance).to eq true
           expect(trainee.cities.first.name).to eq "札幌市"
           expect(trainee.cities.second.name).to eq "千代田区"
           expect(trainee.day_of_weeks.first.name).to eq "月曜日"
@@ -146,7 +146,7 @@ RSpec.describe "Trainees Request", type: :request do
             age_from: nil,
             age_to: nil,
             gender: nil,
-            dm_allowed: false,
+            chat_acceptance: false,
             category: nil,
             instruction_method: nil,
             city_ids: [],

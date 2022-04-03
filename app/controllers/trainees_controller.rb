@@ -33,7 +33,7 @@ class TraineesController < ApplicationController
     params.require(:trainee).permit(
       :name, :age,
       :introduction,
-      :dm_allowed, :category,
+      :chat_acceptance, :category,
       :instruction_method, :avatar,
       city_ids: [], day_of_week_ids: []
     )
@@ -42,7 +42,7 @@ class TraineesController < ApplicationController
   def trainee_search_params
     params.fetch(:search_trainee, {}).permit(
       :age_from, :age_to,
-      :dm_allowed,
+      :chat_acceptance,
       :gender,
       :category,
       :instruction_method,

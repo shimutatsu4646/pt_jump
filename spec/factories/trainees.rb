@@ -5,7 +5,7 @@
 #  id                     :bigint           not null, primary key
 #  age                    :integer          not null
 #  category               :integer
-#  dm_allowed             :boolean          default(FALSE), not null
+#  chat_acceptance        :boolean          default(FALSE), not null
 #  email                  :string(255)      default(""), not null
 #  encrypted_password     :string(255)      default(""), not null
 #  gender                 :integer          not null
@@ -31,7 +31,7 @@ FactoryBot.define do
     introduction { nil }
     category { nil }
     instruction_method { nil }
-    dm_allowed { false }
+    chat_acceptance { false }
     sequence(:email) { |n| "test_trainee#{n}@example.com" }
     password { "trainee_password" }
     password_confirmation { "trainee_password" }
