@@ -8,12 +8,12 @@ ja:
         age: 年齢
         gender: 性別
         introduction: 自己紹介
-        timeframe: 活動時間帯
         category: カテゴリー
         instruction_method: 希望する指導方法
         dm_allowed: ダイレクトメッセージの受け付け
         avatar: プロフィール画像
         city_ids: 活動地域
+        day_of_week_ids: 活動できる曜日
         confirmation_password: 確認用パスワード
         current_password: 現在のパスワード
         confirmation_sent_at: パスワード確認送信時刻
@@ -44,13 +44,13 @@ ja:
         age: 年齢
         gender: 性別
         introduction: 自己紹介
-        timeframe: 活動時間帯
         category: 一番得意なカテゴリー
         instruction_method: 主な指導方法
-        min_fees: 最低料金
+        min_fee: 最低料金
         instruction_period: 指導期間
         avatar: プロフィール画像
         city_ids: 活動地域
+        day_of_week_ids: 指導できる曜日
         confirmation_password: 確認用パスワード
         current_password: 現在のパスワード
         confirmation_sent_at: パスワード確認送信時刻

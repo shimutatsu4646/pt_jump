@@ -69,23 +69,24 @@ RSpec.describe "Trainees Request", type: :request do
         trainee_update_params = {
           name: "update_name",
           introduction: "hello",
-          timeframe: "9:00~17:00",
           category: "building_muscle",
           instruction_method: "online",
           dm_allowed: true,
-          city_ids: ["1", "634"]
+          city_ids: ["1", "634"],
+          day_of_week_ids: ["1", "2"]
         }
         sign_in trainee
         put update_profile_trainee_path(trainee), params: { id: trainee.id, trainee: trainee_update_params }
         aggregate_failures do
           expect(trainee.reload.name).to eq "update_name"
           expect(trainee.reload.introduction).to eq "hello"
-          expect(trainee.reload.timeframe).to eq "9:00~17:00"
           expect(trainee.reload.category).to eq "building_muscle"
           expect(trainee.reload.instruction_method).to eq "online"
           expect(trainee.reload.dm_allowed).to eq true
           expect(trainee.cities.first.name).to eq "札幌市"
           expect(trainee.cities.second.name).to eq "千代田区"
+          expect(trainee.day_of_weeks.first.name).to eq "月曜日"
+          expect(trainee.day_of_weeks.second.name).to eq "火曜日"
           expect(response).to redirect_to trainee_path(trainee.id)
         end
       end
@@ -149,6 +150,7 @@ RSpec.describe "Trainees Request", type: :request do
             category: nil,
             instruction_method: nil,
             city_ids: [],
+            day_of_week_ids: [],
           }
           sign_in trainer
           get search_for_trainee_path, params: { search_trainee: trainee_search_params }

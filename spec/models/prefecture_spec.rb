@@ -17,7 +17,7 @@
 require 'rails_helper'
 
 RSpec.describe Prefecture, type: :model do
-  it "都道府県の数が47であること" do
+  it "都道府県データの総数が47であること" do
     expect(Prefecture.all.count).to eq 47
   end
 end

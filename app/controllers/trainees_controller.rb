@@ -22,7 +22,7 @@ class TraineesController < ApplicationController
 
   def search
     @trainee_search_params = trainee_search_params
-    @trainees = Trainee.includes(:cities, :prefectures).with_attached_avatar.search_trainee(@trainee_search_params)
+    @trainees = Trainee.includes(:cities, :prefectures, :day_of_weeks).with_attached_avatar.search_trainee(@trainee_search_params)
   end
 
   private
@@ -30,10 +30,10 @@ class TraineesController < ApplicationController
   def trainee_profile_params
     params.require(:trainee).permit(
       :name, :age,
-      :introduction, :timeframe,
+      :introduction,
       :dm_allowed, :category,
       :instruction_method, :avatar,
-      city_ids: []
+      city_ids: [], day_of_week_ids: []
     )
   end
 
@@ -44,7 +44,7 @@ class TraineesController < ApplicationController
       :gender,
       :category,
       :instruction_method,
-      city_ids: []
+      city_ids: [], day_of_week_ids: []
     )
   end
 

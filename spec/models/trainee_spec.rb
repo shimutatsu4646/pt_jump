@@ -15,7 +15,6 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string(255)
-#  timeframe              :text(65535)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -76,13 +75,6 @@ RSpec.describe Trainee, type: :model do
       it "性別がnilである場合、無効になること" do
         trainee = build(:trainee, gender: nil)
         expect(trainee).to be_invalid
-      end
-    end
-
-    describe "timeframeカラム" do
-      it "時間帯がnilであっても、有効になること" do
-        trainee = build(:trainee, timeframe: nil)
-        expect(trainee).to be_valid
       end
     end
 
@@ -241,6 +233,7 @@ RSpec.describe Trainee, type: :model do
       end
 
       describe "what_citiesスコープ" do
+        # 事前にcitiesテーブルを結合する必要がある
         subject { Trainee.includes(:cities).what_cities(["1", "3"]) }
 
         let!(:trainee1) { create(:trainee) }
@@ -250,9 +243,26 @@ RSpec.describe Trainee, type: :model do
           trainee1.cities << City.where(id: 1)
           trainee2.cities << City.where(id: 2)
         end
-        # 事前にcitiesテーブルを結合する必要がある
 
         it "what_citiesスコープが条件に当てはまるトレーナーのみを取得すること" do
+          is_expected.to include trainee1
+          is_expected.not_to include trainee2
+        end
+      end
+
+      describe "what_days_of_weekスコープ" do
+        # 事前にday_of_weeksテーブルを結合する必要がある
+        subject { Trainee.includes(:day_of_weeks).what_days_of_week(["1", "3"]) }
+
+        let!(:trainee1) { create(:trainee) }
+        let!(:trainee2) { create(:trainee) }
+
+        before do
+          trainee1.day_of_weeks << DayOfWeek.where(id: 1)
+          trainee2.day_of_weeks << DayOfWeek.where(id: 2)
+        end
+
+        it "what_days_of_weekスコープが条件に当てはまるトレーナーのみを取得すること" do
           is_expected.to include trainee1
           is_expected.not_to include trainee2
         end

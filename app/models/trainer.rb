@@ -16,7 +16,6 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string(255)
-#  timeframe              :text(65535)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -44,6 +43,8 @@ class Trainer < ApplicationRecord
   has_one_attached :avatar
   has_and_belongs_to_many :cities
   has_many :prefectures, through: :cities
+  has_many :instruction_schedules
+  has_many :day_of_weeks, through: :instruction_schedules
 
   scope :search_trainer, -> (trainer_search_params) do
     return if trainer_search_params.blank?
@@ -56,7 +57,8 @@ class Trainer < ApplicationRecord
       which_instruction_period(trainer_search_params[:instruction_period]).
       min_fee_from(trainer_search_params[:min_fee_from]).
       min_fee_to(trainer_search_params[:min_fee_to]).
-      what_cities(trainer_search_params[:city_ids])
+      what_cities(trainer_search_params[:city_ids]).
+      what_days_of_week(trainer_search_params[:day_of_week_ids])
   end
 
   scope :age_from, -> (from) {
@@ -85,5 +87,8 @@ class Trainer < ApplicationRecord
   }
   scope :what_cities, -> (city_ids) {
     where(cities: { id: city_ids.reject(&:blank?).map(&:to_i) }) if city_ids.reject(&:blank?).present?
+  }
+  scope :what_days_of_week, -> (day_of_week_ids) {
+    where(day_of_weeks: { id: day_of_week_ids.reject(&:blank?).map(&:to_i) }) if day_of_week_ids.reject(&:blank?).present?
   }
 end

@@ -15,7 +15,6 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string(255)
-#  timeframe              :text(65535)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -28,8 +27,7 @@ FactoryBot.define do
   factory :trainee do
     name { "test_trainee" }
     age { 20 }
-    gender { "male" } # 数値（0もしくは1）だと、パラメータとしてgenderデータをpostしたときに問題が発生する
-    timeframe { nil }
+    gender { "male" }
     introduction { nil }
     category { nil }
     instruction_method { nil }

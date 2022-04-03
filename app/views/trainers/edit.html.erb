@@ -28,11 +28,6 @@
     </div>
 
     <div class="field">
-      <%= f.label :timeframe %><br />
-      <%= f.text_area :timeframe, autocomplete: "timeframe" %>
-    </div>
-
-    <div class="field">
       <%= f.label :introduction %><br />
       <%= f.text_area :introduction, autocomplete: "introduction" %>
     </div>
@@ -57,6 +52,17 @@
       <%= f.select :instruction_period, Trainer.instruction_periods_i18n.keys.map {|k| [I18n.t("enums.trainer.instruction_period.#{k}"), k]}, { include_blank: true } ,autocomplete: "instruction_period" %>
     </div>
 
+    <div class="field">
+      <%= f.label :day_of_week_ids %><br />
+      <% i = 0 %>
+      <%= f.collection_check_boxes :day_of_week_ids, DayOfWeek.all, :id, :name do |day| %>
+        <% if i % 4 == 0 %>
+          <br>
+        <% end %>
+        <span class="mx-1 my-2"><%= day.check_box + day.text %></span>
+        <% i += 1 %>
+      <% end %>
+    </div>
 
     <div class="field">
       <%= f.label :city_ids %><br />
@@ -73,8 +79,10 @@
                 </button>
               <% end %>
               <div class="collapse m-2" id="cityCollapse<%= prefecture.id %>">
+                <div class="border border-secondary border-2 bg-light p-2 mt-4">
+                  <%= prefecture.name %>の市区町村の一覧
+                </div>
                 <% i = 0 %>
-              <div class="border border-secondary border-2 bg-light p-2 mt-4"><%= prefecture.name %>の市区町村の一覧</div>
                 <%= f.collection_check_boxes :city_ids, City.all, :id, :name do |city| %>
                   <% if prefecture.id == city.object.prefecture_id %>
                     <% if i % 3 == 0 %>

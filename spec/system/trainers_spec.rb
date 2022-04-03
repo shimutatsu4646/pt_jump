@@ -57,6 +57,8 @@ RSpec.describe "Trainers System", type: :system do
         check "trainer_city_ids_1093"
         check "trainer_city_ids_1119"
         check "trainer_city_ids_1120"
+        check "trainer_day_of_week_ids_6"
+        check "trainer_day_of_week_ids_7"
         click_button "更新"
 
         aggregate_failures do
@@ -71,6 +73,8 @@ RSpec.describe "Trainers System", type: :system do
           expect(trainer.cities.first.name).to eq "京都市"
           expect(trainer.cities.second.name).to eq "大阪市"
           expect(trainer.cities.third.name).to eq "堺市"
+          expect(trainer.day_of_weeks.first.name).to eq "土曜日"
+          expect(trainer.day_of_weeks.second.name).to eq "日曜日"
           expect(page).to have_content "updated_name"
           expect(page).to have_content "Added introduction."
           expect(page).to have_content "筋肉づくり"
@@ -82,12 +86,14 @@ RSpec.describe "Trainers System", type: :system do
           expect(page).to have_content "大阪府"
           expect(page).to have_content "大阪市"
           expect(page).to have_content "堺市"
+          expect(page).to have_content "土曜日"
+          expect(page).to have_content "日曜日"
         end
       end
     end
 
     context "入力値に問題がある場合" do
-      scenario "更新しないこと" do
+      scenario "nameの入力がない時、更新しないこと" do
         login_as_trainer trainer
         visit trainer_path(trainer.id)
         click_on "プロフィールの変更"
@@ -324,6 +330,43 @@ RSpec.describe "Trainers System", type: :system do
             expect(page).to have_content(trainer4.name)
           end
         end
+      end
+
+      describe "活動できる曜日を条件に含む検索操作" do
+        before do
+          trainer1.day_of_weeks << DayOfWeek.where(id: 1)
+          trainer2.day_of_weeks << DayOfWeek.where(id: [1, 2])
+          trainer3.day_of_weeks << DayOfWeek.where(id: [1, 2, 3, 4, 5])
+          trainer4.day_of_weeks << DayOfWeek.where(id: [6, 7])
+        end
+
+        scenario "活動できる曜日を条件にして検索できること" do
+          login_as_trainee trainee
+          visit search_for_trainer_path
+
+          check "search_trainer_day_of_week_ids_1"
+          check "search_trainer_day_of_week_ids_3"
+          click_button "この条件で検索する"
+          aggregate_failures do
+            expect(page).to have_content(trainer1.name)
+            expect(page).to have_content(trainer2.name)
+            expect(page).to have_content(trainer3.name)
+            expect(page).not_to have_content(trainer4.name)
+          end
+        end
+      end
+
+      describe "複数の条件を含む検索操作" do
+        before do
+          trainer1.cities << City.where(id: 1) # 札幌市
+          trainer2.cities << City.where(id: [1, 2]) # 札幌市＆函館市
+          trainer3.cities << City.where(id: [1, 2, 3]) # 札幌市＆函館市＆小樽市
+          trainer4.cities << City.where(id: [636, 696]) # 東京都：港区、神奈川県：横浜市
+          trainer1.day_of_weeks << DayOfWeek.where(id: 1)
+          trainer2.day_of_weeks << DayOfWeek.where(id: [1, 2])
+          trainer3.day_of_weeks << DayOfWeek.where(id: [1, 2, 3, 4, 5])
+          trainer4.day_of_weeks << DayOfWeek.where(id: [6, 7])
+        end
 
         scenario "複数の条件を組み合わせて検索できること" do
           login_as_trainee trainee
@@ -337,6 +380,10 @@ RSpec.describe "Trainers System", type: :system do
           select "ダイエット", from: "search_trainer_category"
           select "オンラインで指導", from: "search_trainer_instruction_method"
           select "一ヶ月未満", from: "search_trainer_instruction_period"
+          check "search_trainer_city_ids_1"
+          check "search_trainer_city_ids_2"
+          check "search_trainer_day_of_week_ids_1"
+          check "search_trainer_day_of_week_ids_3"
           click_button "この条件で検索する"
           aggregate_failures do
             expect(page).to have_content(trainer1.name)

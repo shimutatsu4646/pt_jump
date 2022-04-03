@@ -27,3 +27,12 @@ cities_list.each do |prefecture, city|
   prefecture = Prefecture.find_by(name: prefecture)
   prefecture.cities.create(name: city)
 end
+
+# 曜日データ作成
+DayOfWeek.create!(name: "月曜日")
+DayOfWeek.create!(name: "火曜日")
+DayOfWeek.create!(name: "水曜日")
+DayOfWeek.create!(name: "木曜日")
+DayOfWeek.create!(name: "金曜日")
+DayOfWeek.create!(name: "土曜日")
+DayOfWeek.create!(name: "日曜日")

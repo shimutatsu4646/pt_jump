@@ -7,17 +7,19 @@
   <li>名前:<%= @trainer.name %></li>
   <li>年齢:<%= @trainer.age %></li>
   <li>性別:<%= @trainer.gender_i18n %></li>
-  <li>活動時間:<%= @trainer.timeframe %></li>
   <li>自己紹介:<%= @trainer.introduction %></li>
   <li>カテゴリー:<% if @trainer.category %><%= @trainer.category_i18n %><% else %>指定なし<% end %></li>
-  <li>希望する指導方法:<% if @trainer.instruction_method %><%= @trainer.instruction_method_i18n  %><% else %>指定なし<% end %></li>
+  <li>指導方法:<% if @trainer.instruction_method %><%= @trainer.instruction_method_i18n  %><% else %>指定なし<% end %></li>
   <li>最小料金:<% if @trainer.min_fee %><%= @trainer.min_fee %>円<% else %>指定なし<% end %></li>
   <li>指導期間:<% if @trainer.instruction_period %><%= @trainer.instruction_period_i18n  %><% else %>指定なし<% end %></li>
+  <li>指導できる曜日<% if @trainer.day_of_weeks.empty? %>：指定なし<% end %></li>
+  <% @trainer.day_of_weeks.each do |day| %>
+    <li><%= day.name %></li>
+  <% end %>
   <li>活動地域<% if @trainer.cities.empty? %>：入力なし<% end %></li>
   <% @trainer.cities.each do |city| %>
     <li><%= city.prefecture.name %>：<%= city.name %></li>
   <% end %>
-  <li>メールアドレス:<%= @trainer.email %></li>
   <% if @trainer == current_trainer %>
     <li>
       <%= link_to "プロフィールの変更", edit_profile_trainer_path(current_trainer.id) %>

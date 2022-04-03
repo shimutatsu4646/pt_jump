@@ -15,7 +15,6 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string(255)
-#  timeframe              :text(65535)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -44,6 +43,8 @@ class Trainee < ApplicationRecord
   has_one_attached :avatar
   has_and_belongs_to_many :cities
   has_many :prefectures, through: :cities
+  has_many :availability_schedules
+  has_many :day_of_weeks, through: :availability_schedules
 
   scope :search_trainee, -> (trainee_search_params) do
     return if trainee_search_params.blank?
@@ -54,7 +55,8 @@ class Trainee < ApplicationRecord
       which_gender(trainee_search_params[:gender]).
       which_category(trainee_search_params[:category]).
       which_instruction_method(trainee_search_params[:instruction_method]).
-      what_cities(trainee_search_params[:city_ids])
+      what_cities(trainee_search_params[:city_ids]).
+      what_days_of_week(trainee_search_params[:day_of_week_ids])
   end
 
   # ↓検索ページにて、チェックボックスにチェックがない場合適応しない。
@@ -78,5 +80,8 @@ class Trainee < ApplicationRecord
   }
   scope :what_cities, -> (city_ids) {
     where(cities: { id: city_ids.reject(&:blank?).map(&:to_i) }) if city_ids.reject(&:blank?).present?
+  }
+  scope :what_days_of_week, -> (day_of_week_ids) {
+    where(day_of_weeks: { id: day_of_week_ids.reject(&:blank?).map(&:to_i) }) if day_of_week_ids.reject(&:blank?).present?
   }
 end

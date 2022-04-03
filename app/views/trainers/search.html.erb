@@ -42,7 +42,19 @@
         </div>
 
         <div class="search_field">
-          <%= f.label :city_ids, "活動している地域" %><br />
+          <%= f.label :day_of_week_ids, "指導できる曜日" %><br />
+          <% i = 0 %>
+          <%= f.collection_check_boxes :day_of_week_ids, DayOfWeek.all, :id, :name, {checked: @trainer_search_params[:day_of_week_ids]} do |day| %>
+            <% if i % 4 == 0 %>
+              <br>
+            <% end %>
+            <% i += 1 %>
+            <span class="mx-1"><%= day.check_box + day.text %></span>
+          <% end %>
+        </div>
+
+        <div class="search_field">
+          <%= f.label :city_ids, "活動地域" %><br />
           <div class="row justify-content-center mt-3">
             <% Region.all.each do |region| %>
                 <button type= "button" class="btn btn-outline-dark btn-lg m-1 col-4" data-bs-toggle="collapse" data-bs-target="#prefectureCollapse<%= region.id %>" aria-expanded="false">
@@ -56,8 +68,10 @@
                     </button>
                   <% end %>
                   <div class="collapse m-2" id="cityCollapse<%= prefecture.id %>">
+                    <div class="border border-secondary border-2 bg-light p-2 mt-4">
+                      <%= prefecture.name %>の市区町村の一覧
+                    </div>
                     <% i = 0 %>
-                  <div class="border border-secondary border-2 bg-light p-2 mt-4"><%= prefecture.name %>の市区町村の一覧</div>
                     <%= f.collection_check_boxes :city_ids, City.all, :id, :name, {checked: @trainer_search_params[:city_ids]} do |city| %>
                       <% if prefecture.id == city.object.prefecture_id %>
                         <% if i % 3 == 0 %>
@@ -98,6 +112,10 @@
           <li>指導方法：<% if trainer.instruction_method %><%= trainer.instruction_method_i18n  %><% else %>指定なし<% end %></li>
           <li>指導期間：<%= trainer.instruction_period_i18n %></li>
           <li>最低料金：<% if trainer.min_fee %><%= trainer.min_fee %>円<% else %>指定なし<% end %></li>
+          <li>指導できる曜日<% if trainer.day_of_weeks.empty? %>：指定なし<% end %></li>
+          <% trainer.day_of_weeks.each do |day| %>
+              <li><%= day.name %></li>
+          <% end %>
           <li>活動地域<% if trainer.prefectures.empty? %>：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button><% end %></li>
           <% trainer.prefectures.distinct.each do |prefecture| %>
             <li>

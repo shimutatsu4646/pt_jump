@@ -22,7 +22,7 @@ class TrainersController < ApplicationController
 
   def search
     @trainer_search_params = trainer_search_params
-    @trainers = Trainer.includes(:cities, :prefectures).with_attached_avatar.search_trainer(@trainer_search_params)
+    @trainers = Trainer.includes(:cities, :prefectures, :day_of_weeks).with_attached_avatar.search_trainer(@trainer_search_params)
   end
 
   private
@@ -30,10 +30,10 @@ class TrainersController < ApplicationController
   def trainer_profile_params
     params.require(:trainer).permit(
       :name, :age,
-      :introduction, :timeframe,
+      :introduction,
       :min_fee, :instruction_period,
       :category, :instruction_method, :avatar,
-      city_ids: []
+      city_ids: [], day_of_week_ids: []
     )
   end
 
@@ -45,7 +45,7 @@ class TrainersController < ApplicationController
       :instruction_method,
       :instruction_period,
       :min_fee_from, :min_fee_to,
-      city_ids: []
+      city_ids: [], day_of_week_ids: []
     )
   end
 

@@ -28,6 +28,16 @@ cities_list.each do |prefecture, city|
   prefecture.cities.create(name: city)
 end
 
+# 曜日データ作成
+DayOfWeek.create!(name: "月曜日")
+DayOfWeek.create!(name: "火曜日")
+DayOfWeek.create!(name: "水曜日")
+DayOfWeek.create!(name: "木曜日")
+DayOfWeek.create!(name: "金曜日")
+DayOfWeek.create!(name: "土曜日")
+DayOfWeek.create!(name: "日曜日")
+
+
 # トレーニーデータの作成
 
 # trainee1はnilにできるカラムは全てnilにする。
@@ -36,11 +46,11 @@ end
 # １つの都道府県につき、5~8件の市区町村を活動地域とする。
 # ２種類の性別、２種類の指導方法、2種類のdm許可、4種類のカテゴリーを全て網羅する。
 # 一人のトレーニーが複数の都道府県を活動地域とする。
+# trainee2~8は１つの曜日を追加する。trainee9・10は複数の曜日を追加する。
 Trainee.create!(
   name: "trainee1",
   age: 21,
   gender: "male",
-  timeframe: nil,
   introduction: nil,
   category: nil,
   instruction_method: nil,
@@ -53,7 +63,6 @@ trainee2 = Trainee.create!(
   name: "trainee2",
   age: 22,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "building_muscle",
   instruction_method: "online",
@@ -62,12 +71,12 @@ trainee2 = Trainee.create!(
   password: "password2"
 )
 trainee2.cities << City.where(prefecture_id: [13]).limit(5)
+trainee2.day_of_weeks << DayOfWeek.where(name: "月曜日")
 
 trainee3 = Trainee.create!(
   name: "trainee3",
   age: 23,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "losing_weight",
   instruction_method: "offline",
@@ -76,12 +85,12 @@ trainee3 = Trainee.create!(
   password: "password3"
 )
 trainee3.cities << City.where(prefecture_id: [13]).limit(6)
+trainee3.day_of_weeks << DayOfWeek.where(name: "火曜日")
 
 trainee4 = Trainee.create!(
   name: "trainee4",
   age: 24,
   gender: "female",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_function",
   instruction_method: "online",
@@ -90,12 +99,12 @@ trainee4 = Trainee.create!(
   password: "password4"
 )
 trainee4.cities << City.where(prefecture_id: [13]).limit(7)
+trainee4.day_of_weeks << DayOfWeek.where(name: "水曜日")
 
 trainee5 = Trainee.create!(
   name: "trainee5",
   age: 25,
   gender: "female",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
@@ -104,12 +113,12 @@ trainee5 = Trainee.create!(
   password: "password5"
 )
 trainee5.cities << City.where(prefecture_id: [13]).limit(8)
+trainee5.day_of_weeks << DayOfWeek.where(name: "木曜日")
 
 trainee6 = Trainee.create!(
   name: "trainee6",
   age: 26,
   gender: "female",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "losing_weight",
   instruction_method: "offline",
@@ -118,12 +127,12 @@ trainee6 = Trainee.create!(
   password: "password6"
 )
 trainee6.cities << City.where(prefecture_id: [27]).limit(5)
+trainee6.day_of_weeks << DayOfWeek.where(name: "金曜日")
 
 trainee7 = Trainee.create!(
   name: "trainee7",
   age: 27,
   gender: "female",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "building_muscle",
   instruction_method: "online",
@@ -132,12 +141,12 @@ trainee7 = Trainee.create!(
   password: "password7"
 )
 trainee7.cities << City.where(prefecture_id: [27]).limit(6)
+trainee7.day_of_weeks << DayOfWeek.where(name: "土曜日")
 
 trainee8 = Trainee.create!(
   name: "trainee8",
   age: 28,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_function",
   instruction_method: "offline",
@@ -146,12 +155,12 @@ trainee8 = Trainee.create!(
   password: "password8"
 )
 trainee8.cities << City.where(prefecture_id: [27]).limit(7)
+trainee8.day_of_weeks << DayOfWeek.where(name: "日曜日")
 
 trainee9 = Trainee.create!(
   name: "trainee9",
   age: 29,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
@@ -160,12 +169,16 @@ trainee9 = Trainee.create!(
   password: "password9"
 )
 trainee9.cities << City.where(prefecture_id: [27]).limit(8)
+trainee9.day_of_weeks << DayOfWeek.where(name: "月曜日")
+trainee9.day_of_weeks << DayOfWeek.where(name: "火曜日")
+trainee9.day_of_weeks << DayOfWeek.where(name: "水曜日")
+trainee9.day_of_weeks << DayOfWeek.where(name: "木曜日")
+trainee9.day_of_weeks << DayOfWeek.where(name: "金曜日")
 
 trainee10 = Trainee.create!(
   name: "trainee10",
   age: 30,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
@@ -176,6 +189,8 @@ trainee10 = Trainee.create!(
 # 複数の都道府県を活動地域としたトレーニーデータ
 trainee10.cities << City.where(prefecture_id: [13]).limit(8)
 trainee10.cities << City.where(prefecture_id: [27]).limit(8)
+trainee10.day_of_weeks << DayOfWeek.where(name: "土曜日")
+trainee10.day_of_weeks << DayOfWeek.where(name: "日曜日")
 
 
 # トレーナーデータの作成
@@ -187,11 +202,11 @@ trainee10.cities << City.where(prefecture_id: [27]).limit(8)
 # ２種類の性別、２種類の指導方法、2種類の指導期間、4種類のカテゴリーを全て網羅する。
 # min_feeは1000円ずつ増やす。
 # 一人のトレーナーが複数の都道府県を活動地域とする。
+# trainer2~8は１つの曜日を追加する。trainer9・10は複数の曜日を追加する。
 Trainer.create!(
   name: "trainer1",
   age: 21,
   gender: "male",
-  timeframe: nil,
   introduction: nil,
   category: nil,
   instruction_method: nil,
@@ -205,7 +220,6 @@ trainer2 = Trainer.create!(
   name: "trainer2",
   age: 22,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "building_muscle",
   instruction_method: "online",
@@ -215,12 +229,12 @@ trainer2 = Trainer.create!(
   password: "password2"
 )
 trainer2.cities << City.where(prefecture_id: [13]).limit(5)
+trainer2.day_of_weeks << DayOfWeek.where(name: "月曜日")
 
 trainer3 = Trainer.create!(
   name: "trainer3",
   age: 23,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "losing_weight",
   instruction_method: "offline",
@@ -230,12 +244,12 @@ trainer3 = Trainer.create!(
   password: "password3"
 )
 trainer3.cities << City.where(prefecture_id: [13]).limit(6)
+trainer3.day_of_weeks << DayOfWeek.where(name: "火曜日")
 
 trainer4 = Trainer.create!(
   name: "trainer4",
   age: 24,
   gender: "female",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_function",
   instruction_method: "online",
@@ -245,12 +259,12 @@ trainer4 = Trainer.create!(
   password: "password4"
 )
 trainer4.cities << City.where(prefecture_id: [13]).limit(7)
+trainer4.day_of_weeks << DayOfWeek.where(name: "水曜日")
 
 trainer5 = Trainer.create!(
   name: "trainer5",
   age: 25,
   gender: "female",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
@@ -260,12 +274,12 @@ trainer5 = Trainer.create!(
   password: "password5"
 )
 trainer5.cities << City.where(prefecture_id: [13]).limit(8)
+trainer5.day_of_weeks << DayOfWeek.where(name: "木曜日")
 
 trainer6 = Trainer.create!(
   name: "trainer6",
   age: 26,
   gender: "female",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "losing_weight",
   instruction_method: "offline",
@@ -275,12 +289,12 @@ trainer6 = Trainer.create!(
   password: "password6"
 )
 trainer6.cities << City.where(prefecture_id: [27]).limit(5)
+trainer6.day_of_weeks << DayOfWeek.where(name: "金曜日")
 
 trainer7 = Trainer.create!(
   name: "trainer7",
   age: 27,
   gender: "female",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "building_muscle",
   instruction_method: "online",
@@ -290,12 +304,12 @@ trainer7 = Trainer.create!(
   password: "password7"
 )
 trainer7.cities << City.where(prefecture_id: [27]).limit(6)
+trainer7.day_of_weeks << DayOfWeek.where(name: "土曜日")
 
 trainer8 = Trainer.create!(
   name: "trainer8",
   age: 28,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_function",
   instruction_method: "offline",
@@ -305,12 +319,12 @@ trainer8 = Trainer.create!(
   password: "password8"
 )
 trainer8.cities << City.where(prefecture_id: [27]).limit(7)
+trainer8.day_of_weeks << DayOfWeek.where(name: "日曜日")
 
 trainer9 = Trainer.create!(
   name: "trainer9",
   age: 29,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
@@ -320,12 +334,16 @@ trainer9 = Trainer.create!(
   password: "password9"
 )
 trainer9.cities << City.where(prefecture_id: [27]).limit(8)
+trainer9.day_of_weeks << DayOfWeek.where(name: "月曜日")
+trainer9.day_of_weeks << DayOfWeek.where(name: "火曜日")
+trainer9.day_of_weeks << DayOfWeek.where(name: "水曜日")
+trainer9.day_of_weeks << DayOfWeek.where(name: "木曜日")
+trainer9.day_of_weeks << DayOfWeek.where(name: "金曜日")
 
 trainer10 = Trainer.create!(
   name: "trainer10",
   age: 30,
   gender: "male",
-  timeframe: nil,
   introduction: "よろしくお願いします。" * 10,
   category: "physical_therapy",
   instruction_method: "offline",
@@ -337,6 +355,8 @@ trainer10 = Trainer.create!(
 # 複数の都道府県を活動地域としたトレーナーデータ
 trainer10.cities << City.where(prefecture_id: [13]).limit(8)
 trainer10.cities << City.where(prefecture_id: [27]).limit(8)
+trainer10.day_of_weeks << DayOfWeek.where(name: "土曜日")
+trainer10.day_of_weeks << DayOfWeek.where(name: "日曜日")
 
 # トレーニーのデフォルトのプロフィール画像のパス
 trainee_image_file = "default_trainee_avatar.png"

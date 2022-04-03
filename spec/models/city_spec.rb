@@ -17,7 +17,7 @@
 require 'rails_helper'
 
 RSpec.describe City, type: :model do
-  it "市区町村の数がであること" do
+  it "市区町村データの総数が1747であること" do
     expect(City.all.count).to eq 1747
   end
 end

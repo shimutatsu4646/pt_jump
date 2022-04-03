@@ -8,7 +8,7 @@
 require 'rails_helper'
 
 RSpec.describe Region, type: :model do
-  it "地方区分の数が8であること" do
+  it "地方区分データの総数が8であること" do
     expect(Region.all.count).to eq 8
   end
 end
