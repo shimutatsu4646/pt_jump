@@ -3,11 +3,12 @@ class TraineesController < ApplicationController
   before_action :check_for_searching_trainee, only: [:search]
 
   def show
-    @trainee = Trainee.find(params[:id])
+    @trainee = Trainee.includes(:prefectures, :cities, :day_of_weeks).with_attached_avatar.find(params[:id])
   end
 
   def edit
     @trainee = current_trainee
+    @regions = Region.includes(:prefectures, :cities).all
   end
 
   def update
@@ -22,7 +23,8 @@ class TraineesController < ApplicationController
 
   def search
     @trainee_search_params = trainee_search_params
-    @trainees = Trainee.includes(:cities, :prefectures, :day_of_weeks).with_attached_avatar.search_trainee(@trainee_search_params)
+    @trainees = Trainee.includes(:prefectures, :cities, :day_of_weeks).with_attached_avatar.search_trainee(@trainee_search_params)
+    @regions = Region.includes(:prefectures, :cities).all
   end
 
   private

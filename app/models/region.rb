@@ -7,6 +7,7 @@
 #
 class Region < ApplicationRecord
   has_many :prefectures
+  has_many :cities, through: :prefectures
 
   validates :name, presence: true
 end

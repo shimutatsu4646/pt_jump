@@ -16,9 +16,28 @@
   <% @trainer.day_of_weeks.each do |day| %>
     <li><%= day.name %></li>
   <% end %>
-  <li>活動地域<% if @trainer.cities.empty? %>：入力なし<% end %></li>
-  <% @trainer.cities.each do |city| %>
-    <li><%= city.prefecture.name %>：<%= city.name %></li>
+  <li>
+    活動地域
+    <% if @trainer.prefectures.empty? %>
+      ：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button>
+    <% end %>
+  </li>
+  <% @trainer.prefectures.distinct.each do |prefecture| %>
+    <li>
+      <%= prefecture.name %>：
+      <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= @trainer.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= @trainer.id %>and<%= prefecture.id %>">
+        活動している市区町村
+      </button>
+    </li>
+    <div class="collapse" id="collapse<%= @trainer.id %>and<%= prefecture.id %>">
+      <div class="card card-body">
+        <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
+        <% @trainer.cities.where(prefecture_id: prefecture.id).each do |city| %>
+          <span class="col"><%= city.name %></span>
+        <% end %>
+        </p>
+      </div>
+    </div>
   <% end %>
   <% if @trainer == current_trainer %>
     <li>

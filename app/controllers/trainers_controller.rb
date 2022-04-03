@@ -3,11 +3,12 @@ class TrainersController < ApplicationController
   before_action :check_for_searching_trainer, only: [:search]
 
   def show
-    @trainer = Trainer.find(params[:id])
+    @trainer = Trainer.includes(:prefectures, :cities, :day_of_weeks).with_attached_avatar.find(params[:id])
   end
 
   def edit
     @trainer = current_trainer
+    @regions = Region.includes(:prefectures, :cities).all
   end
 
   def update
@@ -22,7 +23,8 @@ class TrainersController < ApplicationController
 
   def search
     @trainer_search_params = trainer_search_params
-    @trainers = Trainer.includes(:cities, :prefectures, :day_of_weeks).with_attached_avatar.search_trainer(@trainer_search_params)
+    @trainers = Trainer.includes(:prefectures, :cities, :day_of_weeks).with_attached_avatar.search_trainer(@trainer_search_params)
+    @regions = Region.includes(:prefectures, :cities).all
   end
 
   private

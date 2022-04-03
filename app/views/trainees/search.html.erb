@@ -51,12 +51,12 @@
         <div class="search_field">
           <%= f.label :city_ids, "活動地域" %><br />
           <div class="row justify-content-center mt-3">
-            <% Region.all.each do |region| %>
+            <% @regions.each do |region| %>
                 <button type= "button" class="btn btn-outline-dark btn-lg m-1 col-4" data-bs-toggle="collapse" data-bs-target="#prefectureCollapse<%= region.id %>" aria-expanded="false">
                   <%= region.name %>
                 </button>
               <div class="collapse m-3" id="prefectureCollapse<%= region.id %>">
-                <% Prefecture.where(region_id: region.id).each do |prefecture| %>
+                <% region.prefectures.each do |prefecture| %>
                   <% if region.id == prefecture.region_id %>
                     <button type= "button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#cityCollapse<%= prefecture.id %>" aria-expanded="false">
                       <%= prefecture.name %>
@@ -67,7 +67,7 @@
                     <div class="border border-secondary border-2 bg-light p-2 mt-4">
                       <%= prefecture.name %>の市区町村の一覧
                     </div>
-                    <%= f.collection_check_boxes :city_ids, City.all, :id, :name, {checked: @trainee_search_params[:city_ids]} do |city| %>
+                    <%= f.collection_check_boxes :city_ids, prefecture.cities, :id, :name, {checked: @trainee_search_params[:city_ids]} do |city| %>
                       <% if prefecture.id == city.object.prefecture_id %>
                         <% if i % 3 == 0 %>
                           <br>
@@ -110,7 +110,11 @@
           <% trainee.day_of_weeks.each do |day| %>
               <li><%= day.name %></li>
           <% end %>
-          <li>活動地域<% if trainee.prefectures.empty? %>：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button><% end %></li>
+          <li>活動地域
+            <% if trainee.prefectures.empty? %>
+              ：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button>
+            <% end %>
+          </li>
           <% trainee.prefectures.distinct.each do |prefecture| %>
             <li>
               <%= prefecture.name %>：
