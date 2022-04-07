@@ -1,0 +1,57 @@
+<div class="vh-100">
+  <h4 class="text-center mt-0">
+    <%= "#{@partner.name}さんとのチャット" %>
+  </h4>
+  <div id="chats"  class="h-50 overflow-auto">
+    <%= @trainer.name if @trainer %>
+    <%= @trainee.name if @trainee %>
+    <% if trainee_signed_in? %>
+      <% @chats.each do |chat|%>
+        <% if chat.from_trainee %> <!-- 送信者がログイントレーニーであるチャット -->
+          <div class="mycomment">
+            <p class="text-break"><%= safe_join(chat.content.split("\n"),tag(:br)) %></p>
+          </div>
+        <% else %> <!-- 送信者がトレーナーであるチャット -->
+          <div class="fukidasi">
+            <div class="faceicon">
+              <%= image_tag @partner.avatar %>
+            </div>
+            <div class="chatting">
+              <div class="says">
+                <p class="text-break"><%= safe_join(chat.content.split("\n"),tag(:br)) %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% elsif trainer_signed_in? %>
+      <% @chats.each do |chat|%>
+        <% unless chat.from_trainee %> <!-- 送信者がログイントレーナーであるチャット -->
+          <div class="mycomment">
+            <p class="text-break"><%= safe_join(chat.content.split("\n"),tag(:br)) %></p>
+          </div>
+        <% else %> <!-- 送信者がトレーニーであるチャット -->
+          <div class="fukidasi">
+            <div class="faceicon">
+              <%= image_tag @partner.avatar %>
+            </div>
+            <div class="chatting">
+              <div class="says">
+                <p class="text-break"><%= safe_join(chat.content.split("\n"),tag(:br)) %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="text-center">
+    <%= form_with(model: @chat) do |f| %>
+      <%= f.text_area :content, placeholder: "入力してください", id: "chat_content", class: "form-control py-2", style: "height: 100px" %>
+      <%= f.hidden_field :partner_id, value: @partner.id %>
+      <%= f.submit '送信', class: "btn btn-outline-primary btn-lg my-3" %>
+    <% end %>
+    <%= button_to "チャットを更新する", chat_path(@partner.id), method: :get, class: "btn btn-secondary btn-sm my-2" %>
+    <%= button_to "チャット一覧に戻る", chats_path, method: :get, class: "btn btn-secondary btn-sm my-2" %>
+  </div>
+</div>

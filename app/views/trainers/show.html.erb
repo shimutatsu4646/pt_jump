@@ -1,6 +1,7 @@
-<h1>プロフィールページ</h1>
 <% if @trainer == current_trainer %>
   <h3>自分のプロフィール</h3>
+<% else %>
+  <h3><%= @trainer.name %>さんのプロフィール</h3>
 <% end %>
 <ul class="custom-light-gray">
   <li><%= image_tag @trainer.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
@@ -46,5 +47,8 @@
     <li>
       <%= link_to "アカウント情報の変更", edit_trainer_registration_path(current_trainer.id) %>
     </li>
+  <% end %>
+  <% if trainee_signed_in? %>
+    <%= link_to "#{@trainer.name}さんとのトークルーム", chat_path(@trainer.id) %>
   <% end %>
 </ul>

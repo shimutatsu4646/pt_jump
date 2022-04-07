@@ -18,6 +18,9 @@
               <%= link_to "トレーナー検索", search_for_trainer_path , class: "nav-link" %>
             </li>
             <li class="nav-item">
+              <%= link_to "チャット一覧", chats_path , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
               <%= link_to "ログアウト", destroy_trainee_session_path , {method: :delete, class: "nav-link"} %>
             </li>
           <% elsif trainer_signed_in? %>
@@ -29,6 +32,9 @@
             </li>
             <li class="nav-item">
               <%= link_to "トレーニー検索", search_for_trainee_path , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "チャット一覧", chats_path , class: "nav-link" %>
             </li>
             <li class="nav-item">
               <%= link_to "ログアウト", destroy_trainer_session_path , {method: :delete, class: "nav-link"} %>

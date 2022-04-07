@@ -8,7 +8,7 @@ RSpec.describe "Trainees System", type: :system do
   describe "詳細ページ" do
     let(:trainee) { create(:trainee) }
 
-    context "対象のトレーニーがログインユーザーの場合" do
+    context "対象のトレーニーがログインユーザー自身の場合" do
       scenario "詳細ページにデータを更新するリンクが表示されていること" do
         login_as_trainee trainee
         visit trainee_path(trainee.id)
@@ -17,7 +17,7 @@ RSpec.describe "Trainees System", type: :system do
       end
     end
 
-    context "対象のトレーニーがログインユーザーではない場合" do
+    context "対象のトレーニーがログインユーザー自身ではない場合" do
       let(:other_trainee) { create(:trainee, name: "other_trainee_name", email: "other_trainee@example.com") }
 
       scenario "詳細ページにデータを更新するリンクが表示されていないこと" do

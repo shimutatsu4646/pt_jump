@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_03_140607) do
+ActiveRecord::Schema.define(version: 2022_04_04_130905) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -45,6 +45,17 @@ ActiveRecord::Schema.define(version: 2022_04_03_140607) do
     t.bigint "day_of_week_id", null: false
     t.index ["day_of_week_id"], name: "index_availability_schedules_on_day_of_week_id"
     t.index ["trainee_id", "day_of_week_id"], name: "index_availability_schedules_on_trainee_id_and_day_of_week_id", unique: true
+  end
+
+  create_table "chats", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "trainee_id", null: false
+    t.bigint "trainer_id", null: false
+    t.boolean "from_trainee", null: false
+    t.text "content", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trainee_id"], name: "index_chats_on_trainee_id"
+    t.index ["trainer_id"], name: "index_chats_on_trainer_id"
   end
 
   create_table "cities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -131,6 +142,8 @@ ActiveRecord::Schema.define(version: 2022_04_03_140607) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "availability_schedules", "day_of_weeks"
   add_foreign_key "availability_schedules", "trainees"
+  add_foreign_key "chats", "trainees"
+  add_foreign_key "chats", "trainers"
   add_foreign_key "cities", "prefectures"
   add_foreign_key "cities_trainees", "cities"
   add_foreign_key "cities_trainees", "trainees"

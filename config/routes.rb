@@ -16,4 +16,6 @@ Rails.application.routes.draw do
     put 'trainers/update_profile/:id', to: 'trainers#update', as: :update_profile_trainer
     get 'trainers/search', to: 'trainers#search', as: :search_for_trainer
   end
+
+  resources :chats, only: [:index, :show, :create]
 end

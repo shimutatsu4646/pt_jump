@@ -372,3 +372,119 @@ trainer_image_path = Rails.root.join('app', 'assets', 'images', trainer_image_fi
 Trainer.all.each do |trainer|
   trainer.avatar.attach(io: File.open(trainer_image_path), filename: trainer_image_file)
 end
+
+
+# チャットデータ
+# トレーナー・トレーニー共にチャットデータはidが2と3のユーザーに絞り作成する。
+# 全てのユーザーにチャットデータがある状態にするのは困難であるため。
+# idが1のユーザーは、
+
+# idが2のトレーナー・トレーニー同士のチャット
+Chat.create!(
+  content: "試験はいつからですか?",
+  trainee_id: 2,
+  trainer_id: 2,
+  from_trainee: true
+)
+Chat.create!(
+  content: "今週の水曜日からです。毎晩９時から１１時まで勉強しています。",
+  trainee_id: 2,
+  trainer_id: 2,
+  from_trainee: false
+)
+Chat.create!(
+  content: "私は試験が終わったので毎週、金曜日と土曜日はアルバイトをしています。",
+  trainee_id: 2,
+  trainer_id: 2,
+  from_trainee: true
+)
+Chat.create!(
+  content: "私は金曜日に試験が終わります。",
+  trainee_id: 2,
+  trainer_id: 2,
+  from_trainee: false
+)
+Chat.create!(
+  content: "それでは、再来週の日曜日の予定はどうですか?",
+  trainee_id: 2,
+  trainer_id: 2,
+  from_trainee: true
+)
+Chat.create!(
+  content: "空いてます!",
+  trainee_id: 2,
+  trainer_id: 2,
+  from_trainee: false
+)
+Chat.create!(
+  content: "外でバーベキューパーティーをしましょう。",
+  trainee_id: 2,
+  trainer_id: 2,
+  from_trainee: true
+)
+Chat.create!(
+  content: "賛成です!!",
+  trainee_id: 2,
+  trainer_id: 2,
+  from_trainee: false
+)
+
+# idが2のトレーニーとidが3のトレーナー
+Chat.create!(
+  content: "私は歌うことが好きなので
+  よくカラオケボックスへ行きます。あなたはどんなことが好きですか?",
+  trainee_id: 2,
+  trainer_id: 3,
+  from_trainee: true
+)
+Chat.create!(
+  content: "私は本が好きなのでよく図書館へ行きます",
+  trainee_id: 2,
+  trainer_id: 3,
+  from_trainee: false
+)
+Chat.create!(
+  content: "あと、私はみんなで食事をしたりお茶を飲んだりすることが好きです。",
+  trainee_id: 2,
+  trainer_id: 3,
+  from_trainee: false
+)
+Chat.create!(
+  content: "素敵ですね。同感です。私は緑茶が好きですよ。",
+  trainee_id: 2,
+  trainer_id: 3,
+  from_trainee: true
+)
+
+# idが3のトレーニーとidが2のトレーナー
+Chat.create!(
+  content: "パソコンが得意でしたよね?",
+  trainer_id: 2,
+  trainee_id: 3,
+  from_trainee: true
+)
+Chat.create!(
+  content: "ええ。専門ではありませんが、わかります。",
+  trainer_id: 2,
+  trainee_id: 3,
+  from_trainee: false
+)
+Chat.create!(
+  content: "操作が簡単なパソコンが欲しいです。",
+  trainer_id: 2,
+  trainee_id: 3,
+  from_trainee: true
+)
+Chat.create!(
+  content: "じゃあ、いっしょに買物へ行きますか?",
+  trainer_id: 2,
+  trainee_id: 3,
+  from_trainee: false
+)
+Chat.create!(
+  content: "お願いします。週末になったら電話します。",
+  trainer_id: 2,
+  trainee_id: 3,
+  from_trainee: true
+)
+
