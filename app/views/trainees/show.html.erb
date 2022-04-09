@@ -48,7 +48,11 @@
     </li>
   <% end %>
   <% if trainer_signed_in? %>
-    <%= link_to "#{@trainee.name}さんとのチャットページ", chat_path(@trainee.id) %>
+    <% if @trainee.chat_acceptance == true %>
+      <%= link_to "#{@trainee.name}さんとのチャットページ", chat_path(@trainee.id) %>
+    <% elsif @trainee.chats.where(trainer_id: current_trainer.id).present? %>
+      <%= link_to "#{@trainee.name}さんとのチャットページ", chat_path(@trainee.id) %>
+    <% end %>
   <% end %>
 </ul>
 

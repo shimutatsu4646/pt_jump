@@ -5,11 +5,19 @@ class ContractsController < ApplicationController
 
   def index
     if trainee_signed_in?
-      @undecided_contracts = Contract.where(trainee_id: current_trainee.id, final_decision: false)
-      @decided_contracts = Contract.where(trainee_id: current_trainee.id, final_decision: true)
+      @undecided_contracts = Contract.
+        where(trainee_id: current_trainee.id, final_decision: false).
+        order("contracts.created_at DESC")
+      @decided_contracts = Contract.
+        where(trainee_id: current_trainee.id, final_decision: true).
+        order("contracts.updated_at DESC")
     elsif trainer_signed_in?
-      @undecided_contracts = Contract.where(trainer_id: current_trainer.id, final_decision: false)
-      @decided_contracts = Contract.where(trainer_id: current_trainer.id, final_decision: true)
+      @undecided_contracts = Contract.
+        where(trainer_id: current_trainer.id, final_decision: false).
+        order("contracts.created_at DESC")
+      @decided_contracts = Contract.
+        where(trainer_id: current_trainer.id, final_decision: true).
+        order("contracts.updated_at DESC")
     end
   end
 

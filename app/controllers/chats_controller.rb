@@ -39,6 +39,17 @@ class ChatsController < ApplicationController
       @chats = @chats.order(:created_at)
     elsif trainer_signed_in?
       @partner = Trainee.with_attached_avatar.find(params[:id])
+      # トレーニーのchat_acceptanceがfalse 且つ このトレーニーとのチャット、もしくは契約がない場合、
+      # トレーニー詳細ページにレンダリングする
+      if @partner.chat_acceptance == false
+        if @partner.chats.where(trainer_id: current_trainer.id).empty?
+          if @partner.contracts.where(trainer_id: current_trainer.id).empty?
+            flash[:notice] = "このトレーニーとチャットすることはできません"
+            redirect_to trainee_path(@partner.id)
+          end
+        end
+      end
+
       @chats_by_myself = Chat.where(trainee_id: @partner.id, trainer_id: current_trainer.id, from_trainee: false)
       @chats_by_other = Chat.where(trainee_id: @partner.id, trainer_id: current_trainer.id, from_trainee: true)
       @chats = @chats_by_myself.or(@chats_by_other)

@@ -5,8 +5,12 @@ class TrainersController < ApplicationController
   def show
     @trainer = Trainer.includes(:prefectures, :cities, :day_of_weeks).with_attached_avatar.find(params[:id])
     if trainee_signed_in?
-      @undecided_contracts = current_trainee.contracts.where(trainer_id: @trainer.id, final_decision: false)
-      @decided_contracts = current_trainee.contracts.where(trainer_id: @trainer.id, final_decision: true)
+      @undecided_contracts = current_trainee.contracts.
+        where(trainer_id: @trainer.id, final_decision: false).
+        order("contracts.created_at DESC")
+      @decided_contracts = current_trainee.contracts.
+        where(trainer_id: @trainer.id, final_decision: true).
+        order("contracts.updated_at DESC")
     end
   end
 

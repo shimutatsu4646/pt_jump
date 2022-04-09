@@ -6,7 +6,7 @@ RSpec.describe "Trainees System", type: :system do
   end
 
   describe "詳細ページ" do
-    let(:trainee) { create(:trainee) }
+    let(:trainee) { create(:trainee, name: "show_trainee") }
 
     context "対象のトレーニーがログインユーザー自身の場合" do
       before do
@@ -21,6 +21,11 @@ RSpec.describe "Trainees System", type: :system do
       scenario "「アカウント情報の変更」リンクが表示されていること" do
         visit trainee_path(trainee.id)
         expect(page).to have_link "アカウント情報の変更"
+      end
+
+      scenario "「〜さんとのチャットページ」リンクが表示されていないこと" do
+        visit trainee_path(trainee.id)
+        expect(page).not_to have_link "#{trainee.name}さんとのチャットページ"
       end
 
       describe "ActiveStorageのavatar" do
@@ -48,6 +53,55 @@ RSpec.describe "Trainees System", type: :system do
         expect(page).not_to have_link "アカウント情報の変更"
       end
 
+      describe "チャットページヘのリンクの有無" do
+        context "traineeのchat_acceptanceがtrueの場合" do
+          let(:accepting_trainee) { create(:trainee, chat_acceptance: true) }
+
+          scenario "「〜さんとのチャットページ」リンクが表示されること" do
+            visit trainee_path(accepting_trainee.id)
+            expect(page).to have_link "#{accepting_trainee.name}さんとのチャットページ"
+          end
+        end
+
+        context "traineeのchat_acceptanceがfalseの場合" do
+          let(:rejecting_trainee) { create(:trainee, chat_acceptance: false) }
+
+          context "このトレーニーとのチャット履歴・契約履歴がない場合" do
+            scenario "「〜さんとのチャットページ」リンクが表示されていないこと" do
+              visit trainee_path(rejecting_trainee.id)
+              expect(page).not_to have_link "#{rejecting_trainee.name}さんとのチャットページ"
+            end
+          end
+
+          context "このトレーニーとのチャット履歴がある場合" do
+            let!(:chat) do
+              create(:chat,
+                trainee_id: rejecting_trainee.id, trainer_id: trainer.id,
+                content: "hello.", from_trainee: true)
+            end
+
+            scenario "「〜さんとのチャットページ」リンクが表示されること" do
+              visit trainee_path(rejecting_trainee.id)
+              expect(page).to have_link "#{rejecting_trainee.name}さんとのチャットページ"
+            end
+          end
+
+          context "このトレーニーとの契約履歴がある場合" do
+            let!(:contract) do
+              create(:contract,
+                trainee_id: rejecting_trainee.id, trainer_id: trainer.id,
+                final_decision: false)
+            end
+
+            scenario "「〜さんとのチャットページ」リンクが表示されないこと" do
+              # 契約詳細ページからチャットページリンクに触れるため。
+              visit trainee_path(rejecting_trainee.id)
+              expect(page).not_to have_link "#{rejecting_trainee.name}さんとのチャットページ"
+            end
+          end
+        end
+      end
+
       describe "ActiveStorageのavatar" do
         scenario "アバター画像が表示されていること" do
           visit trainee_path(trainee.id)
@@ -55,47 +109,49 @@ RSpec.describe "Trainees System", type: :system do
         end
       end
 
-      context "このトレーニーからの契約リクエストがない場合" do
-        scenario "「このトレーニーからリクエストされた契約はありません」と表示されること" do
-          visit trainee_path(trainee.id)
-          expect(page).to have_content "このトレーニーからリクエストされた契約はありません"
-        end
-      end
-
-      context "このトレーニーと成立した契約がない場合" do
-        scenario "「このトレーニーと成立した契約はありません」と表示されること" do
-          visit trainee_path(trainee.id)
-          expect(page).to have_content "このトレーニーと成立した契約はありません"
-        end
-      end
-
-      context "このトレーニーからの契約リクエストがある場合" do
-        let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false) }
-
-        scenario "「このトレーニーからリクエストされた契約」と表示されること" do
-          visit trainee_path(trainee.id)
-          expect(page).to have_content "このトレー二ーからリクエストされた契約"
+      describe "トレーニーとの契約" do
+        context "このトレーニーからの契約リクエストがない場合" do
+          scenario "「このトレーニーからリクエストされた契約はありません」と表示されること" do
+            visit trainee_path(trainee.id)
+            expect(page).to have_content "このトレーニーからリクエストされた契約はありません"
+          end
         end
 
-        scenario "「この契約リクエストの詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
-          visit trainee_path(trainee.id)
-          click_on "この契約リクエストの詳細を見る"
-          expect(current_path).to eq contract_path(contract.id)
-        end
-      end
-
-      context "このトレーニーと成立した契約がある場合" do
-        let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: true) }
-
-        scenario "「このトレーニーと成立した契約」と表示されること" do
-          visit trainee_path(trainee.id)
-          expect(page).to have_content "このトレー二ーと成立した契約"
+        context "このトレーニーと成立した契約がない場合" do
+          scenario "「このトレーニーと成立した契約はありません」と表示されること" do
+            visit trainee_path(trainee.id)
+            expect(page).to have_content "このトレーニーと成立した契約はありません"
+          end
         end
 
-        scenario "「この契約の詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
-          visit trainee_path(trainee.id)
-          click_on "この契約の詳細を見る"
-          expect(current_path).to eq contract_path(contract.id)
+        context "このトレーニーからの契約リクエストがある場合" do
+          let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false) }
+
+          scenario "「このトレーニーからリクエストされた契約」と表示されること" do
+            visit trainee_path(trainee.id)
+            expect(page).to have_content "このトレー二ーからリクエストされた契約"
+          end
+
+          scenario "「この契約リクエストの詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
+            visit trainee_path(trainee.id)
+            click_on "この契約リクエストの詳細を見る"
+            expect(current_path).to eq contract_path(contract.id)
+          end
+        end
+
+        context "このトレーニーと成立した契約がある場合" do
+          let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: true) }
+
+          scenario "「このトレーニーと成立した契約」と表示されること" do
+            visit trainee_path(trainee.id)
+            expect(page).to have_content "このトレー二ーと成立した契約"
+          end
+
+          scenario "「この契約の詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
+            visit trainee_path(trainee.id)
+            click_on "この契約の詳細を見る"
+            expect(current_path).to eq contract_path(contract.id)
+          end
         end
       end
     end

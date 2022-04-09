@@ -55,47 +55,49 @@ RSpec.describe "Trainers System", type: :system do
         end
       end
 
-      context "このトレーナーに契約リクエストをしていない場合" do
-        scenario "「このトレーナーにリクエストした契約はありません」と表示されること" do
-          visit trainer_path(trainer.id)
-          expect(page).to have_content "このトレーニーにリクエストした契約はありません"
-        end
-      end
-
-      context "このトレーナーと成立した契約がない場合" do
-        scenario "「このトレーナーと成立した契約はありません」と表示されること" do
-          visit trainer_path(trainer.id)
-          expect(page).to have_content "このトレーナーと成立した契約はありません"
-        end
-      end
-
-      context "このトレーナーに契約リクエストをした場合" do
-        let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false) }
-
-        scenario "「このトレーナーにリクエストした契約」と表示されること" do
-          visit trainer_path(trainer.id)
-          expect(page).to have_content "このトレー二ーにリクエストした契約"
+      describe "トレーナーとの契約" do
+        context "このトレーナーに契約リクエストをしていない場合" do
+          scenario "「このトレーナーにリクエストした契約はありません」と表示されること" do
+            visit trainer_path(trainer.id)
+            expect(page).to have_content "このトレーニーにリクエストした契約はありません"
+          end
         end
 
-        scenario "「この契約リクエストの詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
-          visit trainer_path(trainer.id)
-          click_on "この契約リクエストの詳細を見る"
-          expect(current_path).to eq contract_path(contract.id)
-        end
-      end
-
-      context "このトレーニーと成立した契約がある場合" do
-        let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: true) }
-
-        scenario "「このトレーニーと成立した契約」と表示されること" do
-          visit trainer_path(trainer.id)
-          expect(page).to have_content "このトレー二ーと成立した契約"
+        context "このトレーナーと成立した契約がない場合" do
+          scenario "「このトレーナーと成立した契約はありません」と表示されること" do
+            visit trainer_path(trainer.id)
+            expect(page).to have_content "このトレーナーと成立した契約はありません"
+          end
         end
 
-        scenario "「この契約の詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
-          visit trainer_path(trainer.id)
-          click_on "この契約の詳細を見る"
-          expect(current_path).to eq contract_path(contract.id)
+        context "このトレーナーに契約リクエストをした場合" do
+          let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false) }
+
+          scenario "「このトレーナーにリクエストした契約」と表示されること" do
+            visit trainer_path(trainer.id)
+            expect(page).to have_content "このトレー二ーにリクエストした契約"
+          end
+
+          scenario "「この契約リクエストの詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
+            visit trainer_path(trainer.id)
+            click_on "この契約リクエストの詳細を見る"
+            expect(current_path).to eq contract_path(contract.id)
+          end
+        end
+
+        context "このトレーニーと成立した契約がある場合" do
+          let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: true) }
+
+          scenario "「このトレーニーと成立した契約」と表示されること" do
+            visit trainer_path(trainer.id)
+            expect(page).to have_content "このトレー二ーと成立した契約"
+          end
+
+          scenario "「この契約の詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
+            visit trainer_path(trainer.id)
+            click_on "この契約の詳細を見る"
+            expect(current_path).to eq contract_path(contract.id)
+          end
         end
       end
     end
