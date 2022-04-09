@@ -27,3 +27,9 @@ ja:
       instruction_method:
         offline: オフラインで指導
         online: オンラインで指導
+  time:
+    formats:
+      until_date: "%Y年%m月%d日"
+  date:
+    formats:
+      default: "%Y年%m月%d日"

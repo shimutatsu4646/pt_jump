@@ -9,31 +9,93 @@ RSpec.describe "Trainers System", type: :system do
     let(:trainer) { create(:trainer) }
 
     context "対象のトレーナーがログインユーザー自身の場合" do
-      scenario "詳細ページにデータを更新するリンクが表示されていること" do
+      before do
         login_as_trainer trainer
-        visit trainer_path(trainer.id)
-        expect(page).to have_content "プロフィールの変更"
-        expect(page).to have_content "アカウント情報の変更"
       end
-    end
 
-    context "対象のトレーナーがログインユーザー自身ではない場合" do
-      let(:other_trainer) { create(:trainer, name: "other_trainer_name", email: "other_trainer@example.com") }
-
-      scenario "詳細ページにデータを更新するリンクが表示されていないこと" do
-        login_as_trainer other_trainer
+      scenario "「プロフィールの変更」リンクが表示されていること" do
         visit trainer_path(trainer.id)
-        expect(page).not_to have_content "プロフィールの変更"
-        expect(page).not_to have_content "アカウント情報の変更"
+        expect(page).to have_link "プロフィールの変更"
       end
-    end
 
-    describe "ActiveStorageのavatar" do
-      scenario "アバター画像が表示されていること" do
+      scenario "「アカウント情報の変更」リンクが表示されていること" do
         visit trainer_path(trainer.id)
-        aggregate_failures do
-          # src$=とすることでその後に続く文字列を含む画像ファイルを探している。
+        expect(page).to have_link "アカウント情報の変更"
+      end
+
+      describe "ActiveStorageのavatar" do
+        scenario "アバター画像が表示されていること" do
+          visit trainer_path(trainer.id)
           expect(page).to have_selector "img[src$='default_trainer_avatar.png']"
+        end
+      end
+    end
+
+    context "トレー二ーとしてログインしている場合" do
+      let(:trainee) { create(:trainee) }
+
+      before do
+        login_as_trainee trainee
+      end
+
+      scenario "「プロフィールの変更」リンクが表示されていないこと" do
+        visit trainer_path(trainer.id)
+        expect(page).not_to have_link "プロフィールの変更"
+      end
+
+      scenario "「アカウント情報の変更」リンクが表示されていないこと" do
+        visit trainer_path(trainer.id)
+        expect(page).not_to have_link "アカウント情報の変更"
+      end
+
+      describe "ActiveStorageのavatar" do
+        scenario "アバター画像が表示されていること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_selector "img[src$='default_trainer_avatar.png']"
+        end
+      end
+
+      context "このトレーナーに契約リクエストをしていない場合" do
+        scenario "「このトレーナーにリクエストした契約はありません」と表示されること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_content "このトレーニーにリクエストした契約はありません"
+        end
+      end
+
+      context "このトレーナーと成立した契約がない場合" do
+        scenario "「このトレーナーと成立した契約はありません」と表示されること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_content "このトレーナーと成立した契約はありません"
+        end
+      end
+
+      context "このトレーナーに契約リクエストをした場合" do
+        let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false) }
+
+        scenario "「このトレーナーにリクエストした契約」と表示されること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_content "このトレー二ーにリクエストした契約"
+        end
+
+        scenario "「この契約リクエストの詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
+          visit trainer_path(trainer.id)
+          click_on "この契約リクエストの詳細を見る"
+          expect(current_path).to eq contract_path(contract.id)
+        end
+      end
+
+      context "このトレーニーと成立した契約がある場合" do
+        let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: true) }
+
+        scenario "「このトレーニーと成立した契約」と表示されること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_content "このトレー二ーと成立した契約"
+        end
+
+        scenario "「この契約の詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
+          visit trainer_path(trainer.id)
+          click_on "この契約の詳細を見る"
+          expect(current_path).to eq contract_path(contract.id)
         end
       end
     end

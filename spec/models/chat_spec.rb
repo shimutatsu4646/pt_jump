@@ -39,6 +39,20 @@ RSpec.describe Chat, type: :model do
       end
     end
 
+    describe "trainee_id" do
+      it "trainee_idがnilである場合、無効になること" do
+        chat = build(:chat, content: "hello", trainee_id: nil, trainer_id: trainer.id, from_trainee: true)
+        expect(chat).to be_invalid
+      end
+    end
+
+    describe "traner_id" do
+      it "trainer_idがnilである場合、無効になること" do
+        chat = build(:chat, content: "hello", trainee_id: trainee.id, trainer_id: nil, from_trainee: true)
+        expect(chat).to be_invalid
+      end
+    end
+
     describe "from_trainee" do
       it "from_traineeがnilである場合、無効になること" do
         chat = build(:chat, content: "hello", trainee_id: trainee.id, trainer_id: trainer.id, from_trainee: nil)

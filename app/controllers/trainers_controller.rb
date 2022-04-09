@@ -4,6 +4,10 @@ class TrainersController < ApplicationController
 
   def show
     @trainer = Trainer.includes(:prefectures, :cities, :day_of_weeks).with_attached_avatar.find(params[:id])
+    if trainee_signed_in?
+      @undecided_contracts = current_trainee.contracts.where(trainer_id: @trainer.id, final_decision: false)
+      @decided_contracts = current_trainee.contracts.where(trainer_id: @trainer.id, final_decision: true)
+    end
   end
 
   def edit

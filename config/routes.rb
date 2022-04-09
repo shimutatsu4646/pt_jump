@@ -18,4 +18,6 @@ Rails.application.routes.draw do
   end
 
   resources :chats, only: [:index, :show, :create]
+  resources :contracts, except: [:new, :edit]
+  get 'contracts/new/:id', to: 'contracts#new', as: :new_contract
 end

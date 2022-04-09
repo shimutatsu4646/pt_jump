@@ -489,3 +489,149 @@ Chat.create!(
   trainee_id: 3,
   from_trainee: true
 )
+
+
+# 契約データ
+
+# ！start_date(指導開始日)とend_date(終了日)のバリデーションに注意！
+# 現在の日付よりも過去であると作成できない
+# 契約はidが2もしくは3のトレーナーに対するものとする
+
+
+
+# 成立済みの契約データ
+
+# 過去に成立した契約データを生成するため、createではなくnew + save(validate:false)を使用。
+# 契約リクエストした日時も矛盾がないようにcreated_atを変更。
+
+Contract.new(
+  id: 1,
+  trainee_id: 2,
+  trainer_id: 2,
+  start_date: Date.parse("2022/03/01"),
+  end_date: Date.parse("2022/04/01"),
+  final_decision: true
+).save(validate: false)
+Contract.find(1).update_attribute(:created_at, Time.parse("2022/02/27") )
+
+Contract.new(
+  id: 2,
+  trainee_id: 3,
+  trainer_id: 2,
+  start_date: Date.parse("2022/03/01"),
+  end_date: Date.parse("2022/04/14"),
+  final_decision: true
+).save(validate: false)
+Contract.find(2).update_attribute(:created_at, Time.parse("2022/03/01") )
+
+Contract.new(
+  id: 3,
+  trainee_id: 4,
+  trainer_id: 2,
+  start_date: Date.parse("2022/02/01"),
+  end_date: Date.parse("2022/04/01"),
+  final_decision: true
+).save(validate: false)
+Contract.find(3).update_attribute(:created_at, Time.parse("2022/01/31") )
+
+Contract.new(
+  id: 4,
+  trainee_id: 5,
+  trainer_id: 3,
+  start_date: Date.parse("2022/03/01"),
+  end_date: Date.parse("2022/04/01"),
+  final_decision: true
+).save(validate: false)
+Contract.find(4).update_attribute(:created_at, Time.parse("2022/02/25") )
+
+Contract.new(
+  id: 5,
+  trainee_id: 6,
+  trainer_id: 3,
+  start_date: Date.parse("2022/04/01"),
+  end_date: Date.parse("2022/04/21"),
+  final_decision: true
+).save(validate: false)
+Contract.find(5).update_attribute(:created_at, Time.parse("2022/03/30") )
+
+Contract.new(
+  id: 6,
+  trainee_id: 7,
+  trainer_id: 3,
+  start_date: Date.parse("2022/03/01"),
+  end_date: Date.parse("2022/04/01"),
+  final_decision: true
+).save(validate: false)
+Contract.find(6).update_attribute(:created_at, Time.parse("2022/02/21") )
+
+
+# リクエスト中の契約データ
+
+Contract.create!(
+  trainee_id: 2,
+  trainer_id: 2,
+  start_date: Date.current,
+  end_date: Date.current + 30,
+  final_decision: false
+)
+Contract.create!(
+  trainee_id: 2,
+  trainer_id: 2,
+  start_date: Date.current + 31,
+  end_date: Date.current + 61,
+  final_decision: false
+)
+Contract.create!(
+  trainee_id: 2,
+  trainer_id: 3,
+  start_date: Date.current + 61,
+  end_date: Date.current + 121,
+  final_decision: false
+)
+
+Contract.create!(
+  trainee_id: 3,
+  trainer_id: 2,
+  start_date: Date.current + 3,
+  end_date: Date.current + 33,
+  final_decision: false
+)
+Contract.create!(
+  trainee_id: 3,
+  trainer_id: 3,
+  start_date: Date.current + 34,
+  end_date: Date.current + 64,
+  final_decision: false
+)
+
+Contract.create!(
+  trainee_id: 4,
+  trainer_id: 2,
+  start_date: Date.current + 7,
+  end_date: Date.current + 67,
+  final_decision: false
+)
+
+Contract.create!(
+  trainee_id: 5,
+  trainer_id: 3,
+  start_date: Date.current,
+  end_date: Date.current + 30,
+  final_decision: false
+)
+
+Contract.create!(
+  trainee_id: 6,
+  trainer_id: 3,
+  start_date: Date.current + 1,
+  end_date: Date.current + 31,
+  final_decision: false
+)
+
+Contract.create!(
+  trainee_id: 7,
+  trainer_id: 3,
+  start_date: Date.current + 5,
+  end_date: Date.current + 95,
+  final_decision: false
+)

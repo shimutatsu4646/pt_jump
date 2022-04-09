@@ -46,6 +46,7 @@ class Trainer < ApplicationRecord
   has_many :instruction_schedules
   has_many :day_of_weeks, through: :instruction_schedules
   has_many :chats
+  has_many :contracts
 
   scope :search_trainer, -> (trainer_search_params) do
     return if trainer_search_params.blank?

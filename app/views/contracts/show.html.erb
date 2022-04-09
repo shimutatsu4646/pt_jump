@@ -1,0 +1,31 @@
+<h3 class="text-center">契約の詳細情報</h3>
+<% if @contract.final_decision %>
+  <h5>成立済みの契約</h5>
+<% else %>
+  <h5>未成立の契約</h5>
+<% end %>
+<% if trainee_signed_in? %>
+  <ul class="custom-light-gray">
+    <li><%= image_tag @contract.trainer.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
+    <li>トレーナー： <%= @contract.trainer.name %></li>
+    <li>指導開始日： <%= l @contract.start_date %></li>
+    <li>指導終了日： <%= l @contract.end_date %></li>
+  </ul>
+  <%= link_to "このトレーナーの詳細ページ", trainer_path(@contract.trainer.id), class: "btn btn-sm btn-primary" %>
+  <%= link_to "このトレーナーとのチャットページ", chat_path(@contract.trainer.id), class: "btn btn-sm btn-primary" %>
+  <% unless @contract.final_decision %>
+    <%= button_to "このリクエストを取り消す",  contract_path(@contract), {method: :delete, class: "btn btn-outline-danger btn-lg mt-4", data: { confirm: "本当に取り消してよろしいですか？" }} %>
+  <% end %>
+<% elsif trainer_signed_in? %>
+  <ul class="custom-light-gray">
+    <li><%= image_tag @contract.trainee.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
+    <li>トレー二ー： <%= @contract.trainee.name %></li>
+    <li>指導開始日： <%= l @contract.start_date %></li>
+    <li>指導終了日： <%= l @contract.end_date %></li>
+  </ul>
+  <%= link_to "このトレー二ーの詳細ページ", trainee_path(@contract.trainee.id), class: "btn btn-sm btn-primary" %>
+  <%= link_to "このトレー二ーとのチャットページ", chat_path(@contract.trainee.id), class: "btn btn-sm btn-primary" %>
+  <% unless @contract.final_decision %>
+    <%= button_to "契約成立",  contract_path(@contract.id), {method: :patch, class: "btn btn-outline-success btn-lg mt-4", data: { confirm: "本当にこの契約を成立してよろしいですか？"}} %>
+  <% end %>
+<% end %>

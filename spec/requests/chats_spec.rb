@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Chats Request", type: :request do
-  describe "GET /chats" do
+  describe "GET /chats" do # index
     let(:trainee) { create(:trainee) }
     let(:trainer) { create(:trainer) }
 
@@ -38,15 +38,14 @@ RSpec.describe "Chats Request", type: :request do
     end
   end
 
-  describe "GET /chats/:id" do
+  describe "GET /chats/:id" do # show
     context "トレーニーとしてログインしている場合" do
-      let!(:trainee) { create(:trainee) }
-      let!(:trainer1) { create(:trainer) }
-      let!(:trainer2) { create(:trainer) }
+      let(:trainee) { create(:trainee) }
+      let(:trainer) { create(:trainer) }
 
       it "urlのidがトレーナーのidと一致するとき正常にレスポンスを返すこと" do
         sign_in trainee
-        get "/chats/#{trainer2.id}"
+        get "/chats/#{trainer.id}"
         aggregate_failures do
           expect(response).to be_successful
           expect(response).to have_http_status "200"
@@ -55,19 +54,18 @@ RSpec.describe "Chats Request", type: :request do
 
       it "urlのidがトレーナーのidと一致しないとき404レスポンスを返すこと" do
         sign_in trainee
-        get "/chats/#{trainer2.id + 1}"
+        get "/chats/#{trainer.id + 1}"
         expect(response).to have_http_status(404)
       end
     end
 
     context "トレーナーとしてログインしている場合" do
-      let!(:trainee1) { create(:trainee) }
-      let!(:trainee2) { create(:trainee) }
-      let!(:trainer) { create(:trainer) }
+      let(:trainee) { create(:trainee) }
+      let(:trainer) { create(:trainer) }
 
       it "urlのidがトレー二ーのidと一致するとき正常にレスポンスを返すこと" do
         sign_in trainer
-        get "/chats/#{trainee2.id}"
+        get "/chats/#{trainee.id}"
         aggregate_failures do
           expect(response).to be_successful
           expect(response).to have_http_status "200"
@@ -76,17 +74,17 @@ RSpec.describe "Chats Request", type: :request do
 
       it "urlのidがトレー二ーのidと一致しないとき404レスポンスを返すこと" do
         sign_in trainer
-        get "/chats/#{trainee2.id + 1}"
+        get "/chats/#{trainee.id + 1}"
         expect(response).to have_http_status(404)
       end
     end
 
     context "ゲストユーザーの場合" do
-      let!(:trainee) { create(:trainee) }
+      let(:trainee) { create(:trainee) }
       let!(:trainer) { create(:trainer) }
 
       it "302レスポンスを返し、トップページにリダイレクトすること" do
-        get "/chats/1"
+        get "/chats/#{trainee.id}"
         aggregate_failures do
           expect(response).to have_http_status "302"
           expect(response).to redirect_to root_path

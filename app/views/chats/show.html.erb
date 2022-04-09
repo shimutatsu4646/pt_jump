@@ -51,7 +51,15 @@
       <%= f.hidden_field :partner_id, value: @partner.id %>
       <%= f.submit '送信', class: "btn btn-outline-primary btn-lg my-3" %>
     <% end %>
-    <%= button_to "チャットを更新する", chat_path(@partner.id), method: :get, class: "btn btn-secondary btn-sm my-2" %>
-    <%= button_to "チャット一覧に戻る", chats_path, method: :get, class: "btn btn-secondary btn-sm my-2" %>
+
+    <%= button_to "チャットを更新する", chat_path(@partner.id), method: :get, class: "btn btn-info btn-sm my-2" %>
+    <%= link_to "チャット一覧", chats_path, method: :get, class: "btn btn-secondary btn-sm my-2" %>
+
+    <% if trainee_signed_in? %>
+      <%= link_to "このトレーナーの詳細", trainer_path(@partner.id), method: :get, class: "btn btn-secondary btn-sm my-2" %>
+      <%= button_to "#{@partner.name}さんに契約リクエストをする",new_contract_path(@partner.id), method: :get, class: "btn btn-success btn-lg my-3" %>
+    <% elsif trainer_signed_in? %>
+      <%= link_to "このトレー二ーの詳細", trainee_path(@partner.id), method: :get, class: "btn btn-secondary btn-sm my-2" %>
+    <% end %>
   </div>
 </div>

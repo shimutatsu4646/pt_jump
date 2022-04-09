@@ -6,7 +6,7 @@ RSpec.describe "Chats System", type: :system do
   end
 
   describe "チャット一覧ページ" do
-    context "トレーニーとしてログイン" do
+    context "トレーニーとしてログインしている場合" do
       let!(:trainee) { create(:trainee) }
       let!(:trainer1) { create(:trainer, name: "trainer1") }
       let!(:trainer2) { create(:trainer, name: "trainer2") }
@@ -41,7 +41,7 @@ RSpec.describe "Chats System", type: :system do
         end
       end
 
-      scenario "チャットをしているトレーナーと同じ数の「チャットページ」ボタンが表示されていること" do
+      scenario "チャットをしているトレーナーと同じ数の「チャットページ」リンクが表示されていること" do
         visit chats_path
         expect(page).to have_link "チャットページ", count: 2
       end
@@ -68,7 +68,7 @@ RSpec.describe "Chats System", type: :system do
       end
     end
 
-    context "トレーナーとしてログイン" do
+    context "トレーナーとしてログインしている場合" do
       let!(:trainer) { create(:trainer) }
       let!(:trainee1) { create(:trainee, name: "trainee1") }
       let!(:trainee2) { create(:trainee, name: "trainee2") }
@@ -103,7 +103,7 @@ RSpec.describe "Chats System", type: :system do
         end
       end
 
-      scenario "チャットをしているトレー二ーと同じ数の「チャットページ」ボタンが表示されていること" do
+      scenario "チャットをしているトレー二ーと同じ数の「チャットページ」リンクが表示されていること" do
         visit chats_path
         expect(page).to have_link "チャットページ", count: 2
       end
@@ -132,9 +132,9 @@ RSpec.describe "Chats System", type: :system do
   end
 
   describe "チャットページ" do
-    context "トレーニーとしてログイン" do
+    context "トレーニーとしてログインしている場合" do
       let!(:trainee) { create(:trainee) }
-      let!(:trainer) { create(:trainer) }
+      let!(:trainer) { create(:trainer, name: "chat_trainer") }
 
       let!(:chat1) do
         create(:chat,
@@ -192,14 +192,28 @@ RSpec.describe "Chats System", type: :system do
         expect(current_path).to eq chat_path(trainer.id)
       end
 
-      scenario "「チャット一覧に戻る」を押すと、チャット一覧ページにレンダリングすること" do
+      scenario "「チャット一覧」を押すと、チャット一覧ページにレンダリングすること" do
         visit chat_path(trainer.id)
-        click_on "チャット一覧に戻る"
+        within(:css, "main") do
+          click_on "チャット一覧"
+        end
         expect(current_path).to eq chats_path
+      end
+
+      scenario "「このトレーナーの詳細」を押すと、詳細ページにレンダリングすること" do
+        visit chat_path(trainer.id)
+        click_on "このトレーナーの詳細"
+        expect(current_path).to eq trainer_path(trainer.id)
+      end
+
+      scenario "「〜さんに契約リクエストをする」を押すと、契約リクエストページにレンダリングすること" do
+        visit chat_path(trainer.id)
+        click_on "#{trainer.name}さんに契約リクエストをする"
+        expect(current_path).to eq new_contract_path(trainer.id)
       end
     end
 
-    context "トレーナーとしてログイン" do
+    context "トレーナーとしてログインしている場合" do
       let!(:trainee) { create(:trainee) }
       let!(:trainer) { create(:trainer) }
 
@@ -259,10 +273,23 @@ RSpec.describe "Chats System", type: :system do
         expect(current_path).to eq chat_path(trainee.id)
       end
 
-      scenario "「チャット一覧に戻る」を押すと、チャット一覧ページにレンダリングすること" do
+      scenario "「チャット一覧」を押すと、チャット一覧ページにレンダリングすること" do
         visit chat_path(trainee.id)
-        click_on "チャット一覧に戻る"
+        within(:css, "main") do
+          click_on "チャット一覧"
+        end
         expect(current_path).to eq chats_path
+      end
+
+      scenario "「このトレー二ーの詳細」を押すと、詳細ページにレンダリングすること" do
+        visit chat_path(trainee.id)
+        click_on "このトレー二ーの詳細"
+        expect(current_path).to eq trainee_path(trainee.id)
+      end
+
+      scenario "「〜さんに契約リクエストをする」リンクがページ内に存在しないこと" do
+        visit chat_path(trainer.id)
+        expect(page).not_to have_content "#{trainer.name}さんに契約リクエストをする"
       end
     end
   end

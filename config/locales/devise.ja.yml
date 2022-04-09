@@ -76,6 +76,9 @@ ja:
         unconfirmed_email: 未確認Eメール
         unlock_token: ロック解除用トークン
         updated_at: 更新日
+      contract:
+        start_date: 指導開始日
+        end_date: 指導終了日
     models:
       trainee: トレーニー
       trainer: トレーナー
