@@ -1,86 +1,87 @@
-<h1>トップページ</h1>
+<div class="text-center">
+  <h2 class="pb-3">トップページ</h2>
 
-<% if trainer_signed_in? %>
-  <h3>トレーニー 一覧</h3>
-  <% @trainees.each do |trainee| %>
-    <ul class="custom-light-gray">
-      <li><%= image_tag trainee.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
-      <li>名前:<%= trainee.name %></li>
-      <li>年齢:<%= trainee.age %></li>
-      <li>性別:<%= trainee.gender_i18n %></li>
-      <li>カテゴリー:<% if trainee.category %><%= trainee.category_i18n %><% else %>指定なし<% end %></li>
-      <li>希望する指導方法:<% if trainee.instruction_method %><%= trainee.instruction_method_i18n  %><% else %>指定なし<% end %></li>
-      <li>チャットの受け入れ:<%= trainee.chat_acceptance ? "許可する" : "許可しない" %></li>
-      <li>活動できる曜日<% if trainee.day_of_weeks.empty? %>：指定なし<% end %></li>
-      <% trainee.day_of_weeks.each do |day| %>
-        <span><%= day.name %></span>
-      <% end %>
-      <li>
-        活動地域
-        <% if trainee.prefectures.empty? %>
-          ：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button>
-        <% end %>
-      </li>
-      <% trainee.prefectures.distinct.each do |prefecture| %>
-        <li>
-          <%= prefecture.name %>：
-          <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= trainee.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= trainee.id %>and<%= prefecture.id %>">
-            活動している市区町村
-          </button>
-        </li>
-        <div class="collapse" id="collapse<%= trainee.id %>and<%= prefecture.id %>">
-          <div class="card card-body">
-            <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
-            <% trainee.cities.where(prefecture_id: prefecture.id).each do |city| %>
-              <span class="col"><%= city.name %></span>
-            <% end %>
-            </p>
-          </div>
-        </div>
-      <% end %>
-      <li><%= link_to  'プロフィール', trainee_path(trainee) %></li>
-    </ul>
+  <% if trainee_signed_in? %>
+    <h4>利用できる機能</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "トレーナー検索", search_for_trainer_path, {method: :get, class: "btn btn-lg btn-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "トレーナー候補の一覧", candidates_path, {method: :get, class: "btn btn-lg btn-success"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "チャットの一覧", chats_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "契約の一覧", contracts_path, {method: :get, class: "btn btn-lg btn-info"}  %>
+      </div>
+    </div>
+
+      <h4>あなたの情報</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "プロフィールページ", trainee_path(current_trainee.id), {method: :get, class: "btn btn-lg btn-outline-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "プロフィール変更ページ", edit_profile_trainee_path(current_trainee.id), {method: :get, class: "btn btn-lg btn-outline-secondary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "アカウント情報変更ページ", edit_trainee_registration_path(current_trainee.id), {method: :get, class: "btn btn-lg btn-outline-dark"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "ログアウトする", destroy_trainee_session_path, {method: :delete, class: "btn btn-lg btn-outline-danger"}  %>
+      </div>
+    </div>
+  <% elsif trainer_signed_in? %>
+    <h4>利用できる機能</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "トレー二ー検索", search_for_trainee_path, {method: :get, class: "btn btn-lg btn-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "チャットの一覧", chats_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "契約の一覧", contracts_path, {method: :get, class: "btn btn-lg btn-info"}  %>
+      </div>
+    </div>
+
+      <h4>あなたの情報</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "プロフィールページ", trainer_path(current_trainer.id), {method: :get, class: "btn btn-lg btn-outline-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "プロフィール変更ページ", edit_profile_trainer_path(current_trainer.id), {method: :get, class: "btn btn-lg btn-outline-secondary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "アカウント情報変更ページ", edit_trainer_registration_path(current_trainer.id), {method: :get, class: "btn btn-lg btn-outline-dark"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "ログアウトする", destroy_trainer_session_path, {method: :delete, class: "btn btn-lg btn-outline-danger"}  %>
+      </div>
+    </div>
+  <% else %>
+  <%# ゲストユーザー %>
+    <h4>トレーニーとしてご利用される方はこちら</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "トレーニーとしてログイン", new_trainee_session_path, {method: :get, class: "btn btn-lg btn-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "トレーニーとして新規登録", new_trainee_registration_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
+      </div>
+    </div>
+
+    <h4>トレーナーとしてご利用される方はこちら</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "トレーナーとしてログイン", new_trainer_session_path, {method: :get, class: "btn btn-lg btn-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "トレーナーとして新規登録", new_trainer_registration_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
+      </div>
+    </div>
   <% end %>
-<% else %>
-  <h3>トレーナー 一覧</h3>
-  <% @trainers.each do |trainer| %>
-    <ul class="custom-light-gray">
-      <li><%= image_tag trainer.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
-      <li>名前:<%= trainer.name %></li>
-      <li>年齢:<%= trainer.age %></li>
-      <li>性別:<%= trainer.gender_i18n %></li>
-      <li>カテゴリー:<%= trainer.category_i18n %><% if trainer.category.nil? %>指定なし<% end %></li>
-      <li>希望する指導方法:<%= trainer.instruction_method_i18n  %><% if trainer.instruction_method.nil? %>指定なし<% end %></li>
-      <li>最小料金:<% if trainer.min_fee %><%= trainer.min_fee %>円<% else %>指定なし<% end %></li>
-      <li>指導期間:<%= trainer.instruction_period_i18n  %><% if trainer.instruction_period.nil? %>指定なし<% end %></li>
-      <li>指導できる曜日<% if trainer.day_of_weeks.empty? %>：指定なし<% end %></li>
-      <% trainer.day_of_weeks.each do |day| %>
-        <li><%= day.name %></li>
-      <% end %>
-      <li>
-        活動地域
-        <% if trainer.prefectures.empty? %>
-          ：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button>
-        <% end %>
-      </li>
-      <% trainer.prefectures.distinct.each do |prefecture| %>
-        <li>
-          <%= prefecture.name %>：
-          <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= trainer.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= trainer.id %>and<%= prefecture.id %>">
-            活動している市区町村
-          </button>
-        </li>
-        <div class="collapse" id="collapse<%= trainer.id %>and<%= prefecture.id %>">
-          <div class="card card-body">
-            <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
-            <% trainer.cities.where(prefecture_id: prefecture.id).each do |city| %>
-              <span class="col"><%= city.name %></span>
-            <% end %>
-            </p>
-          </div>
-        </div>
-      <% end %>
-      <li><%= link_to 'プロフィール', trainer_path(trainer) %></li>
-    </ul>
-  <% end %>
-<% end %>
+</div>

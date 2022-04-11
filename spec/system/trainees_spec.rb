@@ -268,11 +268,12 @@ RSpec.describe "Trainees System", type: :system do
 
     let(:trainer) { create(:trainer) }
 
-    scenario "トレーニー検索ページに訪れると、検索フォームがあり、トレーニーは１件も表示されていないこと" do
+    before do
       login_as_trainer trainer
-      visit root_path
+    end
 
-      click_on "トレーニー検索"
+    scenario "トレーニー検索ページに訪れると、検索フォームがあり、トレーニーは１件も表示されていないこと" do
+      visit search_for_trainee_path
       aggregate_failures do
         expect(current_path).to eq search_for_trainee_path
         expect(page).to have_selector "#collapseSearch"
@@ -283,9 +284,7 @@ RSpec.describe "Trainees System", type: :system do
 
     context "検索条件を入力しない場合" do
       scenario "フォームに入力せず「この条件で検索する」ボタンをクリックすると、トレー二ーを全件取得すること" do
-        login_as_trainer trainer
         visit search_for_trainee_path
-
         click_button "この条件で検索する"
         aggregate_failures do
           expect(current_path).to eq search_for_trainee_path
@@ -299,9 +298,7 @@ RSpec.describe "Trainees System", type: :system do
       end
 
       scenario "「検索条件・検索結果をリセットする」ボタンをクリックすると、同じページにリダイレクトすること" do
-        login_as_trainer trainer
         visit search_for_trainee_path
-
         click_button "検索条件・検索結果をリセットする"
         aggregate_failures do
           expect(current_path).to eq search_for_trainee_path
@@ -317,9 +314,7 @@ RSpec.describe "Trainees System", type: :system do
 
     context "検索条件を入力する場合" do
       scenario "年齢の範囲を条件にして検索できること" do
-        login_as_trainer trainer
         visit search_for_trainee_path
-
         fill_in "search_trainee_age_from", with: 22
         fill_in "search_trainee_age_to", with: 23
         click_button "この条件で検索する"
@@ -332,9 +327,7 @@ RSpec.describe "Trainees System", type: :system do
       end
 
       scenario "性別を条件にして検索できること" do
-        login_as_trainer trainer
         visit search_for_trainee_path
-
         select "男性", from: "search_trainee_gender"
         click_button "この条件で検索する"
         aggregate_failures do
@@ -346,9 +339,7 @@ RSpec.describe "Trainees System", type: :system do
       end
 
       scenario "カテゴリーを条件にして検索できること" do
-        login_as_trainer trainer
         visit search_for_trainee_path
-
         select "筋肉づくり", from: "search_trainee_category"
         click_button "この条件で検索する"
         aggregate_failures do
@@ -360,9 +351,7 @@ RSpec.describe "Trainees System", type: :system do
       end
 
       scenario "指導方法を条件にして検索できること" do
-        login_as_trainer trainer
         visit search_for_trainee_path
-
         select "オンラインで指導", from: "search_trainee_instruction_method"
         click_button "この条件で検索する"
         aggregate_failures do
@@ -374,9 +363,7 @@ RSpec.describe "Trainees System", type: :system do
       end
 
       scenario "チャットの受け入れ可否を条件にして検索できること" do
-        login_as_trainer trainer
         visit search_for_trainee_path
-
         check "search_trainee_chat_acceptance"
         click_button "この条件で検索する"
         aggregate_failures do
@@ -396,9 +383,7 @@ RSpec.describe "Trainees System", type: :system do
         end
 
         scenario "活動地域を条件にして検索できること" do
-          login_as_trainer trainer
           visit search_for_trainee_path
-
           check "search_trainee_city_ids_1"
           check "search_trainee_city_ids_2"
           click_button "この条件で検索する"
@@ -411,9 +396,7 @@ RSpec.describe "Trainees System", type: :system do
         end
 
         scenario "複数の都道府県を含む市区町村を条件にして検索できること" do
-          login_as_trainer trainer
           visit search_for_trainee_path
-
           check "search_trainee_city_ids_636"
           check "search_trainee_city_ids_696"
           click_button "この条件で検索する"
@@ -435,9 +418,7 @@ RSpec.describe "Trainees System", type: :system do
         end
 
         scenario "活動できる曜日を条件にして検索できること" do
-          login_as_trainer trainer
           visit search_for_trainee_path
-
           check "search_trainee_day_of_week_ids_1"
           check "search_trainee_day_of_week_ids_3"
           click_button "この条件で検索する"
@@ -463,9 +444,7 @@ RSpec.describe "Trainees System", type: :system do
         end
 
         scenario "複数の条件を組み合わせて検索できること" do
-          login_as_trainer trainer
           visit search_for_trainee_path
-
           fill_in "search_trainee_age_from", with: 20
           fill_in "search_trainee_age_to", with: 25
           select "男性", from: "search_trainee_gender"
@@ -484,136 +463,6 @@ RSpec.describe "Trainees System", type: :system do
             expect(page).not_to have_content(trainee4.name)
           end
         end
-      end
-    end
-  end
-
-  # DEVISE MODULE--------------------------------------------------------
-
-  describe "Registration" do
-    describe "トレーニーの新規登録" do
-      context "入力値に問題がない場合" do
-        scenario "新規登録すること" do
-          visit new_trainee_registration_path
-          expect do
-            fill_in "trainee_name", with: "test_trainee_name"
-            fill_in "trainee_age", with: 20
-            select "男性", from: "trainee_gender"
-            fill_in "trainee_email", with: "system_test1@example.com"
-            fill_in "trainee_password", with: "test_password"
-            fill_in "trainee_password_confirmation", with: "test_password"
-            check "trainee_chat_acceptance"
-            click_button "登録"
-
-            trainee = Trainee.find_by(name: "test_trainee_name")
-            aggregate_failures do
-              expect(current_path).to eq trainee_path(trainee.id)
-              expect(page).to have_content "アカウント登録が完了しました。"
-              expect(page).to have_selector "img[src$='default_trainee_avatar.png']"
-            end
-          end.to change { Trainee.count }.by(1)
-        end
-      end
-
-      context "入力値に問題がある場合" do
-        scenario "新規登録できないこと" do
-          visit new_trainee_registration_path
-          expect do
-            # nameとageがnilのため、エラー発生
-            fill_in "trainee_name", with: nil
-            fill_in "trainee_age", with: nil
-            select "男性", from: "trainee_gender"
-            fill_in "trainee_email", with: "system_test2@example.com"
-            fill_in "trainee_password", with: "test_password"
-            fill_in "trainee_password_confirmation", with: "test_password"
-            check "trainee_chat_acceptance"
-            click_button "登録"
-
-            aggregate_failures do
-              expect(page).to have_content "名前を入力してください"
-              expect(page).to have_content "年齢を入力してください"
-            end
-          end.to change { Trainee.count }.by(0)
-        end
-      end
-    end
-
-    describe "トレーニーのアカウント情報の更新" do
-      let(:trainee) { create(:trainee) }
-
-      context "入力値に問題がない場合" do
-        scenario "更新すること" do
-          login_as_trainee trainee
-          visit trainee_path(trainee.id)
-          click_on "アカウント情報の変更"
-          expect do
-            fill_in "trainee_email", with: "update_email@example.com"
-            fill_in "trainee_current_password", with: trainee.password
-            click_button "更新"
-
-            aggregate_failures do
-              expect(current_path).to eq trainee_path(trainee.id)
-              expect(page).to have_content "アカウント情報を変更しました。"
-            end
-          end.to change { trainee.reload.email }.to("update_email@example.com")
-        end
-      end
-
-      context "入力値に問題がある場合" do
-        scenario "更新しないこと" do
-          login_as_trainee trainee
-          visit trainee_path(trainee.id)
-          click_on "アカウント情報の変更"
-          expect do
-            fill_in "trainee_email", with: "update_email@example.com"
-            # current_passwordをnilにすることでエラー発生
-            fill_in "trainee_current_password", with: nil
-            click_button "更新"
-          end.not_to change { trainee.reload.email }
-        end
-      end
-    end
-  end
-
-  describe "Session" do
-    let(:trainee) { create(:trainee) }
-
-    context "入力値に問題がない場合" do
-      scenario "ログインすること" do
-        visit new_trainee_session_path
-        fill_in "trainee_email", with: trainee.email
-        fill_in "trainee_password", with: trainee.password
-        click_button "ログイン"
-
-        aggregate_failures do
-          expect(current_path).to eq root_path
-          expect(page).to have_content "ログインしました。"
-        end
-      end
-    end
-
-    context "入力値に問題がある場合" do
-      scenario "ログインできないこと" do
-        visit new_trainee_session_path
-        # emailが一致しないため、エラー発生
-        fill_in "trainee_email", with: "wrong_email@example.com"
-        fill_in "trainee_password", with: trainee.password
-        click_button "ログイン"
-
-        aggregate_failures do
-          expect(current_path).to eq new_trainee_session_path
-          expect(page).to have_content "Eメールまたはパスワードが違います。"
-        end
-      end
-    end
-
-    scenario "ログイン中のトレーニーがログアウトすること" do
-      login_as_trainee trainee
-      click_on "ログアウト"
-
-      aggregate_failures do
-        expect(page).to have_content "ログアウトしました。"
-        expect(current_path).to eq root_path
       end
     end
   end
