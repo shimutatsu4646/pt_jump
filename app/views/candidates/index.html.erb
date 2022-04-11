@@ -1,0 +1,52 @@
+<h3 class="text-center">トレーナー候補一覧</h3>
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+    <% if @candidates.present? %>
+      <% @candidates.each do |trainer| %>
+        <ul class="custom-light-gray col pb-2 border border-3 border-white search-result">
+          <li><%= image_tag trainer.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
+          <div id="candidate_<%= trainer.id %>">
+            <%= render "candidates/candidate", trainer: trainer %>
+          </div>
+          <li>名前：<%= trainer.name %></li>
+          <li>年齢：<%= trainer.age %>歳</li>
+          <li>性別：<%= trainer.gender_i18n %></li>
+          <li>カテゴリー：<% if trainer.category %><%= trainer.category_i18n %><% else %>指定なし<% end %></li>
+          <li>指導方法：<% if trainer.instruction_method %><%= trainer.instruction_method_i18n  %><% else %>指定なし<% end %></li>
+          <li>指導期間：<%= trainer.instruction_period_i18n %></li>
+          <li>最低料金：<% if trainer.min_fee %><%= trainer.min_fee %>円<% else %>指定なし<% end %></li>
+          <li>指導できる曜日<% if trainer.day_of_weeks.empty? %>：指定なし<% end %></li>
+          <% trainer.day_of_weeks.each do |day| %>
+              <li><%= day.name %></li>
+          <% end %>
+          <li>活動地域
+            <% if trainer.prefectures.empty? %>
+              ：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button>
+            <% end %>
+          </li>
+          <% trainer.prefectures.distinct.each do |prefecture| %>
+            <li>
+              <%= prefecture.name %>：
+              <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= trainer.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= trainer.id %>and<%= prefecture.id %>">
+                活動している市区町村
+              </button>
+            </li>
+            <div class="collapse" id="collapse<%= trainer.id %>and<%= prefecture.id %>">
+              <div class="card card-body">
+                <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
+                <% trainer.cities.where(prefecture_id: prefecture.id).each do |city| %>
+                  <span class="col"><%= city.name %></span>
+                <% end %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+          <%= button_to "このトレーナー詳細を見る", trainer_path(trainer), method: :get, class: "btn btn-outline-primary" %>
+        </ul>
+      <% end %>
+    <% else %>
+      <h5>検索して気になるトレーナーを候補に加えましょう。</h5>
+      <%= link_to "トレーナーを検索する", search_for_trainer_path %>
+    <% end %>
+  </div>
+</div>

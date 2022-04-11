@@ -2,10 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Chats Request", type: :request do
   describe "GET /chats" do # index
-    let(:trainee) { create(:trainee) }
-    let(:trainer) { create(:trainer) }
-
     context "トレーニーとしてログインしている場合" do
+      let(:trainee) { create(:trainee) }
+
       it "正常にレスポンスを返すこと" do
         sign_in trainee
         get chats_path
@@ -17,6 +16,8 @@ RSpec.describe "Chats Request", type: :request do
     end
 
     context "トレーナーとしてログインしている場合" do
+      let(:trainer) { create(:trainer) }
+
       it "正常にレスポンスを返すこと" do
         sign_in trainer
         get chats_path

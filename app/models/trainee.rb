@@ -47,6 +47,8 @@ class Trainee < ApplicationRecord
   has_many :day_of_weeks, through: :availability_schedules
   has_many :chats
   has_many :contracts
+  has_many :candidates
+  has_many :trainer_candidates, through: :candidates, source: :trainer
 
   scope :search_trainee, -> (trainee_search_params) do
     return if trainee_search_params.blank?

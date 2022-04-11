@@ -618,6 +618,9 @@ Contract.create!(
   final_decision: false
 )
 
+
+# トレーナー候補データ
+
 Contract.create!(
   trainee_id: 6,
   trainer_id: 3,
@@ -632,4 +635,35 @@ Contract.create!(
   start_date: Date.current + 5,
   end_date: Date.current + 95,
   final_decision: false
+)
+
+
+Candidate.create!(
+  trainee_id: 2,
+  trainer_id: 2,
+)
+
+Candidate.create!(
+  trainee_id: 2,
+  trainer_id: 3,
+)
+
+Candidate.create!(
+  trainee_id: 2,
+  trainer_id: 4,
+)
+
+Candidate.create!(
+  trainee_id: 3,
+  trainer_id: 3,
+)
+
+Candidate.create!(
+  trainee_id: 3,
+  trainer_id: 4,
+)
+
+Candidate.create!(
+  trainee_id: 3,
+  trainer_id: 5,
 )

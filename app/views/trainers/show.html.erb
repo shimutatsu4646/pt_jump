@@ -49,6 +49,9 @@
     </li>
   <% end %>
   <% if trainee_signed_in? %>
+    <div id="candidate_<%= @trainer.id %>">
+      <%= render "candidates/candidate", trainer: @trainer %>
+    </div>
     <li><%= link_to "#{@trainer.name}さんとのチャットページ", chat_path(@trainer.id), class: "btn btn-sm btn-primary" %></li>
     <li><%= link_to "#{@trainer.name}さんに契約リクエストをする", new_contract_path(@trainer.id), class: "btn btn-sm btn-info" %></li>
   <% end %>

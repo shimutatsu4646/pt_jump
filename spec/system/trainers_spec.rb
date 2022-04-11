@@ -23,6 +23,11 @@ RSpec.describe "Trainers System", type: :system do
         expect(page).to have_link "アカウント情報の変更"
       end
 
+      scenario "「〜さんとのチャットページ」リンクが表示されていないこと" do
+        visit trainer_path(trainer.id)
+        expect(page).not_to have_link "#{trainer.name}さんとのチャットページ"
+      end
+
       describe "ActiveStorageのavatar" do
         scenario "アバター画像が表示されていること" do
           visit trainer_path(trainer.id)
@@ -46,6 +51,11 @@ RSpec.describe "Trainers System", type: :system do
       scenario "「アカウント情報の変更」リンクが表示されていないこと" do
         visit trainer_path(trainer.id)
         expect(page).not_to have_link "アカウント情報の変更"
+      end
+
+      scenario "「〜さんとのチャットページ」リンクが表示されること" do
+        visit trainer_path(trainer.id)
+        expect(page).to have_link "#{trainer.name}さんとのチャットページ"
       end
 
       describe "ActiveStorageのavatar" do
@@ -97,6 +107,32 @@ RSpec.describe "Trainers System", type: :system do
             visit trainer_path(trainer.id)
             click_on "この契約の詳細を見る"
             expect(current_path).to eq contract_path(contract.id)
+          end
+        end
+      end
+
+      describe "トレーナー候補" do
+        context "トレーナー候補に加えていない場合" do
+          scenario "「トレーナー候補に加える」ボタンを押すと、トレーナー候補に追加されること" do
+            visit trainer_path(trainer.id)
+            expect do
+              click_on "トレーナー候補に加える"
+            end.to change { Candidate.count }.by(1)
+          end
+        end
+
+        context "トレーナー候補に加えている場合" do
+          let!(:candidate) do
+            create(:candidate,
+            trainee_id: trainee.id,
+            trainer_id: trainer.id)
+          end
+
+          scenario "「トレーナー候補から取り消す」ボタンを押すと、トレーナー候補データが削除されること" do
+            visit trainer_path(trainer.id)
+            expect do
+              click_on "トレーナー候補から取り消す"
+            end.to change { Candidate.count }.by(-1)
           end
         end
       end
@@ -223,8 +259,11 @@ RSpec.describe "Trainers System", type: :system do
 
     let(:trainee) { create(:trainee) }
 
-    scenario "トレーナー検索ページに訪れると、検索フォームがあり、トレーナーは１件も表示されていないこと" do
+    before do
       login_as_trainee trainee
+    end
+
+    scenario "トレーナー検索ページに訪れると、検索フォームがあり、トレーナーは１件も表示されていないこと" do
       visit root_path
 
       click_on "トレーナー検索"
@@ -238,9 +277,7 @@ RSpec.describe "Trainers System", type: :system do
 
     context "検索条件を入力しない場合" do
       scenario "フォームに入力せず「この条件で検索する」ボタンをクリックすると、トレーナーを全件取得すること" do
-        login_as_trainee trainee
         visit search_for_trainer_path
-
         click_button "この条件で検索する"
         aggregate_failures do
           expect(current_path).to eq search_for_trainer_path
@@ -254,9 +291,7 @@ RSpec.describe "Trainers System", type: :system do
       end
 
       scenario "「検索条件・検索結果をリセットする」ボタンをクリックすると、同じページにリダイレクトすること" do
-        login_as_trainee trainee
         visit search_for_trainer_path
-
         click_button "検索条件・検索結果をリセットする"
         aggregate_failures do
           expect(current_path).to eq search_for_trainer_path
@@ -272,9 +307,7 @@ RSpec.describe "Trainers System", type: :system do
 
     context "検索条件を入力する場合" do
       scenario "年齢の範囲を条件にして検索できること" do
-        login_as_trainee trainee
         visit search_for_trainer_path
-
         fill_in "search_trainer_age_from", with: 22
         fill_in "search_trainer_age_to", with: 23
         click_button "この条件で検索する"
@@ -287,9 +320,7 @@ RSpec.describe "Trainers System", type: :system do
       end
 
       scenario "最低料金の範囲を条件にして検索できること" do
-        login_as_trainee trainee
         visit search_for_trainer_path
-
         fill_in "search_trainer_min_fee_from", with: 1000
         fill_in "search_trainer_min_fee_to", with: 3000
         click_button "この条件で検索する"
@@ -302,9 +333,7 @@ RSpec.describe "Trainers System", type: :system do
       end
 
       scenario "性別を条件にして検索できること" do
-        login_as_trainee trainee
         visit search_for_trainer_path
-
         select "男性", from: "search_trainer_gender"
         click_button "この条件で検索する"
         aggregate_failures do
@@ -316,9 +345,7 @@ RSpec.describe "Trainers System", type: :system do
       end
 
       scenario "カテゴリーを条件にして検索できること" do
-        login_as_trainee trainee
         visit search_for_trainer_path
-
         select "筋肉づくり", from: "search_trainer_category"
         click_button "この条件で検索する"
         aggregate_failures do
@@ -330,9 +357,7 @@ RSpec.describe "Trainers System", type: :system do
       end
 
       scenario "指導方法を条件にして検索できること" do
-        login_as_trainee trainee
         visit search_for_trainer_path
-
         select "オンラインで指導", from: "search_trainer_instruction_method"
         click_button "この条件で検索する"
         aggregate_failures do
@@ -344,9 +369,7 @@ RSpec.describe "Trainers System", type: :system do
       end
 
       scenario "指導期間を条件にして検索できること" do
-        login_as_trainee trainee
         visit search_for_trainer_path
-
         select "一ヶ月未満", from: "search_trainer_instruction_period"
         click_button "この条件で検索する"
         aggregate_failures do
@@ -366,9 +389,7 @@ RSpec.describe "Trainers System", type: :system do
         end
 
         scenario "活動地域を条件にして検索できること" do
-          login_as_trainee trainee
           visit search_for_trainer_path
-
           check "search_trainer_city_ids_1"
           check "search_trainer_city_ids_2"
           click_button "この条件で検索する"
@@ -381,9 +402,7 @@ RSpec.describe "Trainers System", type: :system do
         end
 
         scenario "複数の都道府県を含む市区町村を条件にして検索できること" do
-          login_as_trainee trainee
           visit search_for_trainer_path
-
           check "search_trainer_city_ids_636"
           check "search_trainer_city_ids_696"
           click_button "この条件で検索する"
@@ -405,9 +424,7 @@ RSpec.describe "Trainers System", type: :system do
         end
 
         scenario "活動できる曜日を条件にして検索できること" do
-          login_as_trainee trainee
           visit search_for_trainer_path
-
           check "search_trainer_day_of_week_ids_1"
           check "search_trainer_day_of_week_ids_3"
           click_button "この条件で検索する"
@@ -433,9 +450,7 @@ RSpec.describe "Trainers System", type: :system do
         end
 
         scenario "複数の条件を組み合わせて検索できること" do
-          login_as_trainee trainee
           visit search_for_trainer_path
-
           fill_in "search_trainer_age_from", with: 20
           fill_in "search_trainer_age_to", with: 25
           fill_in "search_trainer_min_fee_from", with: 1000
@@ -455,6 +470,39 @@ RSpec.describe "Trainers System", type: :system do
             expect(page).not_to have_content(trainer3.name)
             expect(page).not_to have_content(trainer4.name)
           end
+        end
+      end
+    end
+
+    describe "トレーナー候補" do
+      context "トレーナー候補に加えていない場合" do
+        scenario "「トレーナー候補に加える」ボタンを押すと、トレーナー候補に追加されること" do
+          visit search_for_trainer_path
+          click_on "この条件で検索する"
+          expect do
+            within(:css, "#candidate_#{trainer1.id}") do
+              click_on "トレーナー候補に加える"
+            end
+          end.to change { Candidate.count }.by(1)
+        end
+      end
+
+      context "トレーナー候補に加えている場合" do
+        # trainer1のみ候補に加わっているものとする
+        let!(:candidate1) do
+          create(:candidate,
+          trainee_id: trainee.id,
+          trainer_id: trainer1.id)
+        end
+
+        scenario "「トレーナー候補から取り消す」ボタンを押すと、トレーナー候補データが削除されること" do
+          visit search_for_trainer_path
+          click_on "この条件で検索する"
+          expect do
+            within(:css, "#candidate_#{trainer1.id}") do
+              click_on "トレーナー候補から取り消す"
+            end
+          end.to change { Candidate.count }.by(-1)
         end
       end
     end
