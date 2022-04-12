@@ -107,7 +107,7 @@ RSpec.describe "Contracts System", type: :system do
 
   describe "契約詳細ページ" do
     describe "未成立の契約" do
-      context "トレー二ーとしてログインしている場合" do
+      context "トレーニーとしてログインしている場合" do
         let!(:trainee) { create(:trainee) }
         let!(:trainer) { create(:trainer, name: "trainer_not_decide") }
 
@@ -178,7 +178,7 @@ RSpec.describe "Contracts System", type: :system do
           login_as_trainer trainer
         end
 
-        scenario "契約相手のトレー二ー名が表示されていること" do
+        scenario "契約相手のトレーニー名が表示されていること" do
           visit contract_path(contract.id)
           expect(page).to have_content(trainee.name)
         end
@@ -189,15 +189,15 @@ RSpec.describe "Contracts System", type: :system do
           expect(page).to have_content(contract.end_date.strftime("%Y年%m月%d日"))
         end
 
-        scenario "「このトレー二ーの詳細ページ」をクリックするとトレーニー詳細ページにリダイレクトすること" do
+        scenario "「このトレーニーの詳細ページ」をクリックするとトレーニー詳細ページにリダイレクトすること" do
           visit contract_path(contract.id)
-          click_on "このトレー二ーの詳細ページ"
+          click_on "このトレーニーの詳細ページ"
           expect(current_path).to eq trainee_path(trainee.id)
         end
 
-        scenario "「このトレー二ーとのチャットページ」をクリックするとチャットページにリダイレクトすること" do
+        scenario "「このトレーニーとのチャットページ」をクリックするとチャットページにリダイレクトすること" do
           visit contract_path(contract.id)
-          click_on "このトレー二ーとのチャットページ"
+          click_on "このトレーニーとのチャットページ"
           expect(current_path).to eq chat_path(trainee.id)
         end
 
@@ -220,7 +220,7 @@ RSpec.describe "Contracts System", type: :system do
     end
 
     describe "成立済みの契約" do
-      context "トレー二ーとしてログインしている場合" do
+      context "トレーニーとしてログインしている場合" do
         let!(:trainee) { create(:trainee) }
         let!(:trainer) { create(:trainer, name: "trainer_not_decide") }
 
@@ -279,7 +279,7 @@ RSpec.describe "Contracts System", type: :system do
           login_as_trainer trainer
         end
 
-        scenario "契約相手のトレー二ー名が表示されていること" do
+        scenario "契約相手のトレーニー名が表示されていること" do
           visit contract_path(contract.id)
           expect(page).to have_content(trainee.name)
         end
@@ -290,15 +290,15 @@ RSpec.describe "Contracts System", type: :system do
           expect(page).to have_content(contract.end_date.strftime("%Y年%m月%d日"))
         end
 
-        scenario "「このトレー二ーの詳細ページ」をクリックするとトレーニー詳細ページにリダイレクトすること" do
+        scenario "「このトレーニーの詳細ページ」をクリックするとトレーニー詳細ページにリダイレクトすること" do
           visit contract_path(contract.id)
-          click_on "このトレー二ーの詳細ページ"
+          click_on "このトレーニーの詳細ページ"
           expect(current_path).to eq trainee_path(trainee.id)
         end
 
-        scenario "「このトレー二ーとのチャットページ」をクリックするとチャットページにリダイレクトすること" do
+        scenario "「このトレーニーとのチャットページ」をクリックするとチャットページにリダイレクトすること" do
           visit contract_path(contract.id)
-          click_on "このトレー二ーとのチャットページ"
+          click_on "このトレーニーとのチャットページ"
           expect(current_path).to eq chat_path(trainee.id)
         end
 

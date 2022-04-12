@@ -94,7 +94,7 @@ RSpec.describe "Chats System", type: :system do
         login_as_trainer trainer
       end
 
-      scenario "チャットをしているトレー二ーの名前が表示されていること" do
+      scenario "チャットをしているトレーニーの名前が表示されていること" do
         visit chats_path
         aggregate_failures do
           expect(page).to have_content "trainee1"
@@ -103,19 +103,19 @@ RSpec.describe "Chats System", type: :system do
         end
       end
 
-      scenario "チャットをしているトレー二ーと同じ数の「チャットページ」リンクが表示されていること" do
+      scenario "チャットをしているトレーニーと同じ数の「チャットページ」リンクが表示されていること" do
         visit chats_path
         expect(page).to have_link "チャットページ", count: 2
       end
 
-      scenario "画像の数がチャットをしているトレー二ーと同じ数になっていること" do
+      scenario "画像の数がチャットをしているトレーニーと同じ数になっていること" do
         visit chats_path
         within(:css, ".chat-partners") do
           expect(page).to have_selector "img", count: 2
         end
       end
 
-      scenario "トレー二ーとの最後のチャットのみが表示されていること" do
+      scenario "トレーニーとの最後のチャットのみが表示されていること" do
         visit chats_path
         aggregate_failures do
           expect(page).not_to have_content "trainee1 first"
@@ -281,9 +281,9 @@ RSpec.describe "Chats System", type: :system do
         expect(current_path).to eq chats_path
       end
 
-      scenario "「このトレー二ーの詳細」を押すと、詳細ページにレンダリングすること" do
+      scenario "「このトレーニーの詳細」を押すと、詳細ページにレンダリングすること" do
         visit chat_path(trainee.id)
-        click_on "このトレー二ーの詳細"
+        click_on "このトレーニーの詳細"
         expect(current_path).to eq trainee_path(trainee.id)
       end
 

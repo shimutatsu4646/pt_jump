@@ -64,7 +64,7 @@ RSpec.describe "Chats Request", type: :request do
       let(:trainee) { create(:trainee) }
       let(:trainer) { create(:trainer) }
 
-      context "urlのidがトレー二ーのidと一致しないとき" do
+      context "urlのidがトレーニーのidと一致しないとき" do
         it "404レスポンスを返すこと" do
           sign_in trainer
           get "/chats/#{trainee.id + 1}"
@@ -76,7 +76,7 @@ RSpec.describe "Chats Request", type: :request do
         context "traineeのchat_acceptanceがtrueの場合" do
           let(:accepting_trainee) { create(:trainee, chat_acceptance: true) }
 
-          it "urlのidがトレー二ーのidと一致するとき正常にレスポンスを返すこと" do
+          it "urlのidがトレーニーのidと一致するとき正常にレスポンスを返すこと" do
             sign_in trainer
             get "/chats/#{accepting_trainee.id}"
             aggregate_failures do

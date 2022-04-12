@@ -1,48 +1,95 @@
-<h3 class="text-center">トレーナー候補一覧</h3>
-<div class="container">
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+<div class="text-center">
+  <h3>トレーナー候補一覧</h3>
+  <div class="row row-cols-1">
     <% if @candidates.present? %>
       <% @candidates.each do |trainer| %>
-        <ul class="custom-light-gray col pb-2 border border-3 border-white search-result">
-          <li><%= image_tag trainer.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
-          <div id="candidate_<%= trainer.id %>">
-            <%= render "candidates/candidate", trainer: trainer %>
+        <div class="custom-light-gray row border border-2 p-3 my-3">
+          <div class="col-12">
+            <%= image_tag trainer.avatar.variant(resize_to_fill:[200, 200]), class: "avatar_image" %>
           </div>
-          <li>名前：<%= trainer.name %></li>
-          <li>年齢：<%= trainer.age %>歳</li>
-          <li>性別：<%= trainer.gender_i18n %></li>
-          <li>カテゴリー：<% if trainer.category %><%= trainer.category_i18n %><% else %>指定なし<% end %></li>
-          <li>指導方法：<% if trainer.instruction_method %><%= trainer.instruction_method_i18n  %><% else %>指定なし<% end %></li>
-          <li>指導期間：<%= trainer.instruction_period_i18n %></li>
-          <li>最低料金：<% if trainer.min_fee %><%= trainer.min_fee %>円<% else %>指定なし<% end %></li>
-          <li>指導できる曜日<% if trainer.day_of_weeks.empty? %>：指定なし<% end %></li>
-          <% trainer.day_of_weeks.each do |day| %>
-              <li><%= day.name %></li>
-          <% end %>
-          <li>活動地域
-            <% if trainer.prefectures.empty? %>
-              ：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button>
-            <% end %>
-          </li>
-          <% trainer.prefectures.distinct.each do |prefecture| %>
-            <li>
-              <%= prefecture.name %>：
-              <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= trainer.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= trainer.id %>and<%= prefecture.id %>">
-                活動している市区町村
-              </button>
-            </li>
-            <div class="collapse" id="collapse<%= trainer.id %>and<%= prefecture.id %>">
-              <div class="card card-body">
-                <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
-                <% trainer.cities.where(prefecture_id: prefecture.id).each do |city| %>
-                  <span class="col"><%= city.name %></span>
-                <% end %>
-                </p>
-              </div>
+          <%= button_to "このトレーナー詳細を見る", trainer_path(trainer), method: :get, class: "btn btn-primary my-3" %>
+          <div class="my-3">
+            <div id="candidate_<%= trainer.id %>">
+              <%= render "candidates/candidate", trainer: trainer %>
             </div>
-          <% end %>
-          <%= button_to "このトレーナー詳細を見る", trainer_path(trainer), method: :get, class: "btn btn-outline-primary" %>
-        </ul>
+          </div>
+          <div class="card card-body col-12">
+            ユーザー名<br>
+            <%= trainer.name %>
+          </div>
+          <div class="card card-body col-6">
+            年齢<br>
+            <%= trainer.age %>歳
+          </div>
+          <div class="card card-body col-6">
+            性別<br>
+            <%= trainer.gender_i18n %>
+          </div>
+          <div class="card card-body col-6">
+            得意なカテゴリー<br>
+            <% if trainer.category %>
+              <%= trainer.category_i18n %>
+            <% else %>
+              入力なし
+              <% end %>
+          </div>
+          <div class="card card-body col-6">
+            希望する指導方法<br>
+            <% if trainer.instruction_method %>
+              <%= trainer.instruction_method_i18n  %>
+            <% else %>
+              入力なし
+            <% end %>
+          </div>
+          <div class="card card-body col-6">
+            最小料金<br>
+            <% if trainer.min_fee %>
+                <%= trainer.min_fee %>円
+              <% else %>
+                指定なし
+              <% end %>
+          </div>
+          <div class="card card-body col-6">
+            指導期間<br>
+            <% if trainer.instruction_period %>
+              <%= trainer.instruction_period_i18n  %>
+            <% else %>
+              指定なし
+            <% end %>
+          </div>
+          <div class="card card-body col-6">
+            活動できる曜日<br>
+            <% if trainer.day_of_weeks.empty? %>
+              入力なし
+            <% end %>
+            <% trainer.day_of_weeks.each do |day| %>
+              <span><%= day.name %></span>
+            <% end %>
+          </div>
+          <div class="card card-body col-6">
+            活動地域<br>
+            <% if trainer.prefectures.empty? %>
+              入力なし
+            <% end %>
+            <% trainer.prefectures.distinct.each do |prefecture| %>
+              <div>
+                <%= prefecture.name %>：
+                <button class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= trainer.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= trainer.id %>and<%= prefecture.id %>">
+                  活動している市区町村
+                </button>
+              </div>
+              <div class="collapse" id="collapse<%= trainer.id %>and<%= prefecture.id %>">
+                <div class="card card-body">
+                  <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
+                  <% trainer.cities.where(prefecture_id: prefecture.id).each do |city| %>
+                    <span class="col"><%= city.name %></span>
+                  <% end %>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
       <% end %>
     <% else %>
       <h5>検索して気になるトレーナーを候補に加えましょう。</h5>

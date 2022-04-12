@@ -2,14 +2,18 @@
   <h3>トレーナーログイン</h3>
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <div class="field">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-    </div>
+    <div class="sign_in">
+      <div class="row row-cols-1 m-3 px-5">
+        <div class="field col p-2">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+        </div>
 
-    <div class="field">
-      <%= f.label :password %><br />
-      <%= f.password_field :password, autocomplete: "current-password" %>
+        <div class="field col p-2">
+          <%= f.label :password %><br />
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+        </div>
+      </div>
     </div>
 
     <% if devise_mapping.rememberable? %>

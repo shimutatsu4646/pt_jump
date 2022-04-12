@@ -129,7 +129,7 @@ RSpec.describe "Trainees System", type: :system do
 
           scenario "「このトレーニーからリクエストされた契約」と表示されること" do
             visit trainee_path(trainee.id)
-            expect(page).to have_content "このトレー二ーからリクエストされた契約"
+            expect(page).to have_content "このトレーニーからリクエストされた契約"
           end
 
           scenario "「この契約リクエストの詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
@@ -144,7 +144,7 @@ RSpec.describe "Trainees System", type: :system do
 
           scenario "「このトレーニーと成立した契約」と表示されること" do
             visit trainee_path(trainee.id)
-            expect(page).to have_content "このトレー二ーと成立した契約"
+            expect(page).to have_content "このトレーニーと成立した契約"
           end
 
           scenario "「この契約の詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
@@ -283,13 +283,13 @@ RSpec.describe "Trainees System", type: :system do
     end
 
     context "検索条件を入力しない場合" do
-      scenario "フォームに入力せず「この条件で検索する」ボタンをクリックすると、トレー二ーを全件取得すること" do
+      scenario "フォームに入力せず「この条件で検索する」ボタンをクリックすると、トレーニーを全件取得すること" do
         visit search_for_trainee_path
         click_button "この条件で検索する"
         aggregate_failures do
           expect(current_path).to eq search_for_trainee_path
           expect(page).to have_selector "#collapseSearch"
-          expect(page).to have_selector "ul.search-result", count: 4
+          expect(page).to have_selector "div.search-result", count: 4
           expect(page).to have_content(trainee1.name)
           expect(page).to have_content(trainee2.name)
           expect(page).to have_content(trainee3.name)

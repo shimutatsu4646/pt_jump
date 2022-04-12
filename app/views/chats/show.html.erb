@@ -59,7 +59,7 @@
       <%= link_to "このトレーナーの詳細", trainer_path(@partner.id), method: :get, class: "btn btn-secondary btn-sm my-2" %>
       <%= button_to "#{@partner.name}さんに契約リクエストをする",new_contract_path(@partner.id), method: :get, class: "btn btn-success btn-lg my-3" %>
     <% elsif trainer_signed_in? %>
-      <%= link_to "このトレー二ーの詳細", trainee_path(@partner.id), method: :get, class: "btn btn-secondary btn-sm my-2" %>
+      <%= link_to "このトレーニーの詳細", trainee_path(@partner.id), method: :get, class: "btn btn-secondary btn-sm my-2" %>
     <% end %>
   </div>
 </div>

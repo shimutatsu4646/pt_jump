@@ -128,7 +128,7 @@ RSpec.describe "Trainers Request", type: :request do
   end
 
   describe "GET /trainers/search" do
-    context "ログイン済みトレー二ーの場合" do
+    context "ログイン済みトレーニーの場合" do
       let(:trainee) { create(:trainee) }
 
       context "@trainer_search_paramsがnilの場合" do
@@ -180,7 +180,7 @@ RSpec.describe "Trainers Request", type: :request do
     end
 
     context "ゲストユーザーの場合" do
-      it "302レスポンスを返し、トレー二ー用ログインページにリダイレクトすること" do
+      it "302レスポンスを返し、トレーニー用ログインページにリダイレクトすること" do
         get search_for_trainer_path
         aggregate_failures do
           expect(response).to have_http_status "302"

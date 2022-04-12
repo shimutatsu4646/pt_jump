@@ -332,7 +332,7 @@ RSpec.describe "Contracts Request", type: :request do
         create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false)
       end
 
-      it "契約は削除されず、302レスポンスを返し、トレー二ーログインページにリダイレクトすること" do
+      it "契約は削除されず、302レスポンスを返し、トレーニーログインページにリダイレクトすること" do
         sign_in trainer
         expect do
           delete contract_path(contract.id)
@@ -352,7 +352,7 @@ RSpec.describe "Contracts Request", type: :request do
         create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false)
       end
 
-      it "契約は削除されず、302レスポンスを返し、トレー二ーログインページにリダイレクトすること" do
+      it "契約は削除されず、302レスポンスを返し、トレーニーログインページにリダイレクトすること" do
         expect do
           delete contract_path(contract.id)
         end.not_to change { Contract.count }

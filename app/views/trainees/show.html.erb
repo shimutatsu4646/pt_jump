@@ -1,86 +1,127 @@
-<% if @trainee == current_trainee %>
-  <h3>自分のプロフィール</h3>
-<% else %>
-  <h3><%= @trainee.name %>さんのプロフィールページ</h3>
-<% end %>
-<ul class="custom-light-gray">
-  <li><%= image_tag @trainee.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
-  <li>名前:<%= @trainee.name %></li>
-  <li>年齢:<%= @trainee.age %></li>
-  <li>性別:<%= @trainee.gender_i18n %></li>
-  <li>自己紹介:<%= @trainee.introduction %></li>
-  <li>カテゴリー:<% if @trainee.category %><%= @trainee.category_i18n %><% else %>指定なし<% end %></li>
-  <li>希望する指導方法:<% if @trainee.instruction_method %><%= @trainee.instruction_method_i18n  %><% else %>指定なし<% end %></li>
-  <li>チャットの受け入れ:<%= @trainee.chat_acceptance ? "許可する" : "許可しない" %></li>
-  <li>活動できる曜日<% if @trainee.day_of_weeks.empty? %>：指定なし<% end %></li>
-  <% @trainee.day_of_weeks.each do |day| %>
-    <span><%= day.name %></span>
+<div class="text-center">
+  <% if @trainee == current_trainee %>
+    <h3>自分のプロフィール</h3>
+  <% else %>
+    <h3><%= @trainee.name %>さんのプロフィールページ</h3>
   <% end %>
-  <li>
-    活動地域
-    <% if @trainee.prefectures.empty? %>
-      ：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button>
-    <% end %>
-  </li>
-  <% @trainee.prefectures.distinct.each do |prefecture| %>
-    <li>
-      <%= prefecture.name %>：
-      <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= @trainee.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= @trainee.id %>and<%= prefecture.id %>">
-        活動している市区町村
-      </button>
-    </li>
-    <div class="collapse" id="collapse<%= @trainee.id %>and<%= prefecture.id %>">
-      <div class="card card-body">
-        <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
-        <% @trainee.cities.where(prefecture_id: prefecture.id).each do |city| %>
-          <span class="col"><%= city.name %></span>
+  <div class="custom-light-gray row border border-2 p-3">
+    <div class="col-12">
+      <%= image_tag @trainee.avatar.variant(resize_to_fill:[200, 200]), class: "avatar_image" %>
+    </div>
+    <div class="card card-body col-12">
+      ユーザー名<br>
+      <%= @trainee.name %>
+    </div>
+    <div class="card card-body col-6">
+      年齢<br>
+      <%= @trainee.age %>歳
+    </div>
+    <div class="card card-body col-6">
+      性別<br>
+      <%= @trainee.gender_i18n %>
+    </div>
+    <div class="card card-body col-6">
+      カテゴリー<br>
+      <% if @trainee.category %>
+        <%= @trainee.category_i18n %>
+      <% else %>
+        入力なし
         <% end %>
-        </p>
-      </div>
+    </div>
+    <div class="card card-body col-6">
+      希望する指導方法<br>
+      <% if @trainee.instruction_method %>
+        <%= @trainee.instruction_method_i18n  %>
+      <% else %>
+        入力なし
+      <% end %>
+    </div>
+    <div class="card card-body col-6">
+      活動できる曜日<br>
+      <% if @trainee.day_of_weeks.empty? %>
+        入力なし
+      <% end %>
+      <% @trainee.day_of_weeks.each do |day| %>
+        <span><%= day.name %></span>
+      <% end %>
+    </div>
+    <div class="card card-body col-6">
+      活動地域<br>
+      <% if @trainee.prefectures.empty? %>
+        入力なし
+      <% end %>
+      <% @trainee.prefectures.distinct.each do |prefecture| %>
+        <div>
+          <%= prefecture.name %>：
+          <button class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= @trainee.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= @trainee.id %>and<%= prefecture.id %>">
+            活動している市区町村
+          </button>
+        </div>
+        <div class="collapse" id="collapse<%= @trainee.id %>and<%= prefecture.id %>">
+          <div class="card card-body">
+            <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
+            <% @trainee.cities.where(prefecture_id: prefecture.id).each do |city| %>
+              <span class="col"><%= city.name %></span>
+            <% end %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="card card-body col-12">
+      チャットの受け入れ<br>
+      <%= @trainee.chat_acceptance ? "許可する" : "許可しない" %>
+    </div>
+    <div class="card card-body col-12">
+      自己紹介<br>
+      <%= @trainee.introduction %>
+    </div>
+  </div>
+
+  <% if @trainee == current_trainee %>
+    <div class="my-2">
+      <%= link_to "プロフィールの変更", edit_profile_trainee_path(current_trainee.id), class: "btn btn-primary" %>
+    </div>
+    <div class="my-2">
+      <%= link_to "アカウント情報の変更", edit_trainee_registration_path(current_trainee.id), class: "btn btn-primary" %>
     </div>
   <% end %>
-  <% if @trainee == current_trainee %>
-    <li>
-      <%= link_to "プロフィールの変更", edit_profile_trainee_path(current_trainee.id) %>
-    </li>
-    <li>
-      <%= link_to "アカウント情報の変更", edit_trainee_registration_path(current_trainee.id) %>
-    </li>
-  <% end %>
   <% if trainer_signed_in? %>
-    <% if @trainee.chat_acceptance == true %>
-      <%= link_to "#{@trainee.name}さんとのチャットページ", chat_path(@trainee.id) %>
-    <% elsif @trainee.chats.where(trainer_id: current_trainer.id).present? %>
-      <%= link_to "#{@trainee.name}さんとのチャットページ", chat_path(@trainee.id) %>
-    <% end %>
+    <div class="my-4">
+      <% if @trainee.chat_acceptance == true %>
+        <%= link_to "#{@trainee.name}さんとのチャットページ", chat_path(@trainee.id), class: "btn btn-primary btn-lg" %>
+      <% elsif @trainee.chats.where(trainer_id: current_trainer.id).present? %>
+        <%= link_to "#{@trainee.name}さんとのチャットページ", chat_path(@trainee.id), class: "btn btn-primary btn-lg" %>
+      <% end %>
+    </div>
   <% end %>
-</ul>
 
-<% if trainer_signed_in? %>
-  <div class="undecided_contracts p-3">
-    <% if @undecided_contracts.present? %>
-      <h4 class="text-center">このトレー二ーからリクエストされた契約</h4>
-      <% @undecided_contracts.each do |contract| %>
-        <ul class="custom-light-gray pb-2 border border-3 border-white">
-          <li>リクエストされた日時： <%= l contract.created_at, format: :until_date %></li>
-          <li><%= link_to "この契約リクエストの詳細を見る", contract_path(contract.id) %></li>
-        </ul>
+  <% if trainer_signed_in? %>
+    <div class="undecided_contracts p-3">
+      <% if @undecided_contracts.present? %>
+        <h4 class="text-center">このトレーニーからリクエストされた契約</h4>
+        <% @undecided_contracts.each do |contract| %>
+          <ul class="custom-light-gray pb-2 border border-3 border-white">
+            <li>リクエストされた日時： <%= l contract.created_at, format: :until_date %></li>
+            <li><%= link_to "この契約リクエストの詳細を見る", contract_path(contract.id) %></li>
+          </ul>
+        <% end %>
+      <% else  %>
+        <h5>このトレーニーからリクエストされた契約はありません</h5>
       <% end %>
-    <% else  %>
-      <h5>このトレーニーからリクエストされた契約はありません</h5>
-    <% end %>
-  </div>
-  <div class="decided_contracts p-3">
-    <% if @decided_contracts.present? %>
-      <h4 class="text-center">このトレー二ーと成立した契約</h4>
-      <% @decided_contracts.each do |contract| %>
-        <ul class="custom-light-gray pb-2 border border-3 border-white">
-          <li>リクエストされた日時： <%= l contract.created_at, format: :until_date %></li>
-          <li><%= link_to "この契約の詳細を見る", contract_path(contract.id) %></li>
-        </ul>
+    </div>
+    <div class="decided_contracts p-3">
+      <% if @decided_contracts.present? %>
+        <h4 class="text-center">このトレーニーと成立した契約</h4>
+        <% @decided_contracts.each do |contract| %>
+          <ul class="custom-light-gray pb-2 border border-3 border-white">
+            <li>リクエストされた日時： <%= l contract.created_at, format: :until_date %></li>
+            <li><%= link_to "この契約の詳細を見る", contract_path(contract.id) %></li>
+          </ul>
+        <% end %>
+      <% else  %>
+        <h5>このトレーニーと成立した契約はありません</h5>
       <% end %>
-    <% else  %>
-      <h5>このトレーニーと成立した契約はありません</h5>
-    <% end %>
-  </div>
-<% end %>
+    </div>
+  <% end %>
+</div>

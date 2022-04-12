@@ -15,25 +15,27 @@
           <%= f.check_box :chat_acceptance, checked: @trainee_search_params[:chat_acceptance] == "1" ? "checked" : "unchecked" %> <!-- 値が"1"のときはtrue,"0"のときはfalse -->
         </div>
 
-        <div class="search_field">
-          <%= f.label :age, "年齢の範囲" %><br />
-          <%= f.number_field :age_from, value: @trainee_search_params[:age_from] %>歳以上
-          <%= f.number_field :age_to, value: @trainee_search_params[:age_to] %>歳以下
-        </div>
+        <div class="row row-cols-1 row-cols-md-2 m-2">
+          <div class="search_field col p-2">
+            <%= f.label :age, "年齢の範囲" %><br />
+            <%= f.number_field :age_from, value: @trainee_search_params[:age_from], class: "form-control" %>歳以上
+            <%= f.number_field :age_to, value: @trainee_search_params[:age_to], class: "form-control" %>歳以下
+          </div>
 
-        <div class="search_field">
-          <%= f.label :gender, "性別" %><br />
-          <%= f.select :gender, Trainee.genders_i18n.keys.map {|k| [I18n.t("enums.trainee.gender.#{k}"), k]}, { include_blank: true, selected: @trainee_search_params[:gender] } %>
-        </div>
+          <div class="search_field col p-2">
+            <%= f.label :gender, "性別" %><br />
+            <%= f.select :gender, Trainee.genders_i18n.keys.map {|k| [I18n.t("enums.trainee.gender.#{k}"), k]}, { include_blank: true, selected: @trainee_search_params[:gender] }, class: "form-control" %>
+          </div>
 
-        <div class="search_field">
-          <%= f.label :category, "カテゴリー" %><br />
-          <%= f.select :category, Trainee.categories_i18n.keys.map {|k| [I18n.t("enums.trainee.category.#{k}"), k]}, { include_blank: true, selected: @trainee_search_params[:category] } %>
-        </div>
+          <div class="search_field col p-2">
+            <%= f.label :category, "カテゴリー" %><br />
+            <%= f.select :category, Trainee.categories_i18n.keys.map {|k| [I18n.t("enums.trainee.category.#{k}"), k]}, { include_blank: true, selected: @trainee_search_params[:category] }, class: "form-control" %>
+          </div>
 
-        <div class="search_field">
-          <%= f.label :instruction_method, "希望している指導方法" %><br />
-          <%= f.select :instruction_method, Trainee.instruction_methods_i18n.keys.map {|k| [I18n.t("enums.trainee.instruction_method.#{k}"), k]}, { include_blank: true, selected: @trainee_search_params[:instruction_method] } %>
+          <div class="search_field col p-2">
+            <%= f.label :instruction_method, "希望している指導方法" %><br />
+            <%= f.select :instruction_method, Trainee.instruction_methods_i18n.keys.map {|k| [I18n.t("enums.trainee.instruction_method.#{k}"), k]}, { include_blank: true, selected: @trainee_search_params[:instruction_method] }, class: "form-control" %>
+          </div>
         </div>
 
         <div class="search_field">
@@ -94,48 +96,80 @@
   <% end %>
 </div>
 
-<div class="container">
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+<div class="text-center">
+  <div class="row row-cols-1">
     <% if @trainee_search_params.present? %>
       <% @trainees.each do |trainee| %>
-        <ul class="custom-light-gray col pb-2 border border-3 border-white search-result">
-          <li><%= image_tag trainee.avatar.variant(gravity: :center, resize:"200x200^", crop:"200x200+0+0").processed, class: "avatar_image" %></li>
-          <li>名前：<%= trainee.name %></li>
-          <li>年齢：<%= trainee.age %>歳</li>
-          <li>性別：<%= trainee.gender_i18n %></li>
-          <li>カテゴリー：<% if trainee.category %><%= trainee.category_i18n %><% else %>指定なし<% end %></li>
-          <li>希望する指導方法：<% if trainee.instruction_method %><%= trainee.instruction_method_i18n %><% else %>指定なし<% end %></li>
-          <li>チャットの受け入れ:<%= trainee.chat_acceptance ? "許可する" : "許可しない" %></li>
-          <li>活動できる曜日<% if trainee.day_of_weeks.empty? %>：指定なし<% end %></li>
-          <% trainee.day_of_weeks.each do |day| %>
-              <li><%= day.name %></li>
-          <% end %>
-          <li>活動地域
-            <% if trainee.prefectures.empty? %>
-              ：<button type="button" class="btn btn-sm btn-secondary" disabled>入力なし</button>
+        <div class="custom-light-gray row border border-2 p-3 my-3 search-result">
+          <div class="col-12">
+            <%= image_tag trainee.avatar.variant(resize_to_fill:[200, 200]), class: "avatar_image" %>
+          </div>
+          <%= button_to "このトレーナー詳細を見る", trainee_path(trainee), method: :get, class: "btn btn-primary my-3" %>
+          <div class="card card-body col-12">
+            ユーザー名<br>
+            <%= trainee.name %>
+          </div>
+          <div class="card card-body col-6">
+            年齢<br>
+            <%= trainee.age %>歳
+          </div>
+          <div class="card card-body col-6">
+            性別<br>
+            <%= trainee.gender_i18n %>
+          </div>
+          <div class="card card-body col-6">
+            カテゴリー<br>
+            <% if trainee.category %>
+              <%= trainee.category_i18n %>
+            <% else %>
+              入力なし
+              <% end %>
+          </div>
+          <div class="card card-body col-6">
+            希望する指導方法<br>
+            <% if trainee.instruction_method %>
+              <%= trainee.instruction_method_i18n  %>
+            <% else %>
+              入力なし
             <% end %>
-          </li>
-          <% trainee.prefectures.distinct.each do |prefecture| %>
-            <li>
-              <%= prefecture.name %>：
-              <button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= trainee.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= trainee.id %>and<%= prefecture.id %>">
-                活動している市区町村
-              </button>
-            </li>
-            <div class="collapse" id="collapse<%= trainee.id %>and<%= prefecture.id %>">
-              <div class="card card-body">
-                <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
-                <% trainee.cities.where(prefecture_id: prefecture.id).each do |city| %>
-                  <span class="col"><%= city.name %></span>
-                <% end %>
-                </p>
+          </div>
+          <div class="card card-body col-6">
+            活動できる曜日<br>
+            <% if trainee.day_of_weeks.empty? %>
+              入力なし
+            <% end %>
+            <% trainee.day_of_weeks.each do |day| %>
+              <span><%= day.name %></span>
+            <% end %>
+          </div>
+          <div class="card card-body col-6">
+            活動地域<br>
+            <% if trainee.prefectures.empty? %>
+              入力なし
+            <% end %>
+            <% trainee.prefectures.distinct.each do |prefecture| %>
+              <div>
+                <%= prefecture.name %>：
+                <button class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= trainee.id %>and<%= prefecture.id %>" aria-expanded="false" aria-controls="collapse<%= trainee.id %>and<%= prefecture.id %>">
+                  活動している市区町村
+                </button>
               </div>
-            </div>
-          <% end %>
-          <li>
-          <%= button_to "このトレーニーの詳細を見る", trainee_path(trainee), method: :get, class: "btn btn-outline-primary" %>
-          </li>
-        </ul>
+              <div class="collapse" id="collapse<%= trainee.id %>and<%= prefecture.id %>">
+                <div class="card card-body">
+                  <p class="row row-cols-2 row-cols-md-3 row-cols-lg-3">
+                  <% trainee.cities.where(prefecture_id: prefecture.id).each do |city| %>
+                    <span class="col"><%= city.name %></span>
+                  <% end %>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="card card-body col-12">
+            チャットの受け入れ<br>
+            <%= trainee.chat_acceptance ? "許可する" : "許可しない" %>
+          </div>
+        </div>
       <% end %>
     <% end %>
   </div>

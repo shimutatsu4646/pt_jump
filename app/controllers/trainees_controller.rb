@@ -70,7 +70,7 @@ class TraineesController < ApplicationController
 
   def check_for_searching_trainee
     if current_trainee.present?
-      flash[:notice] = "トレー二ー検索を利用できるのはトレーナーユーザーのみです。"
+      flash[:notice] = "トレーニー検索を利用できるのはトレーナーユーザーのみです。"
       redirect_to root_path
     elsif current_trainer.nil?
       flash[:notice] = "トレーナーとしてログインもしくはアカウント登録してください。"

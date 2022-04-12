@@ -243,10 +243,10 @@ RSpec.describe "StaticPages System", type: :system do
       end
 
       describe "リンク" do
-        scenario "「トレー二ー検索」をクリックするとトレー二ー検索ページにリダイレクトすること" do
+        scenario "「トレーニー検索」をクリックするとトレーニー検索ページにリダイレクトすること" do
           visit root_path
           within(:css, "main") do
-            click_on "トレー二ー検索"
+            click_on "トレーニー検索"
           end
           expect(current_path).to eq search_for_trainee_path
         end

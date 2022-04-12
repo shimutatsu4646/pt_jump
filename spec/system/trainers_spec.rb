@@ -36,7 +36,7 @@ RSpec.describe "Trainers System", type: :system do
       end
     end
 
-    context "トレー二ーとしてログインしている場合" do
+    context "トレーニーとしてログインしている場合" do
       let(:trainee) { create(:trainee) }
 
       before do
@@ -85,7 +85,7 @@ RSpec.describe "Trainers System", type: :system do
 
           scenario "「このトレーナーにリクエストした契約」と表示されること" do
             visit trainer_path(trainer.id)
-            expect(page).to have_content "このトレー二ーにリクエストした契約"
+            expect(page).to have_content "このトレーニーにリクエストした契約"
           end
 
           scenario "「この契約リクエストの詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
@@ -100,7 +100,7 @@ RSpec.describe "Trainers System", type: :system do
 
           scenario "「このトレーニーと成立した契約」と表示されること" do
             visit trainer_path(trainer.id)
-            expect(page).to have_content "このトレー二ーと成立した契約"
+            expect(page).to have_content "このトレーニーと成立した契約"
           end
 
           scenario "「この契約の詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
@@ -280,7 +280,7 @@ RSpec.describe "Trainers System", type: :system do
         aggregate_failures do
           expect(current_path).to eq search_for_trainer_path
           expect(page).to have_selector "#collapseSearch"
-          expect(page).to have_selector "ul.search-result", count: 4
+          expect(page).to have_selector "div.search-result", count: 4
           expect(page).to have_content(trainer1.name)
           expect(page).to have_content(trainer2.name)
           expect(page).to have_content(trainer3.name)
