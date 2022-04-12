@@ -123,4 +123,34 @@ RSpec.describe "Trainer Registration Request", type: :request do
       end
     end
   end
+
+  describe "DELETE /trainers" do
+    let(:trainee) { create(:trainee) }
+    let(:trainer) { create(:trainer) }
+
+    let!(:candidate) do
+      create(:candidate, trainee_id: trainee.id, trainer_id: trainer.id)
+    end
+
+    let!(:chat) do
+      create(:chat,
+        trainee_id: trainee.id, trainer_id: trainer.id,
+        content: "hello.", from_trainee: true)
+    end
+
+    let!(:contract) do
+      create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false)
+    end
+
+    before do
+      sign_in trainer
+    end
+
+    scenario "正常にレスポンスを返すこと" do
+      expect do
+        delete trainer_registration_path
+      end.to change { Trainer.count }.by(-1)
+      expect(response).to redirect_to root_path
+    end
+  end
 end

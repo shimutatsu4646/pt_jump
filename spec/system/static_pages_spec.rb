@@ -5,7 +5,7 @@ RSpec.describe "StaticPages System", type: :system do
     driven_by(:rack_test)
   end
 
-  fdescribe "ヘッダー" do
+  describe "ヘッダー" do
     context "トレーニーとしてログインしている場合" do
       let(:trainee) { create(:trainee) }
 

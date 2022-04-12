@@ -40,14 +40,19 @@ class Trainee < ApplicationRecord
   enum category: { losing_weight: 0, building_muscle: 1, physical_function: 2, physical_therapy: 3 }
   enum instruction_method: { offline: 0, online: 1 }
 
-  has_one_attached :avatar
-  has_and_belongs_to_many :cities
+  has_one_attached :avatar, dependent: :destroy
+
+  has_and_belongs_to_many :cities, dependent: :destroy
   has_many :prefectures, through: :cities
-  has_many :availability_schedules
+
+  has_many :availability_schedules, dependent: :destroy
   has_many :day_of_weeks, through: :availability_schedules
-  has_many :chats
-  has_many :contracts
-  has_many :candidates
+
+  has_many :chats, dependent: :destroy
+
+  has_many :contracts, dependent: :destroy
+
+  has_many :candidates, dependent: :destroy
   has_many :trainer_candidates, through: :candidates, source: :trainer
 
   scope :search_trainee, -> (trainee_search_params) do

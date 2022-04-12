@@ -88,6 +88,50 @@ RSpec.describe "TraineeRegistrations System", type: :system do
         end
       end
     end
+
+    describe "トレーニーの退会" do
+      describe "DELETE /trainees" do
+        let(:trainee) { create(:trainee) }
+        let(:trainer) { create(:trainer) }
+
+        let!(:candidate) do
+          create(:candidate, trainee_id: trainee.id, trainer_id: trainer.id)
+        end
+
+        let!(:chat) do
+          create(:chat,
+            trainee_id: trainee.id, trainer_id: trainer.id,
+            content: "hello.", from_trainee: true)
+        end
+
+        let!(:contract) do
+          create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false)
+        end
+
+        before do
+          login_as_trainee trainee
+        end
+
+        scenario "「退会する」ボタンをクリックすると、トレーニーデータと、そのトレーニーに関連付いているデータが削除される" do
+          aggregate_failures do
+            expect(trainee.candidates.empty?).to eq false
+            expect(trainee.chats.empty?).to eq false
+            expect(trainee.contracts.empty?).to eq false
+          end
+
+          visit edit_trainee_registration_path
+          expect do
+            click_on "退会する"
+          end.to change { Trainee.count }.by(-1)
+          aggregate_failures do
+            expect(trainee.candidates.empty?).to eq true
+            expect(trainee.chats.empty?).to eq true
+            expect(trainee.contracts.empty?).to eq true
+            expect(current_path).to eq root_path
+          end
+        end
+      end
+    end
   end
 
   describe "Session" do
