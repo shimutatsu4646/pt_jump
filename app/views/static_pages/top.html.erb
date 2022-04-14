@@ -83,5 +83,34 @@
         <%= button_to "トレーナーとして新規登録", new_trainer_registration_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
       </div>
     </div>
+
+    <%# ↓ポートフォリオ用のログイン情報を表示するためのコード↓ %>
+    <div class="mt-5">
+      <div class="bg-white border border-2 p-3 m-1">
+        <p>※トレーニーとして動作確認をする場合は、以下のログイン情報をお使いください。</p>
+        <p>Eメール：trainee2@example.com</p>
+        <p>パスワード：password2</p>
+      </div>
+      <div class="bg-white border border-2 p-3 m-1">
+        <p>※トレーナーとして動作確認をする場合は、以下のログイン情報をお使いください。</p>
+        <p>Eメール：trainer2@example.com</p>
+        <p>パスワード：password2</p>
+      </div>
+      <div class="bg-white border border-2 p-3 m-1">
+        <p>※新規登録したばかりのユーザーを想定したユーザーアカウントは、以下になります。</p>
+        <div class="bg-white border border-1 p-3">
+          <p>[トレーニー]</p>
+          <p>Eメール：trainee1@example.com</p>
+          <p>パスワード：password1</p>
+        </div>
+        <div class="bg-white border border-1 p-3">
+          <p>[トレーナー]</p>
+          <p>Eメール：trainer1@example.com</p>
+          <p>パスワード：password1</p>
+        </div>
+      </div>
+    </div>
+    <%# ↑ポートフォリオ用のログイン情報を表示するためのコード↑ %>
+
   <% end %>
 </div>

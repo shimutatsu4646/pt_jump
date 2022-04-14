@@ -49,9 +49,6 @@
               <%= link_to "ログアウト", destroy_trainer_session_path , {method: :delete, class: "nav-link"} %>
             </li>
           <% else %>
-            <li class="nav-item mb-4 mb-md-0">
-              <a href="#" class="nav-link disabled text-light" aria-disabled="true">ゲストユーザーとして利用中</a>
-            </li>
             <li class="nav-item">
               <%= link_to "トレーニーログイン", new_trainee_session_path, class: "nav-link" %>
             </li>
