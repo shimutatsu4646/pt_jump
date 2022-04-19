@@ -108,14 +108,14 @@
       <%= link_to "#{@trainer.name}さんとのチャットページ", chat_path(@trainer.id), class: "btn btn-lg btn-primary" %>
     </div>
     <div class="my-3">
-      <%= link_to "#{@trainer.name}さんに契約リクエストをする", new_contract_path(@trainer.id), class: "btn btn-lg btn-info" %>
+      <%= link_to "#{@trainer.name}さんに契約リクエストをする", new_contract_path(@trainer.id), class: "btn btn-lg btn-success" %>
     </div>
   <% end %>
 
   <% if trainee_signed_in? %>
     <div class="undecided_contracts p-3">
       <% if @undecided_contracts.present? %>
-        <h4 class="text-center">このトレーニーにリクエストした契約</h4>
+        <h4 class="text-center">このトレーナーにリクエストした契約</h4>
         <% @undecided_contracts.each do |contract| %>
           <ul class="custom-light-gray pb-2 border border-3 border-white">
             <li>リクエストした日時： <%= l contract.created_at, format: :until_date %></li>
@@ -123,12 +123,12 @@
           </ul>
         <% end %>
       <% else %>
-        <h5>このトレーニーにリクエストした契約はありません</h5>
+        <h5>このトレーナーにリクエストした契約はありません</h5>
       <% end %>
     </div>
     <div class="decided_contracts p-3">
       <% if @decided_contracts.present? %>
-        <h4 class="text-center">このトレーニーと成立した契約</h4>
+        <h4 class="text-center">このトレーナーと成立した契約</h4>
         <% @decided_contracts.each do |contract| %>
           <ul class="custom-light-gray pb-2 border border-3 border-white">
             <li>リクエストした日時： <%= l contract.created_at, format: :until_date %></li>

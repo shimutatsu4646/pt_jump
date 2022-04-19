@@ -60,6 +60,8 @@ group :development, :test do
   gem 'spring-commands-rspec'
 
   gem 'rubocop-airbnb'
+
+  gem 'rails-erd'
 end
 
 group :development do

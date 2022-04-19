@@ -69,7 +69,7 @@ RSpec.describe "Trainers System", type: :system do
         context "このトレーナーに契約リクエストをしていない場合" do
           scenario "「このトレーナーにリクエストした契約はありません」と表示されること" do
             visit trainer_path(trainer.id)
-            expect(page).to have_content "このトレーニーにリクエストした契約はありません"
+            expect(page).to have_content "このトレーナーにリクエストした契約はありません"
           end
         end
 
@@ -85,7 +85,7 @@ RSpec.describe "Trainers System", type: :system do
 
           scenario "「このトレーナーにリクエストした契約」と表示されること" do
             visit trainer_path(trainer.id)
-            expect(page).to have_content "このトレーニーにリクエストした契約"
+            expect(page).to have_content "このトレーナーにリクエストした契約"
           end
 
           scenario "「この契約リクエストの詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do
@@ -95,12 +95,12 @@ RSpec.describe "Trainers System", type: :system do
           end
         end
 
-        context "このトレーニーと成立した契約がある場合" do
+        context "このトレーナーと成立した契約がある場合" do
           let!(:contract) { create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: true) }
 
-          scenario "「このトレーニーと成立した契約」と表示されること" do
+          scenario "「このトレーナーと成立した契約」と表示されること" do
             visit trainer_path(trainer.id)
-            expect(page).to have_content "このトレーニーと成立した契約"
+            expect(page).to have_content "このトレーナーと成立した契約"
           end
 
           scenario "「この契約の詳細を見る」をクリックすると、契約詳細ページにリダイレクトすること" do

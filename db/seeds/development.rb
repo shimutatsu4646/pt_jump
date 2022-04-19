@@ -383,49 +383,52 @@ end
 
 # idが2のトレーナー・トレーニー同士のチャット
 Chat.create!(
-  content: "試験はいつからですか?",
+  content: "こんにちは。筋肉を付けたいです。指導していただけませんか？",
   trainee_id: 2,
   trainer_id: 2,
   from_trainee: true
 )
 Chat.create!(
-  content: "今週の水曜日からです。毎晩９時から１１時まで勉強しています。",
+  content: "いいですよ！運動経験はありますか？",
   trainee_id: 2,
   trainer_id: 2,
   from_trainee: false
 )
 Chat.create!(
-  content: "私は試験が終わったので毎週、金曜日と土曜日はアルバイトをしています。",
+  content: "サッカーをやっていました。",
   trainee_id: 2,
   trainer_id: 2,
   from_trainee: true
 )
 Chat.create!(
-  content: "私は金曜日に試験が終わります。",
+  content: "運動経験があるのでしたら、ジムのマシンを使ってトレーニングするのが一番効果が出やすいですよ。
+  ジムに通ってますか？",
   trainee_id: 2,
   trainer_id: 2,
   from_trainee: false
 )
 Chat.create!(
-  content: "それでは、再来週の日曜日の予定はどうですか?",
+  content: "通っていません。どこかのジムに入会しないといけないですか？",
   trainee_id: 2,
   trainer_id: 2,
   from_trainee: true
 )
 Chat.create!(
-  content: "空いてます!",
+  content: "入会しなくて大丈夫です！
+  小さいスペースですが、私がトレーニングスペースを確保しているので、そこでできます。料金は指導料だけです。",
   trainee_id: 2,
   trainer_id: 2,
   from_trainee: false
 )
 Chat.create!(
-  content: "外でバーベキューパーティーをしましょう。",
+  content: "わかりました。よろしくおねがいします。",
   trainee_id: 2,
   trainer_id: 2,
   from_trainee: true
 )
 Chat.create!(
-  content: "賛成です!!",
+  content: "よろしくおねがいします！
+  あとは、食事の見直しが必要かもしれないので、普段の食事を教えていただいてもいいですか？",
   trainee_id: 2,
   trainer_id: 2,
   from_trainee: false
@@ -433,58 +436,58 @@ Chat.create!(
 
 # idが2のトレーニーとidが3のトレーナー
 Chat.create!(
-  content: "私は歌うことが好きなので
-  よくカラオケボックスへ行きます。あなたはどんなことが好きですか?",
+  content: "こんにちは。再来月までに体重を減らしたいのですが、指導いただけませんか？",
   trainee_id: 2,
   trainer_id: 3,
   from_trainee: true
 )
 Chat.create!(
-  content: "私は本が好きなのでよく図書館へ行きます",
+  content: "もちろんいいですよ！なぜ体重を減らしたいのですか？",
   trainee_id: 2,
   trainer_id: 3,
   from_trainee: false
 )
 Chat.create!(
-  content: "あと、私はみんなで食事をしたりお茶を飲んだりすることが好きです。",
-  trainee_id: 2,
-  trainer_id: 3,
-  from_trainee: false
-)
-Chat.create!(
-  content: "素敵ですね。同感です。私は緑茶が好きですよ。",
+  content: "友達の結婚式がありまして、ドレスを綺麗に着こなしたいんです。",
   trainee_id: 2,
   trainer_id: 3,
   from_trainee: true
+)
+Chat.create!(
+  content: "わかりました。一緒に頑張りましょう！
+  来月の月末までの契約でよろしいですか？",
+  trainee_id: 2,
+  trainer_id: 3,
+  from_trainee: false
 )
 
 # idが3のトレーニーとidが2のトレーナー
 Chat.create!(
-  content: "パソコンが得意でしたよね?",
-  trainer_id: 2,
-  trainee_id: 3,
-  from_trainee: true
-)
-Chat.create!(
-  content: "ええ。専門ではありませんが、わかります。",
+  content: "こんにちは！ダイエットがしたいようですね",
   trainer_id: 2,
   trainee_id: 3,
   from_trainee: false
 )
 Chat.create!(
-  content: "操作が簡単なパソコンが欲しいです。",
-  trainer_id: 2,
-  trainee_id: 3,
-  from_trainee: true
-)
-Chat.create!(
-  content: "じゃあ、いっしょに買物へ行きますか?",
+  content: "私はボディビルの大会に出場したこともあるので、私が指導したらしっかり結果を出しますよ！ダイエットの指導も得意です！",
   trainer_id: 2,
   trainee_id: 3,
   from_trainee: false
 )
 Chat.create!(
-  content: "お願いします。週末になったら電話します。",
+  content: "それはいいですね！",
+  trainer_id: 2,
+  trainee_id: 3,
+  from_trainee: true
+)
+Chat.create!(
+  content: "それでは、いつから指導しましょうか？",
+  trainer_id: 2,
+  trainee_id: 3,
+  from_trainee: false
+)
+Chat.create!(
+  content: "今月は忙しいので、来月ならいいです",
   trainer_id: 2,
   trainee_id: 3,
   from_trainee: true
