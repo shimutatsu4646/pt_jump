@@ -1,0 +1,69 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark py-4">
+    <div class="container-fluid mx-4">
+      <%= link_to "P.T.Jump", root_path , class: "navbar-brand" %>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav m-auto mt-3 mt-md-0 mb-2 mb-md-0">
+          <% if trainee_signed_in? %>
+            <li class="nav-item mb-4 mb-md-0">
+              <a href="#" class="nav-link disabled text-light" aria-disabled="true"><%= current_trainee.name %>としてログイン中</a>
+            </li>
+            <li class="nav-item">
+              <%= link_to "プロフィール", trainee_path(current_trainee.id) , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーナー検索", search_for_trainer_path , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーナー候補一覧", candidates_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "チャット一覧", chats_path , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "契約一覧", contracts_path , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_trainee_session_path , {method: :delete, class: "nav-link"} %>
+            </li>
+          <% elsif trainer_signed_in? %>
+            <li class="nav-item mb-4 mb-md-0">
+              <a href="#" class="nav-link disabled text-light" aria-disabled="true"><%= current_trainer.name %>としてログイン中</a>
+            </li>
+            <li class="nav-item">
+              <%= link_to "プロフィール", trainer_path(current_trainer.id) , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーニー検索", search_for_trainee_path , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "チャット一覧", chats_path , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "契約一覧", contracts_path , class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_trainer_session_path , {method: :delete, class: "nav-link"} %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "トレーニーログイン", new_trainee_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーニー登録", new_trainee_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーナーログイン", new_trainer_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "トレーナー登録", new_trainer_registration_path, class: "nav-link" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

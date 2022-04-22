@@ -1,0 +1,15 @@
+<% if current_trainee.candidates.find_by(trainer_id: trainer.id) %>
+  <%= button_to destroy_candidate_path(trainer.id), {class:"text-decoration-none border border-secondary border-3 rounded-pill p-1", method: :delete, remote: true} do %>
+    <span>
+      <i class="fa-solid fa-star" aria-hidden="true"></i>
+    </span>
+    <span class="text">トレーナー候補から取り消す</span>
+  <% end %>
+<% else %>
+  <%= button_to create_candidate_path(trainer.id), {class:"text-decoration-none border border-secondary border-3 rounded-pill p-1", method: :post, remote: true} do %>
+    <span class="icon">
+      <i class="fa-regular fa-star" aria-hidden="true"></i>
+    </span>
+    <span class="text">トレーナー候補に加える</span>
+  <% end %>
+<% end %>

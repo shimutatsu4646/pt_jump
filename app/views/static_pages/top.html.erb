@@ -1,0 +1,116 @@
+<div class="text-center">
+  <h2 class="pb-3">トップページ</h2>
+
+  <% if trainee_signed_in? %>
+    <h4>利用できる機能</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "トレーナー検索", search_for_trainer_path, {method: :get, class: "btn btn-lg btn-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "トレーナー候補の一覧", candidates_path, {method: :get, class: "btn btn-lg btn-success"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "チャットの一覧", chats_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "契約の一覧", contracts_path, {method: :get, class: "btn btn-lg btn-info"}  %>
+      </div>
+    </div>
+
+      <h4>あなたの情報</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "プロフィールページ", trainee_path(current_trainee.id), {method: :get, class: "btn btn-lg btn-outline-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "プロフィール変更ページ", edit_profile_trainee_path(current_trainee.id), {method: :get, class: "btn btn-lg btn-outline-secondary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "アカウント情報変更ページ", edit_trainee_registration_path(current_trainee.id), {method: :get, class: "btn btn-lg btn-outline-dark"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "ログアウトする", destroy_trainee_session_path, {method: :delete, class: "btn btn-lg btn-outline-danger"}  %>
+      </div>
+    </div>
+  <% elsif trainer_signed_in? %>
+    <h4>利用できる機能</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "トレーニー検索", search_for_trainee_path, {method: :get, class: "btn btn-lg btn-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "チャットの一覧", chats_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "契約の一覧", contracts_path, {method: :get, class: "btn btn-lg btn-info"}  %>
+      </div>
+    </div>
+
+      <h4>あなたの情報</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "プロフィールページ", trainer_path(current_trainer.id), {method: :get, class: "btn btn-lg btn-outline-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "プロフィール変更ページ", edit_profile_trainer_path(current_trainer.id), {method: :get, class: "btn btn-lg btn-outline-secondary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "アカウント情報変更ページ", edit_trainer_registration_path(current_trainer.id), {method: :get, class: "btn btn-lg btn-outline-dark"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "ログアウトする", destroy_trainer_session_path, {method: :delete, class: "btn btn-lg btn-outline-danger"}  %>
+      </div>
+    </div>
+  <% else %>
+  <%# ゲストユーザー %>
+    <h4>トレーニーとしてご利用される方はこちら</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "トレーニーとしてログイン", new_trainee_session_path, {method: :get, class: "btn btn-lg btn-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "トレーニーとして新規登録", new_trainee_registration_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
+      </div>
+    </div>
+
+    <h4>トレーナーとしてご利用される方はこちら</h4>
+    <div class="row row-cols-1 my-2 p-3">
+      <div class="col my-2">
+        <%= button_to "トレーナーとしてログイン", new_trainer_session_path, {method: :get, class: "btn btn-lg btn-primary"}  %>
+      </div>
+      <div class="col my-2">
+        <%= button_to "トレーナーとして新規登録", new_trainer_registration_path, {method: :get, class: "btn btn-lg btn-warning"}  %>
+      </div>
+    </div>
+
+    <%# ↓ポートフォリオ用のログイン情報を表示するためのコード↓ %>
+    <div class="mt-5">
+      <div class="bg-white border border-2 p-3 m-1">
+        <p>※トレーニーとして動作確認をする場合は、以下のログイン情報をお使いください。</p>
+        <p>Eメール：trainee2@example.com</p>
+        <p>パスワード：password2</p>
+      </div>
+      <div class="bg-white border border-2 p-3 m-1">
+        <p>※トレーナーとして動作確認をする場合は、以下のログイン情報をお使いください。</p>
+        <p>Eメール：trainer2@example.com</p>
+        <p>パスワード：password2</p>
+      </div>
+      <div class="bg-white border border-2 p-3 m-1">
+        <p>※新規登録したばかりのユーザーを想定したユーザーアカウントは、以下になります。</p>
+        <div class="bg-white border border-1 p-3">
+          <p>[トレーニー]</p>
+          <p>Eメール：trainee1@example.com</p>
+          <p>パスワード：password1</p>
+        </div>
+        <div class="bg-white border border-1 p-3">
+          <p>[トレーナー]</p>
+          <p>Eメール：trainer1@example.com</p>
+          <p>パスワード：password1</p>
+        </div>
+      </div>
+    </div>
+    <%# ↑ポートフォリオ用のログイン情報を表示するためのコード↑ %>
+
+  <% end %>
+</div>

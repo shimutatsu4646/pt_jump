@@ -1,0 +1,4 @@
+<% flash.each do |key, value| %>
+  <%# <%= content_tag(:p, value, class: ["flash, #{key}, sticky-top, py-md-1"]) %>
+  <%= content_tag(:div, value, class: ["alert alert-success text-center"]) %>
+<% end %>

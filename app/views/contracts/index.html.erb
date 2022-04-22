@@ -1,0 +1,41 @@
+<div class="undecided_contracts p-3">
+  <% if trainee_signed_in? %>
+    <h4 class="text-center">リクエスト中の契約</h4>
+    <% @undecided_contracts.each do |contract| %>
+      <ul class="custom-light-gray pb-2 border border-3 border-white">
+        <li>あなたがリクエストしたトレーナー： <%= contract.trainer.name %></li>
+        <li>リクエストした日時： <%= l contract.created_at, format: :until_date %></li>
+        <li><%= link_to "この契約リクエストの詳細を見る", contract_path(contract.id) %></li>
+      </ul>
+    <% end %>
+  <% elsif trainer_signed_in? %>
+    <h3 class="text-center">リクエストされた契約</h3>
+    <% @undecided_contracts.each do |contract| %>
+      <ul class="custom-light-gray pb-2 border border-3 border-white">
+        <li>あなたにリクエストしたトレーニー： <%= contract.trainee.name %></li>
+        <li>リクエストされた日時： <%= l contract.created_at, format: :until_date %></li>
+        <li><%= link_to "この契約リクエストの詳細を見る", contract_path(contract.id) %></li>
+      </ul>
+    <% end %>
+  <% end %>
+</div>
+<div class="decided_contracts p-3">
+  <h4 class="text-center">成立済みの契約</h4>
+  <% if trainee_signed_in? %>
+    <% @decided_contracts.each do |contract| %>
+      <ul class="custom-light-gray pb-2 border border-3 border-white">
+        <li>あなたがリクエストしたトレーナー： <%= contract.trainer.name %></li>
+        <li>リクエストした日時： <%= l contract.created_at, format: :until_date %></li>
+        <li><%= link_to "この契約の詳細を見る", contract_path(contract.id) %></li>
+      </ul>
+    <% end %>
+  <% elsif trainer_signed_in? %>
+    <% @decided_contracts.each do |contract| %>
+      <ul class="custom-light-gray pb-2 border border-3 border-white">
+        <li>あなたにリクエストしたトレーニー： <%= contract.trainee.name %></li>
+        <li>リクエストされた日時： <%= l contract.created_at, format: :until_date %></li>
+        <li><%= link_to "この契約の詳細を見る", contract_path(contract.id) %></li>
+      </ul>
+    <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,43 @@
+<h3 class="text-center">チャット一覧</h3>
+<div class="chat-partners">
+  <% @chat_partners.each do |partner| %>
+    <ul class="text-center">
+      <% if trainee_signed_in? %>
+        <li>
+          <div class="card mx-auto" style="width: 20rem;">
+            <p class="mb-0">
+              <%= image_tag partner.avatar, class: "w-50" %>
+            </p>
+            <div class="card-body pt-0">
+              <h5 class="card-title">
+                <%= link_to partner.name, trainer_path(partner.id) %>
+              </h5>
+              <p class="card-text border-top border-bottom border-3 py-2 bg-light">
+                <%= Chat.where(trainee_id: current_trainee.id).where(trainer_id: partner.id).last.content.truncate(20) %>
+              </p>
+              <%= link_to "チャットページ", chat_path(partner.id), class: "btn btn-sm btn-primary" %>
+            </div>
+          </div>
+        </li>
+      <% elsif trainer_signed_in? %>
+        <li>
+          <div class="card mx-auto" style="width: 20rem;">
+            <p class="mb-0">
+              <%= image_tag partner.avatar, class: "w-50" %>
+            </p>
+            <div class="card-body pt-0">
+              <h5 class="card-title">
+                <%= link_to partner.name, trainee_path(partner.id) %>
+              </h5>
+              <p class="card-text border-top border-bottom border-3 py-2 bg-light">
+                <%= Chat.where(trainer_id: current_trainer.id).where(trainee_id: partner.id).last.content.truncate(20) %>
+              </p>
+              <%= link_to "チャットページ", chat_path(partner.id), class: "btn btn-sm btn-primary" %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+

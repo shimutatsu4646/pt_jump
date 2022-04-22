@@ -50,6 +50,4 @@ test:
 #
 production:
   <<: *default
-  database: pt_jump_production
-  username: pt_jump
-  password: <%= ENV['PT_JUMP_DATABASE_PASSWORD'] %>
+  url: <%= ENV['JAWSDB_CHARCOAL_URL']&.sub('mysql://', 'mysql2://') %>

@@ -30,9 +30,19 @@ module PtJump
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
+    config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.yml').to_s]
+    config.i18n.default_locale = :ja
+
+    config.time_zone = 'Asia/Tokyo'
+    # config.active_record.default_timezone = :local
+
     # config.eager_load_paths << Rails.root.join("extras")
 
-    # Don't generate system test files.
-    config.generators.system_tests = nil
+    config.generators do |g|
+      g.skip_routes true
+      g.helper false
+      g.assets false
+      g.test_framework :rspec, view_specs: false, routing_specs: false # viewのテストはsystemスペックに任せる。
+    end
   end
 end

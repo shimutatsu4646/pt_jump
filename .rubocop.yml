@@ -20,4 +20,5 @@ AllCops:
     - 'node_modules/**/*'
     - 'spec/spec_helper.rb'
     - 'tmp/**/*'
+    - 'config/initializers/devise.rb'
 

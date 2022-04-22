@@ -1,0 +1,38 @@
+// 変数設置
+// $theme-color: #CCFF99;
+
+// タグ毎の共通スタイル
+h1 {
+  padding-bottom: 3rem;
+}
+
+h3 {
+  padding-bottom: 2rem;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+// 全体のスタイル
+body {
+  background-color: #f7f7f7;
+}
+
+main > .container {
+  padding: 50px 15px 50px;
+}
+
+a {
+  color: #262d33;
+
+  &:hover {
+    color: #0653b6;
+  }
+}
+
+// カスタムクラス
+.custom-light-gray {
+  background-color: rgb(238, 237, 237);
+}

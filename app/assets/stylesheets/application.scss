@@ -9,7 +9,28 @@
  * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
  */
+
+
+
+// Bootstrapの変数は[@import "bootstrap";]の前に指定することで、定義した変数が反映される。
+
+// 下記は変数
+
+// 上記は変数
+
+@import "bootstrap";
+
+@import "layout";
+@import "message";
+@import "form";
+@import "image";
+@import "chat";
+@import "contract";
+
+$fa-font-path: '@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/regular';
+// @import '@fortawesome/fontawesome-free/scss/brands';
+// @import '@fortawesome/fontawesome-free/scss/v4-shims';

@@ -8,6 +8,9 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # ActiveStorageを利用した画像添付の際に、高負荷がかかってMySQLのコネクトが外れるため。
+  config.active_job.queue_adapter = :inline
+
   config.cache_classes = false
   config.action_view.cache_template_loading = true
 
@@ -57,4 +60,8 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # シードデータが消えないようにする。
+  # CIを使用する場合は、RAILS_ENV=testと指定する必要あり。 例）RAILS_ENV=test bundle exec rspec
+  config.active_record.maintain_test_schema = false
 end

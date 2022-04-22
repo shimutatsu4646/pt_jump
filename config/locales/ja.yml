@@ -1,0 +1,35 @@
+ja:
+  enums:
+    trainee:
+      gender:
+        male: 男性
+        female: 女性
+      category:
+        losing_weight: ダイエット
+        building_muscle: 筋肉づくり
+        physical_function: 身体機能の向上
+        physical_therapy: リハビリテーション
+      instruction_method:
+        offline: オフラインで指導
+        online: オンラインで指導
+    trainer:
+      gender:
+        male: 男性
+        female: 女性
+      instruction_period:
+        below_one_month: 一ヶ月未満
+        above_one_month: 一ヶ月以上
+      category:
+        losing_weight: ダイエット
+        building_muscle: 筋肉づくり
+        physical_function: 身体機能の向上
+        physical_therapy: リハビリテーション
+      instruction_method:
+        offline: オフラインで指導
+        online: オンラインで指導
+  time:
+    formats:
+      until_date: "%Y年%m月%d日"
+  date:
+    formats:
+      default: "%Y年%m月%d日"
