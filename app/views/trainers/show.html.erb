@@ -12,6 +12,16 @@
       ユーザー名<br>
       <%= @trainer.name %>
     </div>
+    <div class="card card-body col-12">
+      <% if @trainer.reviews.present? %>
+        <div id="star-rate-average"></div>
+        <div>
+          <%= link_to "レビューの一覧を見る", index_reviews_path(@trainer.id), class: "btn btn-sm btn-info" %>
+        </div>
+      <% else %>
+        <div>レビューはありません</div>
+      <% end %>
+    </div>
     <div class="card card-body col-6">
       年齢<br>
       <%= @trainer.age %>歳
@@ -86,7 +96,11 @@
     </div>
     <div class="card card-body col-12">
       自己紹介<br>
-      <%= @trainer.introduction %>
+      <% if @trainer.introduction %>
+        <%= safe_join(@trainer.introduction.split("\n"),tag(:br)) %>
+      <% else %>
+        入力なし
+      <% end %>
     </div>
   </div>
 
@@ -110,6 +124,15 @@
     <div class="my-3">
       <%= link_to "#{@trainer.name}さんに契約リクエストをする", new_contract_path(@trainer.id), class: "btn btn-lg btn-success" %>
     </div>
+    <% if @decided_contracts.present? %>
+      <div class="my-3">
+        <% if @review.present? %>
+          <%= link_to "自分が投稿したレビューを編集する", edit_review_path(@review.id), class: "btn btn-lg btn-info" %>
+        <% else %>
+          <%= link_to "レビューを投稿する", new_review_path(@trainer.id), class: "btn btn-lg btn-info" %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 
   <% if trainee_signed_in? %>
@@ -141,3 +164,15 @@
     </div>
   <% end %>
 </div>
+
+<script>
+  $('#star-rate-average').raty({
+    size     : 36,
+    starOff:  '<%= asset_path('star-off.png') %>',
+    starOn : '<%= asset_path('star-on.png') %>',
+    starHalf : '<%= asset_path('star-half.png') %>',
+    half: true,
+    readOnly: true,
+    score: '<%= @trainer.reviews.average(:star_rate).to_f.round(1) %>',
+  });
+</script>

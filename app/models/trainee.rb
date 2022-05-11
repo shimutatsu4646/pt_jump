@@ -55,6 +55,8 @@ class Trainee < ApplicationRecord
   has_many :candidates, dependent: :destroy
   has_many :trainer_candidates, through: :candidates, source: :trainer
 
+  has_many :reviews # traineeが退会したとしてもレビューは残る
+
   scope :search_trainee, -> (trainee_search_params) do
     return if trainee_search_params.blank?
 

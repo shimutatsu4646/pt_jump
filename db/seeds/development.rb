@@ -567,6 +567,16 @@ Contract.new(
 ).save(validate: false)
 Contract.find(6).update_attribute(:created_at, Time.parse("2022/02/21") )
 
+Contract.new(
+  id: 7,
+  trainee_id: 2,
+  trainer_id: 3,
+  start_date: Date.parse("2022/02/01"),
+  end_date: Date.parse("2022/03/01"),
+  final_decision: true
+).save(validate: false)
+Contract.find(7).update_attribute(:created_at, Time.parse("2022/01/30") )
+
 
 # リクエスト中の契約データ
 
@@ -670,4 +680,41 @@ Candidate.create!(
 Candidate.create!(
   trainee_id: 3,
   trainer_id: 5,
+)
+
+
+# レビューのデータ
+
+Review.create!(
+  trainee_id: 2,
+  trainer_id: 2,
+  title: "非常に丁寧な指導でした。",
+  comment: "またお願いしたいと思います。",
+  star_rate: 5.0
+)
+
+Review.create!(
+  trainee_id: 3,
+  trainer_id: 2,
+  title: "チャットの返信スピード",
+  comment: "チャットが帰ってくるのが遅かったです。
+  それ以外はとても良かったので星４とします。",
+  star_rate: 4.0
+)
+
+Review.create!(
+  trainee_id: 5,
+  trainer_id: 3,
+  title: "適当な指導",
+  comment: "威圧的な指導で、楽しくありませんでした。
+  おすすめしません。",
+  star_rate: 2.0
+)
+
+Review.create!(
+  trainee_id: 6,
+  trainer_id: 3,
+  title: "微妙",
+  comment: "トレーナー自身の体型は非常によいです。ご自身でトレーニングをされているようですが、指導は微妙でした。",
+  star_rate: 3.0
 )

@@ -1,4 +1,10 @@
 ja:
+  activerecord:
+    attributes:
+      review:
+        title: タイトル
+        comment: レビュー
+        star_rate: 星評価
   enums:
     trainee:
       gender:

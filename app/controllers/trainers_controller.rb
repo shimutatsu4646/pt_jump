@@ -8,9 +8,12 @@ class TrainersController < ApplicationController
       @undecided_contracts = current_trainee.contracts.
         where(trainer_id: @trainer.id, final_decision: false).
         order("contracts.created_at DESC")
+
       @decided_contracts = current_trainee.contracts.
         where(trainer_id: @trainer.id, final_decision: true).
         order("contracts.updated_at DESC")
+
+      @review = Review.find_by(trainer_id: @trainer.id, trainee_id: current_trainee.id)
     end
   end
 

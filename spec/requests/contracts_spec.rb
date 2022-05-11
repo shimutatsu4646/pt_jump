@@ -110,7 +110,7 @@ RSpec.describe "Contracts Request", type: :request do
         end
       end
 
-      it "rlのidにidが一致するトレーナーが存在しない場合、404レスポンスを返すこと" do
+      it "urlのidにidが一致するトレーナーが存在しない場合、404レスポンスを返すこと" do
         sign_in trainee
         get "/contracts/new/#{trainer.id + 1}"
         expect(response).to have_http_status(404)
@@ -121,7 +121,7 @@ RSpec.describe "Contracts Request", type: :request do
       let(:trainee) { create(:trainee) }
       let(:trainer) { create(:trainer) }
 
-      it "302レスポンスを返し、トレーニーログインページにダイレクトすること" do
+      it "302レスポンスを返し、トレーニーログインページにリダイレクトすること" do
         sign_in trainer
         get "/contracts/new/#{trainer.id}"
         aggregate_failures do
@@ -135,7 +135,7 @@ RSpec.describe "Contracts Request", type: :request do
       let!(:trainee) { create(:trainee) }
       let!(:trainer) { create(:trainer) }
 
-      it "302レスポンスを返し、トレーニーログインページにダイレクトすること" do
+      it "302レスポンスを返し、トレーニーログインページにリダイレクトすること" do
         get "/contracts/new/#{trainer.id}"
         aggregate_failures do
           expect(response).to have_http_status "302"

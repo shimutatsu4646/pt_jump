@@ -41,13 +41,20 @@ class Trainer < ApplicationRecord
   enum instruction_method: { offline: 0, online: 1 }
 
   has_one_attached :avatar, dependent: :destroy
+
   has_and_belongs_to_many :cities, dependent: :destroy
   has_many :prefectures, through: :cities
+
   has_many :instruction_schedules, dependent: :destroy
   has_many :day_of_weeks, through: :instruction_schedules
+
   has_many :chats, dependent: :destroy
+
   has_many :contracts, dependent: :destroy
+
   has_many :candidates, dependent: :destroy
+
+  has_many :reviews, dependent: :destroy
 
   scope :search_trainer, -> (trainer_search_params) do
     return if trainer_search_params.blank?
