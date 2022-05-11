@@ -21,4 +21,8 @@ Rails.application.routes.draw do
   resources :candidates, only: [:index]
   post 'candidates/:id', to: 'candidates#create', as: :create_candidate
   delete 'candidates/:id', to: 'candidates#destroy', as: :destroy_candidate
+
+  resources :reviews, except: [:index, :new, :destroy]
+  get 'reviews/index/:id', to: 'reviews#index', as: :index_reviews
+  get 'reviews/new/:id', to: 'reviews#new', as: :new_review
 end

@@ -74,7 +74,11 @@
     </div>
     <div class="card card-body col-12">
       自己紹介<br>
-      <%= @trainee.introduction %>
+      <% if @trainee.introduction %>
+        <%= safe_join(@trainee.introduction.split("\n"),tag(:br)) %>
+      <% else %>
+        入力なし
+      <% end %>
     </div>
   </div>
 

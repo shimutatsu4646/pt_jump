@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_10_001551) do
+ActiveRecord::Schema.define(version: 2022_04_22_065224) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -121,6 +121,18 @@ ActiveRecord::Schema.define(version: 2022_04_10_001551) do
     t.string "name", null: false
   end
 
+  create_table "reviews", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "trainee_id"
+    t.bigint "trainer_id", null: false
+    t.float "star_rate", default: 0.0, null: false
+    t.string "title", null: false
+    t.text "comment", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trainee_id"], name: "index_reviews_on_trainee_id"
+    t.index ["trainer_id"], name: "index_reviews_on_trainer_id"
+  end
+
   create_table "trainees", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -178,4 +190,6 @@ ActiveRecord::Schema.define(version: 2022_04_10_001551) do
   add_foreign_key "instruction_schedules", "day_of_weeks"
   add_foreign_key "instruction_schedules", "trainers"
   add_foreign_key "prefectures", "regions"
+  add_foreign_key "reviews", "trainees"
+  add_foreign_key "reviews", "trainers"
 end

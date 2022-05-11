@@ -1,0 +1,45 @@
+<div class="text-center">
+  <h3>レビューの編集</h3>
+
+  <%= form_with(model: @review, url: review_path(@review.id), method: :patch) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <div class="row row-cols-1 row-cols-lg-2 m-2">
+      <div class="field col p-2" id="star">
+        <%= f.label :star_rate, '評価', class:'col col-form-label mb-4' %><br />
+        <p class="fst-italic">
+          同じ評価だったとしても再度ご入力ください
+        </p>
+        <%= f.hidden_field :star_rate, id: :review_star %>
+      </div>
+
+
+      <div class="field col p-2">
+        <%= f.label :title %><br />
+        <span class="fst-italic">50文字以内</span><br />
+        <%= f.text_field :title, class: "form-control" %>
+      </div>
+    </div>
+
+      <div class="field col p-2">
+        <%= f.label :comment %><br />
+        <%= f.text_area :comment, class: "form-control", rows: "5" %>
+      </div>
+
+    <div class="actions">
+      <%= f.submit "投稿する", class: "btn btn-outline-primary btn-lg my-3" %>
+    </div>
+  <% end %>
+</div>
+
+<!-- 評価javascript -->
+<script>
+  $('#star').raty({
+    size     : 36,
+    starOff:  '<%= asset_path('star-off.png') %>',
+    starOn : '<%= asset_path('star-on.png') %>',
+    starHalf : '<%= asset_path('star-half.png') %>',
+    scoreName: 'review[star_rate]',
+    half: true,
+  });
+</script>

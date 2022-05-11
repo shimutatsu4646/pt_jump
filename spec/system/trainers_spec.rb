@@ -13,6 +13,23 @@ RSpec.describe "Trainers System", type: :system do
         login_as_trainer trainer
       end
 
+      context "レビューがある場合" do
+        let(:trainee) { create(:trainee) }
+        let!(:review) { create(:review, trainee_id: trainee.id, trainer_id: trainer.id) }
+
+        scenario "「レビューの一覧を見る」リンクが表示されていること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_link "レビューの一覧を見る"
+        end
+      end
+
+      context "レビューがない場合" do
+        scenario "「レビューはありません」と表示されていること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_content "レビューはありません"
+        end
+      end
+
       scenario "「プロフィールの変更」リンクが表示されていること" do
         visit trainer_path(trainer.id)
         expect(page).to have_link "プロフィールの変更"
@@ -41,6 +58,75 @@ RSpec.describe "Trainers System", type: :system do
 
       before do
         login_as_trainee trainee
+      end
+
+      context "レビューがある場合" do
+        let!(:review) { create(:review, trainee_id: trainee.id, trainer_id: trainer.id) }
+
+        scenario "「レビューの一覧を見る」リンクが表示されていること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_link "レビューの一覧を見る"
+        end
+      end
+
+      context "レビューがない場合" do
+        scenario "「レビューはありません」と表示されていること" do
+          visit trainer_path(trainer.id)
+          expect(page).to have_content "レビューはありません"
+        end
+      end
+
+      describe "レビュー投稿・編集リンク" do
+        context "成立済みの契約がある場合" do
+          let!(:contract) do
+            create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: true)
+          end
+
+          context "既にレビューを投稿している場合" do
+            let!(:review) do
+              create(:review, trainee_id: trainee.id, trainer_id: trainer.id)
+            end
+
+            it "「自分が投稿したレビューを編集する」リンクが表示されていること" do
+              visit trainer_path(trainer.id)
+              expect(page).to have_link "自分が投稿したレビューを編集する"
+            end
+
+            it "「レビューを投稿する」リンクが表示されていないこと" do
+              visit trainer_path(trainer.id)
+              expect(page).not_to have_link "レビューを投稿する"
+            end
+          end
+
+          context "まだレビューを投稿していない場合" do
+            it "「レビューを投稿する」リンクが表示されていること" do
+              visit trainer_path(trainer.id)
+              expect(page).to have_link "レビューを投稿する"
+            end
+
+            it "「自分が投稿したレビューを編集する」リンクが表示されていないこと" do
+              visit trainer_path(trainer.id)
+              expect(page).not_to have_link "自分が投稿したレビューを編集する"
+            end
+          end
+        end
+
+        context "成立済みの契約がない場合" do
+          let!(:contract) do
+            create(:contract, trainee_id: trainee.id, trainer_id: trainer.id, final_decision: false)
+            # final_decision: false => まだ成立していない
+          end
+
+          it "「レビューを投稿する」リンクが表示されていないこと" do
+            visit trainer_path(trainer.id)
+            expect(page).not_to have_link "レビューを投稿する"
+          end
+
+          it "「自分が投稿したレビューを編集する」リンクが表示されていないこと" do
+            visit trainer_path(trainer.id)
+            expect(page).not_to have_link "自分が投稿したレビューを編集する"
+          end
+        end
       end
 
       scenario "「プロフィールの変更」リンクが表示されていないこと" do

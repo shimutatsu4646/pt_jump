@@ -110,7 +110,7 @@ RSpec.describe "TrainerRegistrations System", type: :system do
           login_as_trainer trainer
         end
 
-        fscenario "「退会する」ボタンをクリックすると、トレーナーデータと、そのトレーナーに関連付いているデータが削除される" do
+        scenario "「退会する」ボタンをクリックすると、トレーナーデータと、そのトレーナーに関連付いているデータが削除される" do
           aggregate_failures do
             expect(trainer.candidates.empty?).to eq false
             expect(trainer.chats.empty?).to eq false

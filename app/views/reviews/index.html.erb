@@ -1,0 +1,64 @@
+<div class= "text-center">
+  <h3>レビュー　一覧</h3>
+  <h4><%= @trainer.name %></h4>
+
+  <div id="star-rate-average"></div>
+
+  <% if trainee_signed_in? %>
+    <% if @decided_contracts.present? %>
+      <div class="m-3">
+        <% if @trainer.reviews.where(trainee_id: current_trainee.id).empty? %>
+          <%= link_to "レビューを投稿する", new_review_path(@trainer.id), class: "btn btn-info" %>
+        <% else %>
+          <%= link_to "自分が投稿したレビューを編集する", edit_review_path(@review.id), class: "btn btn-info" %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+<% @reviews.each do |review|%>
+  <div class="custom-light-gray row border border-2 p-3 m-3">
+    <div id="star-rate<%= review.id %>" class="p-2 mb-3"></div>
+    <div class="card card-body">
+      <span class="fw-bold">
+      タイトル
+      </span>
+      <%= review.title %>
+    </div>
+    <div class="card card-body">
+      <span class="fw-bold">
+      レビュー文
+      </span>
+      <%= safe_join(review.comment.split("\n"),tag(:br)) %>
+    </div>
+    <div class="card card-body">
+      <span class="fw-bold">
+      更新日
+      </span>
+      <%= l review.updated_at, format: :until_date %>
+    </div>
+    <script>
+      $('#star-rate<%= review.id %>').raty({
+        size: 36,
+        starOff: '<%= asset_path('star-off.png') %>',
+        starOn: '<%= asset_path('star-on.png') %>',
+        starHalf: '<%= asset_path('star-half.png') %>',
+        half: true,
+        readOnly: true,
+        score: <%= review.star_rate %>
+      });
+    </script>
+  </div>
+<% end %>
+
+<script>
+  $('#star-rate-average').raty({
+    size: 36,
+    starOff:  '<%= asset_path('star-off.png') %>',
+    starOn: '<%= asset_path('star-on.png') %>',
+    starHalf: '<%= asset_path('star-half.png') %>',
+    half: true,
+    readOnly: true,
+    score: '<%= @trainer.reviews.average(:star_rate).to_f.round(1) %>',
+  });
+</script>
